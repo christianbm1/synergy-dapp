@@ -37,7 +37,7 @@ const BackgroundImage = createGlobalStyle`
     background-color: #171923;
   }
 `;
-const TITLE = 'pushmoney.money | Boardroom'
+const TITLE = 'Synergy | Boardroom'
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {

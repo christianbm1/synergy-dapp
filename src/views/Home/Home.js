@@ -154,7 +154,7 @@ const Home = () => {
           sm={4}
           style={{ display: 'flex', justifyContent: 'center', verticalAlign: 'middle', overflow: 'hidden' }}
         >
-          <img src={PushImage} alt="Pushmoney.money" style={{ maxHeight: '240px' }} />
+          <img src={PushImage} alt="Synergy" style={{ maxHeight: '240px' }} />
         </Grid>
         {/* Explanation text */}
         <Grid item xs={12} sm={8}>

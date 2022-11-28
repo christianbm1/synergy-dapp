@@ -25,7 +25,7 @@ const BackgroundImage = createGlobalStyle`
   }
 `;
 
-const TITLE = 'pushmoney.money | Farms'
+const TITLE = 'Synergy | Farms'
 
 
 const Farm = () => {

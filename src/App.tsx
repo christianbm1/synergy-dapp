@@ -21,8 +21,6 @@ import {RefreshContextProvider} from './contexts/RefreshContext';
 const Home = lazy(() => import('./views/Home'));
 const Farm = lazy(() => import('./views/Farm'));
 const Boardroom = lazy(() => import('./views/Boardroom'));
-const Bond = lazy(() => import('./views/Bond'));
-const Xpush = lazy(() => import('./views/Stake'));
 
 const NoMatch = () => (
   <h3 style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
@@ -54,12 +52,6 @@ const App: React.FC = () => {
             <Route path="/boardroom">
               <Boardroom />
             </Route>
-            <Route path="/bond">
-              <Bond />
-            </Route>
-            <Route path="/xpush">
-              <Xpush />
-            </Route>
             <Route path="*">
               <NoMatch />
             </Route>
@@ -81,7 +73,7 @@ const Providers: React.FC = ({children}) => {
             walletconnect: {rpcUrl: config.defaultProvider},
             walletlink: {
               url: config.defaultProvider,
-              appName: 'pushmoney.money',
+              appName: 'synergy',
               appLogoUrl: 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/logo_256x256.png',
             },
           }}

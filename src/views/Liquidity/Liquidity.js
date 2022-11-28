@@ -26,7 +26,7 @@ const BackgroundImage = createGlobalStyle`
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
-const TITLE = 'pushmoney.money |'
+const TITLE = 'Synergy |'
 
 const ProvideLiquidity = () => {
   const [pushAmount, setPushAmount] = useState(0);

@@ -120,33 +120,25 @@ const Nav = () => {
             <Typography variant="h6" color="inherit" noWrap style={{ flexGrow: '0' }} className={classes.toolbarTitle}>
               {/* <a className={ classes.brandLink } href="/">Push Money</a> */}
               <Link to="/" color="inherit" className={classes.brandLink}>
-                <img alt="pushmoney.money" src={synergyLogo} height="60px" />
+                <img alt="Synergy" src={synergyLogo} height="60px" />
               </Link>
             </Typography>
             <Box style={{ paddingLeft: '15px', fontSize: '1rem', flexGrow: '1' }}>
-              <Link to="/" className={'navLink ' + classes.link}>
-                Home
-              </Link>
               <Link to="/farm" className={'navLink ' + classes.link}>
                 Farm
               </Link>
               <Link to="/boardroom" className={'navLink ' + classes.link}>
-                Boardroom
+                ARK
               </Link>
-              <Link to="/xpush" className={'navLink ' + classes.link}>
-                xPUSH
+              <Link to="/" className={'navLink ' + classes.link}>
+                Lottery
               </Link>
-              <Link to="/bond" className={'navLink ' + classes.link}>
-                Bond
+              <Link to="/" className={'navLink ' + classes.link}>
+                NFT
               </Link>
-              <a
-                href="https://docs.pushmoney.money"
-                className={'navLink ' + classes.link}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Docs
-              </a>
+              <Link to="/" className={'navLink ' + classes.link}>
+                Portfolio
+              </Link>
             </Box>
 
             <Box
@@ -182,7 +174,7 @@ const Nav = () => {
             </IconButton>
 
             <img
-              alt="pushmoney.money"
+              alt="Synergy"
               src={synergyLogo}
               style={{ height: '40px', marginTop: '-10px', marginLeft: '10px', marginRight: '15px' }}
             />
@@ -215,10 +207,8 @@ const Nav = () => {
                 </ListItem>
                 <ListItemLink primary="Home" to="/" />
                 <ListItemLink primary="Farm" to="/farm" />
-                <ListItemLink primary="xPUSH" to="/xpush" />
                 <ListItemLink primary="Boardroom" to="/boardroom" />
-                <ListItemLink primary="Bond" to="/bond" />
-                <ListItem button component="a" href="https://docs.pushmoney.money">
+                <ListItem button component="a" href="https://">
                   <ListItemText>Documentation</ListItemText>
                 </ListItem>
               </List>
