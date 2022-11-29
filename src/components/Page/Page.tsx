@@ -13,7 +13,6 @@ const Page: React.FC = ({children}) => {
       <Container maxWidth="lg" style={{paddingBottom: '5rem'}}>
         {children}
       </Container>
-      <Footer />
     </div>
   );
 };
