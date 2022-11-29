@@ -30,6 +30,10 @@ import synergyLogo from '../../assets/img/logo.png';
 import { roundAndFormatNumber } from '../../0x';
 //import TokenSymbol from '../TokenSymbol';
 
+import IconTelegram from '../../assets/img/telegram.png';
+import IconTwitter from '../../assets/img/twitter.png';
+import IconDiscord from '../../assets/img/discord.png';
+
 const useStyles = makeStyles((theme) => ({
   '@global': {
     ul: {
@@ -40,8 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     color: '#f9d749',
-    'background-color': 'transparent',
-    // borderBottom: `1px solid ${theme.palette.divider}`,
+    'background-color': '#000309',
     padding: '10px',
     marginBottom: '3rem',
   },
@@ -68,11 +71,15 @@ const useStyles = makeStyles((theme) => ({
     color: '#f9d749',
     fontSize: '18px',
     marginTop: '15px',
-    margin: theme.spacing(10, 1, 1, 2),
+    margin: theme.spacing(10, 2, 1, 2),
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'none',
     },
+  },
+  socialLink: {
+    margin: '6px 4px 4px 4px',
+    textDecoration: 'none',
   },
   brandLink: {
     textDecoration: 'none',
@@ -123,7 +130,7 @@ const Nav = () => {
                 <img alt="Synergy" src={synergyLogo} height="60px" />
               </Link>
             </Typography>
-            <Box style={{ paddingLeft: '15px', fontSize: '1rem', flexGrow: '1' }}>
+            <Box style={{ paddingLeft: '30px', fontSize: '1rem', flexGrow: '1' }}>
               <Link to="/farm" className={'navLink ' + classes.link}>
                 Farm
               </Link>
@@ -145,19 +152,35 @@ const Nav = () => {
               style={{
                 flexGrow: '0',
                 paddingLeft: '15px',
-                paddingTop: '5px',
                 fontSize: '1rem',
                 paddingRight: '15px',
-                height: '30px',
                 display: 'flex',
               }}
             >
-              <div className="navTokenIcon push"></div>{' '}
-              <div className="navTokenPrice">${roundAndFormatNumber(Number(pushPriceInDollars), 2)}</div>
-              <div className="navTokenIcon pshare"></div>{' '}
-              <div className="navTokenPrice">${roundAndFormatNumber(Number(sharePriceInDollars), 2)}</div>
-              <div className="navTokenIcon btc"></div>{' '}
-              <div className="navTokenPrice">${roundAndFormatNumber(Number(btcPriceInDollars), 2)}</div>
+              <a
+                href="https://twitter.com/SynergyCOFP"
+                rel="noopener noreferrer"
+                target="_blank"
+                className={classes.socialLink}
+              >
+                <img alt="Twitter" src={IconTwitter} height="45px" />
+              </a>
+              <a 
+                href="https://discord.gg/nczxGjeTSv" 
+                rel="noopener noreferrer" 
+                target="_blank" 
+                className={classes.socialLink}
+              >
+                <img alt="Discord" src={IconDiscord} height="45px" />
+              </a>
+              <a 
+                href="https://t.me/SynergyCOFP" 
+                rel="noopener noreferrer" 
+                target="_blank" 
+                className={classes.socialLink}
+              >
+                <img alt="Telegram" src={IconTelegram} height="45px" />
+              </a>
             </Box>
             <AccountButton text="Connect" />
           </>
