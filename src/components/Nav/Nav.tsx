@@ -44,9 +44,13 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     color: '#f9d749',
-    'background-color': '#000309',
+    'background-color': 'transparent',
     padding: '10px',
     marginBottom: '3rem',
+    position: 'static',
+    'max-width': '1280px',
+    'margin-left': 'auto',
+    'margin-right': 'auto',
   },
   drawer: {
     width: 240,
@@ -69,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textTransform: 'uppercase',
     color: '#f9d749',
-    fontSize: '18px',
+    fontSize: '24px',
     marginTop: '15px',
     margin: theme.spacing(10, 2, 1, 2),
     textDecoration: 'none',
