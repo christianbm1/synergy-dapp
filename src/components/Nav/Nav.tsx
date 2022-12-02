@@ -33,6 +33,7 @@ import { roundAndFormatNumber } from '../../0x';
 import IconTelegram from '../../assets/img/telegram.png';
 import IconTwitter from '../../assets/img/twitter.png';
 import IconDiscord from '../../assets/img/discord.png';
+import IconReddit from '../../assets/img/reddit.png';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -162,12 +163,20 @@ const Nav = () => {
               }}
             >
               <a
-                href="https://twitter.com/SynergyCOFP"
+                href="https://www.reddit.com/r/SynergyCOFP/"
                 rel="noopener noreferrer"
                 target="_blank"
                 className={classes.socialLink}
               >
-                <img alt="Twitter" src={IconTwitter} height="45px" />
+                <img alt="Reddit" src={IconReddit} height="45px" />
+              </a>
+              <a 
+                href="https://t.me/SynergyCOFP" 
+                rel="noopener noreferrer" 
+                target="_blank" 
+                className={classes.socialLink}
+              >
+                <img alt="Telegram" src={IconTelegram} height="45px" />
               </a>
               <a 
                 href="https://discord.gg/nczxGjeTSv" 
@@ -177,13 +186,13 @@ const Nav = () => {
               >
                 <img alt="Discord" src={IconDiscord} height="45px" />
               </a>
-              <a 
-                href="https://t.me/SynergyCOFP" 
-                rel="noopener noreferrer" 
-                target="_blank" 
+              <a
+                href="https://twitter.com/SynergyCOFP"
+                rel="noopener noreferrer"
+                target="_blank"
                 className={classes.socialLink}
               >
-                <img alt="Telegram" src={IconTelegram} height="45px" />
+                <img alt="Twitter" src={IconTwitter} height="45px" />
               </a>
             </Box>
             <AccountButton text="Connect" />
