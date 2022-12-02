@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
     marginBottom: '3rem',
     position: 'static',
-    'max-width': '1280px',
     'margin-left': 'auto',
     'margin-right': 'auto',
   },
