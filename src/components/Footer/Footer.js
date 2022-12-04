@@ -2,11 +2,6 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {Container, Grid, Typography, Link} from '@material-ui/core';
 
-import {ReactComponent as IconTelegram} from '../../assets/img/telegram.svg';
-import {ReactComponent as IconTwitter} from '../../assets/img/twitter.svg';
-import {ReactComponent as IconGithub} from '../../assets/img/github.svg';
-import {ReactComponent as IconDiscord} from '../../assets/img/discord.svg';
-
 const useStyles = makeStyles((theme) => ({
   footer: {
     position: 'absolute',
@@ -49,25 +44,6 @@ const Footer = () => {
               </Link>{' '}
               {new Date().getFullYear()}
             </Typography>
-          </Grid>
-          <Grid item xs={6} style={{textAlign: 'right', height: '20px'}}>
-            <a
-              href="https://twitter.com/money_push"
-              rel="noopener noreferrer"
-              target="_blank"
-              className={classes.link}
-            >
-              <IconTwitter style={{fill: '#dddfee'}} />
-            </a>
-            <a href="https://github.com/PUSH-MONEY" rel="noopener noreferrer" target="_blank" className={classes.link}>
-              <IconGithub style={{fill: '#dddfee', height: '20px'}} />
-            </a>
-            <a href="https://t.me/pushmoney1" rel="noopener noreferrer" target="_blank" className={classes.link}>
-              <IconTelegram style={{fill: '#dddfee', height: '20px'}} />
-            </a>
-            <a href="https://discord.gg/YwKPEZ5epn" rel="noopener noreferrer" target="_blank" className={classes.link}>
-              <IconDiscord style={{fill: '#dddfee', height: '20px'}} />
-            </a>
           </Grid>
         </Grid>
       </Container>

@@ -11,11 +11,11 @@ const newTheme = createTheme({
     },
     background: {
       default: '#121212',
-      paper: '#000316d4',
+      paper: '#6165688c',
     },
     primary: {
       light: '#ffe066',
-      main: '#2c2560',
+      main: '#f1ca2a',
       dark: '#b38f00',
       contrastText: '#000',
     },

@@ -24,7 +24,7 @@ body {
 /* .MuiTypography-body1,
 .MuiPaper-root, */
 h2 {
-  color: #f9d749 !important;
+  color: white !important;
 }
 
 body {
@@ -47,7 +47,7 @@ h5,
 h6 {
   font-family: 'Rubik', cursive !important;
   text-transform: uppercase;
-  color: #f9d749;
+  color: white;
 }
 
 .MuiToolbar-regular {
@@ -133,7 +133,7 @@ code {
   border-radius: 15px;
   font-size: 1rem !important;
   padding-left: 5px;
-  background-color: #f9d749 !important;
+  background-color: #eee5de !important;
   color: #171923 !important;
   /* box-shadow: 0px 0px 5px 0px rgba(251,221,76,1); */
 }
@@ -158,7 +158,7 @@ code {
 .shinyButtonSecondary:hover {
   background-color: #f9d749 !important;
   color: #171923 !important;
-  box-shadow: 0px 0px 5px 0px rgba(251, 221, 76, 1);
+  box-shadow: 0px 0px 5px 0px rgba(166, 166, 166, 1);
 }
 
 .navTokenPrice {
