@@ -19,6 +19,7 @@ import Popups from './components/Popups';
 import {RefreshContextProvider} from './contexts/RefreshContext';
 
 const Home = lazy(() => import('./views/Home'));
+const GenesisPool = lazy(() => import('./views/GenesisPool'));
 const Farm = lazy(() => import('./views/Farm'));
 const Boardroom = lazy(() => import('./views/Boardroom'));
 
@@ -45,6 +46,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route path="/gpool">
+              <GenesisPool />
             </Route>
             <Route path="/farm">
               <Farm />

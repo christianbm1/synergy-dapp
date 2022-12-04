@@ -135,6 +135,9 @@ const Nav = () => {
               </Link>
             </Typography>
             <Box style={{ paddingLeft: '30px', fontSize: '1rem', flexGrow: '1' }}>
+              <Link to="/gpool" className={'navLink ' + classes.link}>
+                Genesis Pools
+              </Link>
               <Link to="/farm" className={'navLink ' + classes.link}>
                 Farm
               </Link>
