@@ -1,23 +1,23 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
-import {LPStat} from '../push-finance/types';
+import useSynergyFinance from './useSynergyFinance';
+import {LPStat} from '../synergy-finance/types';
 import useRefresh from './useRefresh';
 
 const useLpStatsBTC = (lpTicker: string) => {
   const [stat, setStat] = useState<LPStat>();
   const {slowRefresh} = useRefresh();
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
     async function fetchLpPrice() {
       try {
-        setStat(await pushFinance.getLPStatBTC(lpTicker));
+        setStat(await synergyFinance.getLPStatBTC(lpTicker));
       } catch (err) {
         console.error(err);
       }
     }
     fetchLpPrice();
-  }, [setStat, pushFinance, slowRefresh, lpTicker]);
+  }, [setStat, synergyFinance, slowRefresh, lpTicker]);
 
   return stat;
 };

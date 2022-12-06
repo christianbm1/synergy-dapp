@@ -1,19 +1,19 @@
 import {useCallback, useEffect, useState} from 'react';
 
 import {BigNumber} from 'ethers';
-import usePushFinance from './usePushFinance';
-import {ContractName} from '../push-finance';
+import useSynergyFinance from './useSynergyFinance';
+import {ContractName} from '../synergy-finance';
 import config from '../config';
 
 const useStakedBalance = (poolName: ContractName, poolId: Number) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
-  const pushFinance = usePushFinance();
-  const isUnlocked = pushFinance?.isUnlocked;
+  const synergyFinance = useSynergyFinance();
+  const isUnlocked = synergyFinance?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
-    const balance = await pushFinance.stakedBalanceOnBank(poolName, poolId, pushFinance.myAccount);
+    const balance = await synergyFinance.stakedBalanceOnBank(poolName, poolId, synergyFinance.myAccount);
     setBalance(balance);
-  }, [poolName, poolId, pushFinance]);
+  }, [poolName, poolId, synergyFinance]);
 
   useEffect(() => {
     if (isUnlocked) {
@@ -22,7 +22,7 @@ const useStakedBalance = (poolName: ContractName, poolId: Number) => {
       const refreshBalance = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [isUnlocked, poolName, setBalance, pushFinance, fetchBalance]);
+  }, [isUnlocked, poolName, setBalance, synergyFinance, fetchBalance]);
 
   return balance;
 };

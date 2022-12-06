@@ -12,9 +12,9 @@ import useHarvest from '../../../hooks/useHarvest';
 
 import {getDisplayBalance} from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
-import {Bank} from '../../../push-finance';
-import usePushStats from '../../../hooks/usePushStats';
-import useShareStats from '../../../hooks/usepShareStats';
+import {Bank} from '../../../synergy-finance';
+import useCrystalStats from '../../../hooks/useCrystalStats';
+import useDiamondStats from '../../../hooks/useDiamondStats';
 
 interface HarvestProps {
   bank: Bank;
@@ -23,11 +23,11 @@ interface HarvestProps {
 const Harvest: React.FC<HarvestProps> = ({bank}) => {
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const {onReward} = useHarvest(bank);
-  const pushStats = usePushStats();
-  const pShareStats = useShareStats();
+  const crsStats = useCrystalStats();
+  const diaStats = useDiamondStats();
 
-  const tokenName = bank.earnTokenName === 'PSHARE' ? 'PSHARE' : 'PUSH';
-  const tokenStats = bank.earnTokenName === 'PSHARE' ? pShareStats : pushStats;
+  const tokenName = bank.earnTokenName === 'DIA' ? 'DIA' : 'CRS';
+  const tokenStats = bank.earnTokenName === 'DIA' ? diaStats : crsStats;
   const tokenPriceInDollars = useMemo(
     () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
     [tokenStats],

@@ -1,15 +1,15 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
-import {Bank} from '../push-finance';
+import useSynergyFinance from './useSynergyFinance';
+import {Bank} from '../synergy-finance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useRedeem = (bank: Bank) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleRedeem = useCallback(() => {
-    handleTransactionReceipt(pushFinance.exit(bank.contract, bank.poolId), `Redeem ${bank.contract}`);
-  }, [bank, pushFinance, handleTransactionReceipt]);
+    handleTransactionReceipt(synergyFinance.exit(bank.contract, bank.poolId), `Redeem ${bank.contract}`);
+  }, [bank, synergyFinance, handleTransactionReceipt]);
 
   return {onRedeem: handleRedeem};
 };

@@ -11,7 +11,6 @@ import PoolCard from './PoolCard';
 import TitleImage from '../../assets/img/gpool-title.png';
 import BGImage from '../../assets/img/background/gpool.png';
 import Triangle from '../../assets/img/triangle.png';
-import Character from '../../assets/img/gpool-avatar.png';
 import Row from '../../components/Row';
 import { white } from '../../theme/colors';
 import useBanks from '../../hooks/useBanks';
@@ -40,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
     const classes = useStyles();
     const [banks] = useBanks();
+    console.log("Genesis / banks : ", banks)
     const { path } = useRouteMatch();
     const { account } = useWallet();
     const activeBanks = banks.filter((bank) => !bank.finished);

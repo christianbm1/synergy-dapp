@@ -10,10 +10,6 @@ export type Configuration = {
   externalTokens: {[contractName: string]: [string, number]};
   config?: EthereumConfig;
 
-  baseLaunchDate: Date;
-  bondLaunchesAt: Date;
-  boardroomLaunchesAt: Date;
-
   refreshInterval: number;
 };
 

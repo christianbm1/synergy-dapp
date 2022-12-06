@@ -2,7 +2,7 @@
 //import { Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
 import { Fetcher, Route, Token } from '@pancakeswap/sdk';
 import { Configuration } from './config';
-import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats, PShareSwapperStat } from './types';
+import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -14,12 +14,12 @@ import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 import config, { bankDefinitions } from '../config';
 import moment from 'moment';
 import { parseUnits } from 'ethers/lib/utils';
-import { BNB_TICKER, SPOOKY_ROUTER_ADDR, PUSH_TICKER } from '../utils/constants';
+import { BNB_TICKER, SPOOKY_ROUTER_ADDR, CRS_TICKER } from '../utils/constants';
 /**
- * An API module of Push Money contracts.
+ * An API module of Synergy Finance contracts.
  * All contract-interacting domain logic should be defined in here.
  */
-export class PushFinance {
+export class SynergyFinance {
   myAccount: string;
   provider: ethers.providers.Web3Provider;
   signer?: ethers.Signer;
@@ -28,11 +28,9 @@ export class PushFinance {
   externalTokens: { [name: string]: ERC20 };
   boardroomVersionOfUser?: string;
 
-  PUSHBTCB_LP: Contract;
-  PUSH: ERC20;
-  PSHARE: ERC20;
-  PBOND: ERC20;
-  XPUSH: ERC20;
+  CRSBTCB_LP: Contract;
+  CRS: ERC20;
+  DIA: ERC20;
   BNB: ERC20;
   BTC: ERC20;
 
@@ -49,15 +47,13 @@ export class PushFinance {
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal);
     }
-    this.PUSH = new ERC20(deployments.Push.address, provider, 'PUSH');
-    this.PSHARE = new ERC20(deployments.PShare.address, provider, 'PSHARE');
-    this.PBOND = new ERC20(deployments.PBond.address, provider, 'PBOND');
+    this.CRS = new ERC20(deployments.Crystal.address, provider, 'CRS');
+    this.DIA = new ERC20(deployments.Diamond.address, provider, 'DIA');
     this.BNB = this.externalTokens['WBNB'];
     this.BTC = this.externalTokens['BTCB'];
-    this.XPUSH = new ERC20(deployments.xPUSH.address, provider, 'XPUSH');
 
     // Uniswap V2 Pair
-    this.PUSHBTCB_LP = new Contract(externalTokens['PUSH-BTCB-LP'][0], IUniswapV2PairABI, provider);
+    this.CRSBTCB_LP = new Contract(externalTokens['CRS-BTCB-LP'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -74,11 +70,11 @@ export class PushFinance {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.PUSH, this.PSHARE, this.PBOND, ...Object.values(this.externalTokens)];
+    const tokens = [this.CRS, this.DIA, ...Object.values(this.externalTokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    this.PUSHBTCB_LP = this.PUSHBTCB_LP.connect(this.signer);
+    this.CRSBTCB_LP = this.CRSBTCB_LP.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -98,22 +94,22 @@ export class PushFinance {
   //=========================IN HOME PAGE==============================
   //===================================================================
 
-  async getPushStat(): Promise<TokenStat> {
-    const { PushRewardPool, PushGenesisRewardPool } = this.contracts;
-    const supply = await this.PUSH.totalSupply();
-    const pushRewardPoolSupply = await this.PUSH.balanceOf(PushGenesisRewardPool.address);
-    const pushRewardPoolSupply2 = await this.PUSH.balanceOf(PushRewardPool.address);
-    const pushCirculatingSupply = supply.sub(pushRewardPoolSupply).sub(pushRewardPoolSupply2);
-    const priceInBTC = await this.getTokenPriceFromPancakeswapBTC(this.PUSH);
+  async getCrystalStat(): Promise<TokenStat> {
+    const { CrystalRewardPool, CrystalGenesisRewardPool } = this.contracts;
+    const supply = await this.CRS.totalSupply();
+    const crsRewardPoolSupply = await this.CRS.balanceOf(CrystalGenesisRewardPool.address);
+    const crsRewardPoolSupply2 = await this.CRS.balanceOf(CrystalRewardPool.address);
+    const crsCirculatingSupply = supply.sub(crsRewardPoolSupply).sub(crsRewardPoolSupply2);
+    const priceInBTC = await this.getTokenPriceFromPancakeswapBTC(this.CRS);
     const priceOfOneBTC = await this.getBTCBPriceFromPancakeswap();
-    const priceOfPushInDollars = ((Number(priceInBTC) * Number(priceOfOneBTC)) / 10000).toFixed(2);
+    const priceOfCrystalInDollars = ((Number(priceInBTC) * Number(priceOfOneBTC)) / 10000).toFixed(2);
 
     return {
       //  tokenInFtm: (Number(priceInBNB) * 100).toString(),
       tokenInFtm: priceInBTC.toString(),
-      priceInDollars: priceOfPushInDollars,
-      totalSupply: getDisplayBalance(supply, this.PUSH.decimal, 0),
-      circulatingSupply: getDisplayBalance(pushCirculatingSupply, this.PUSH.decimal, 0),
+      priceInDollars: priceOfCrystalInDollars,
+      totalSupply: getDisplayBalance(supply, this.CRS.decimal, 0),
+      circulatingSupply: getDisplayBalance(crsCirculatingSupply, this.CRS.decimal, 0),
     };
   }
 
@@ -133,8 +129,8 @@ export class PushFinance {
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
-    const token0 = name.startsWith('PUSH') ? this.PUSH : this.PSHARE;
-    const isPush = name.startsWith('PUSH');
+    const token0 = name.startsWith('CRS') ? this.CRS : this.DIA;
+    const isCrystal = name.startsWith('CRS');
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
@@ -142,7 +138,7 @@ export class PushFinance {
     const ftmAmount = getDisplayBalance(ftmAmountBN, 18);
     const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
     const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
-    const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isPush);
+    const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isCrystal);
     const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
     const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice)).toFixed(2).toString();
     return {
@@ -158,8 +154,8 @@ export class PushFinance {
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
-    const token0 = name.startsWith('PUSH') ? this.PUSH : this.PSHARE;
-    const isPush = name.startsWith('PUSH');
+    const token0 = name.startsWith('CRS') ? this.CRS : this.DIA;
+    const isCrystal = name.startsWith('CRS');
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
@@ -167,7 +163,7 @@ export class PushFinance {
     const btcAmount = getDisplayBalance(btcAmountBN, 18);
     const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
     const ftmAmountInOneLP = Number(btcAmount) / Number(lpTokenSupply);
-    const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isPush);
+    const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isCrystal);
 
     const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
 
@@ -181,87 +177,51 @@ export class PushFinance {
       totalSupply: Number(lpTokenSupply).toFixed(2).toString(),
     };
   }
-  /**
-   * Use this method to get price for Push
-   * @returns TokenStat for PBOND
-   * priceInBNB
-   * priceInDollars
-   * TotalSupply
-   * CirculatingSupply (always equal to total supply for bonds)
-   */
-  async getBondStat(): Promise<TokenStat> {
-    const { Treasury } = this.contracts;
-    const pushStat = await this.getPushStat();
-    const bondPushRatioBN = await Treasury.getBondPremiumRate();
-    const modifier = bondPushRatioBN / 1e14 > 1 ? bondPushRatioBN / 1e14 : 1;
-    const bondPriceInBNB = (Number(pushStat.tokenInFtm) * modifier).toFixed(4);
-    const priceOfPBondInDollars = (Number(pushStat.priceInDollars) * modifier).toFixed(4);
-    const supply = await this.PBOND.displayedTotalSupply();
-    return {
-      tokenInFtm: bondPriceInBNB,
-      priceInDollars: priceOfPBondInDollars,
-      totalSupply: supply,
-      circulatingSupply: supply,
-    };
-  }
 
   /**
-   * @returns TokenStat for PSHARE
+   * @returns TokenStat for DIA
    * priceInBNB
    * priceInDollars
    * TotalSupply
    * CirculatingSupply (always equal to total supply for bonds)
    */
   async getShareStat(): Promise<TokenStat> {
-    const { PShareRewardPool } = this.contracts;
+    const { DiamondRewardPool } = this.contracts;
 
-    const supply = await this.PSHARE.totalSupply();
+    const supply = await this.DIA.totalSupply();
 
-    const priceInBNB = await this.getTokenPriceFromPancakeswap(this.PSHARE);
-    const pushRewardPoolSupply = await this.PSHARE.balanceOf(PShareRewardPool.address);
-    const pShareCirculatingSupply = supply.sub(pushRewardPoolSupply);
+    const priceInBNB = await this.getTokenPriceFromPancakeswap(this.DIA);
+    const crsRewardPoolSupply = await this.DIA.balanceOf(DiamondRewardPool.address);
+    const diaCirculatingSupply = supply.sub(crsRewardPoolSupply);
     const priceOfOneBNB = await this.getWBNBPriceFromPancakeswap();
     const priceOfSharesInDollars = (Number(priceInBNB) * Number(priceOfOneBNB)).toFixed(2);
 
     return {
       tokenInFtm: priceInBNB,
       priceInDollars: priceOfSharesInDollars,
-      totalSupply: getDisplayBalance(supply, this.PSHARE.decimal, 0),
-      circulatingSupply: getDisplayBalance(pShareCirculatingSupply, this.PSHARE.decimal, 0),
+      totalSupply: getDisplayBalance(supply, this.DIA.decimal, 0),
+      circulatingSupply: getDisplayBalance(diaCirculatingSupply, this.DIA.decimal, 0),
     };
   }
 
-  async getPushStatInEstimatedTWAP(): Promise<TokenStat> {
-    const { Oracle, PushRewardPool } = this.contracts;
-    const expectedPrice = await Oracle.twap(this.PUSH.address, ethers.utils.parseEther('10000'));
+  async getCRSStatInEstimatedTWAP(): Promise<TokenStat> {
+    const { Oracle, CrystalRewardPool } = this.contracts;
+    const expectedPrice = await Oracle.twap(this.CRS.address, ethers.utils.parseEther('10000'));
 
-    const supply = await this.PUSH.totalSupply();
-    const pushRewardPoolSupply = await this.PUSH.balanceOf(PushRewardPool.address);
-    const pushCirculatingSupply = supply.sub(pushRewardPoolSupply);
+    const supply = await this.CRS.totalSupply();
+    const crsRewardPoolSupply = await this.CRS.balanceOf(CrystalRewardPool.address);
+    const crsCirculatingSupply = supply.sub(crsRewardPoolSupply);
     return {
       tokenInFtm: getDisplayBalance(expectedPrice),
       priceInDollars: getDisplayBalance(expectedPrice),
-      totalSupply: getDisplayBalance(supply, this.PUSH.decimal, 0),
-      circulatingSupply: getDisplayBalance(pushCirculatingSupply, this.PUSH.decimal, 0),
+      totalSupply: getDisplayBalance(supply, this.CRS.decimal, 0),
+      circulatingSupply: getDisplayBalance(crsCirculatingSupply, this.CRS.decimal, 0),
     };
   }
 
-  async getPushPriceInLastTWAP(): Promise<BigNumber> {
+  async getCRSPriceInLastTWAP(): Promise<BigNumber> {
     const { Treasury } = this.contracts;
-    return Treasury.getPushUpdatedPrice();
-  }
-
-  // async getPushPegTWAP(): Promise<any> {
-  //   const { Treasury } = this.contracts;
-  //   const updatedPrice = Treasury.getPushUpdatedPrice();
-  //   const updatedPrice2 = updatedPrice * 10000;
-  //   return updatedPrice2;
-  // }
-
-  async getBondsPurchasable(): Promise<BigNumber> {
-    const { Treasury } = this.contracts;
-    // const burnablePush = (Number(Treasury.getBurnablePushLeft()) * 1000).toFixed(2).toString();
-    return Treasury.getBurnablePushLeft();
+    return Treasury.getCRSUpdatedPrice();
   }
 
   /**
@@ -276,7 +236,7 @@ export class PushFinance {
     const depositTokenPrice = await this.getDepositTokenPriceInDollars(bank.depositTokenName, depositToken);
     const stakeInPool = await depositToken.balanceOf(bank.address);
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
-    const stat = bank.earnTokenName === 'PUSH' ? await this.getPushStat() : await this.getShareStat();
+    const stat = bank.earnTokenName === 'CRS' ? await this.getCrystalStat() : await this.getShareStat();
     const tokenPerSecond = await this.getTokenPerSecond(
       bank.earnTokenName,
       bank.contract,
@@ -299,47 +259,6 @@ export class PushFinance {
     };
   }
 
-  async getXpushAPR(): Promise<PoolStats> {
-    if (this.myAccount === undefined) return;
-    const pushToken = this.PUSH;
-    const xpushToken = this.XPUSH;
-
-    const xpushExchange = await this.getXpushExchange();
-    const xpushPercent = await xpushExchange;
-    const xpushPercentTotal = (Number(xpushPercent) / 1000000000000000000) * 100 - 100;
-
-    const depositTokenPrice = await this.getDepositTokenPriceInDollars(pushToken.symbol, pushToken);
-
-    const stakeInPool = await pushToken.balanceOf(xpushToken.address);
-
-    const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, pushToken.decimal));
-
-    const startDate = new Date('January 24, 2022');
-    const nowDate = new Date(Date.now());
-    const difference = nowDate.getTime() - startDate.getTime();
-    const days = difference / 60 / 60 / 24 / 1000;
-    const aprPerDay = xpushPercentTotal / days;
-
-    // Determine days between now and a date
-
-    // const tokenPerHour = tokenPerSecond.mul(60).mul(60);
-    // const totalRewardPricePerYear =
-    //   Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
-    // const totalRewardPricePerDay = Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24)));
-    // const totalStakingTokenInPool =
-    //   Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
-    // const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
-    // const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
-
-    const dailyAPR = aprPerDay;
-    const yearlyAPR = aprPerDay * 365;
-    return {
-      dailyAPR: dailyAPR.toFixed(2).toString(),
-      yearlyAPR: yearlyAPR.toFixed(2).toString(),
-      TVL: TVL.toFixed(2).toString(),
-    };
-  }
-
   /**
    * Method to return the amount of tokens the pool yields per second
    * @param earnTokenName the name of the token that the pool is earning
@@ -353,8 +272,8 @@ export class PushFinance {
     poolContract: Contract,
     depositTokenName: string,
   ) {
-    if (earnTokenName === 'PUSH') {
-      if (!contractName.endsWith('PushRewardPool')) {
+    if (earnTokenName === 'CRS') {
+      if (!contractName.endsWith('CrystalRewardPool')) {
         const rewardPerSecond = await poolContract.pushPerSecond();
         if (depositTokenName === 'BTCB') {
           return rewardPerSecond.mul(2200).div(11000);
@@ -380,9 +299,9 @@ export class PushFinance {
       return await poolContract.epochPushPerSecond(0);
     }
     const rewardPerSecond = await poolContract.pSharePerSecond();
-    if (depositTokenName.startsWith('PUSH-BTCB')) {
+    if (depositTokenName.startsWith('CRS-BTCB')) {
       return rewardPerSecond.mul(29750).div(59500);
-    } else if (depositTokenName.startsWith('PUSH-PSHARE')) {
+    } else if (depositTokenName.startsWith('CRS-DIA')) {
       return rewardPerSecond.mul(14875).div(59500);
     } else {
       return rewardPerSecond.mul(14875).div(59500);
@@ -403,12 +322,12 @@ export class PushFinance {
     if (tokenName === 'WBNB') {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
-      if (tokenName === 'PUSH-BTCB-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.PUSH, true);
-      } else if (tokenName === 'PSHARE-BNB-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.PSHARE, false);
-      } else if (tokenName === 'PUSH-PSHARE-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.PUSH, true);
+      if (tokenName === 'CRS-BTCB-LP') {
+        tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
+      } else if (tokenName === 'DIA-BNB-LP') {
+        tokenPrice = await this.getLPTokenPrice(token, this.DIA, false);
+      } else if (tokenName === 'CRS-DIA-LP') {
+        tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
         tokenPrice = (Number(tokenPrice) * Number(priceOfOneFtmInDollars)).toString();
@@ -427,32 +346,6 @@ export class PushFinance {
     return Treasury.epoch();
   }
 
-  async getBondOraclePriceInLastTWAP(): Promise<BigNumber> {
-    const { Treasury } = this.contracts;
-    return Treasury.getBondPremiumRate();
-  }
-
-  /**
-   * Buy bonds with cash.
-   * @param amount amount of cash to purchase bonds with.
-   */
-  async buyBonds(amount: string | number): Promise<TransactionResponse> {
-    const { Treasury } = this.contracts;
-    const treasuryPushPrice = await Treasury.getPushPrice();
-    return await Treasury.buyBonds(decimalToBalance(amount), treasuryPushPrice);
-  }
-
-  /**
-   * Redeem bonds for cash.
-   * @param amount amount of bonds to redeem.
-   */
-  async redeemBonds(amount: string | number): Promise<TransactionResponse> {
-    const { Treasury } = this.contracts;
-    const priceForPush = await Treasury.getPushPrice();
-
-    return await Treasury.redeemBonds(decimalToBalance(amount), priceForPush);
-  }
-
   async getTotalValueLocked(): Promise<Number> {
     let totalValue = 0;
     for (const bankInfo of Object.values(bankDefinitions)) {
@@ -465,16 +358,13 @@ export class PushFinance {
       totalValue += poolValue;
     }
 
-    const PSHAREPrice = (await this.getShareStat()).priceInDollars;
-    const PUSHPrice = (await this.getPushStat()).priceInDollars;
+    const DIAPrice = (await this.getShareStat()).priceInDollars;
+    const CRSPrice = (await this.getCrystalStat()).priceInDollars;
 
-    const boardroompShareBalanceOf = await this.PSHARE.balanceOf(this.currentBoardroom().address);
-    const pushStakeBalanceOf = await this.PUSH.balanceOf(this.XPUSH.address);
+    const boardroomDIABalanceOf = await this.DIA.balanceOf(this.currentBoardroom().address);
+    const boardroomTVL = Number(getDisplayBalance(boardroomDIABalanceOf, this.DIA.decimal)) * Number(DIAPrice);
 
-    const boardroomTVL = Number(getDisplayBalance(boardroompShareBalanceOf, this.PSHARE.decimal)) * Number(PSHAREPrice);
-    const pushTVL = Number(getDisplayBalance(pushStakeBalanceOf, this.PUSH.decimal)) * Number(PUSHPrice);
-
-    return totalValue + boardroomTVL + pushTVL;
+    return totalValue + boardroomTVL;
   }
 
   /**
@@ -482,14 +372,14 @@ export class PushFinance {
    * Reference https://github.com/DefiDebauchery/discordpricebot/blob/4da3cdb57016df108ad2d0bb0c91cd8dd5f9d834/pricebot/pricebot.py#L150
    * @param lpToken the token under calculation
    * @param token the token pair used as reference (the other one would be BNB in most cases)
-   * @param isPush sanity check for usage of push token or pShare
+   * @param isCrystal sanity check for usage of crs token or dia
    * @returns price of the LP token
    */
-  async getLPTokenPrice(lpToken: ERC20, token: ERC20, isPush: boolean): Promise<string> {
+  async getLPTokenPrice(lpToken: ERC20, token: ERC20, isCrystal: boolean): Promise<string> {
     const totalSupply = getFullDisplayBalance(await lpToken.totalSupply(), lpToken.decimal);
     //Get amount of tokenA
     const tokenSupply = getFullDisplayBalance(await token.balanceOf(lpToken.address), token.decimal);
-    const stat = isPush === true ? await this.getPushStat() : await this.getShareStat();
+    const stat = isCrystal === true ? await this.getCrystalStat() : await this.getShareStat();
     const priceOfToken = stat.priceInDollars;
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
@@ -502,14 +392,14 @@ export class PushFinance {
    * Reference https://github.com/DefiDebauchery/discordpricebot/blob/4da3cdb57016df108ad2d0bb0c91cd8dd5f9d834/pricebot/pricebot.py#L150
    * @param lpToken the token under calculation
    * @param token the token pair used as reference (the other one would be BNB in most cases)
-   * @param isPush sanity check for usage of push token or pShare
+   * @param isCrystal sanity check for usage of crs token or dia
    * @returns price of the LP token
    */
-  async getApeLPTokenPrice(lpToken: ERC20, token: ERC20, isPush: boolean): Promise<string> {
+  async getApeLPTokenPrice(lpToken: ERC20, token: ERC20, isCrystal: boolean): Promise<string> {
     const totalSupply = getFullDisplayBalance(await lpToken.totalSupply(), lpToken.decimal);
     //Get amount of tokenA
     const tokenSupply = getFullDisplayBalance(await token.balanceOf(lpToken.address), token.decimal);
-    const stat = isPush === true ? await this.getPushStat() : await this.getShareStat();
+    const stat = isCrystal === true ? await this.getCrystalStat() : await this.getShareStat();
     const priceOfToken = stat.priceInDollars;
     const tokenInLP = Number(tokenSupply) / Number(totalSupply);
     const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
@@ -525,8 +415,8 @@ export class PushFinance {
   ): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
-      if (earnTokenName === 'PUSH') {
-        return await pool.pendingPUSH(poolId, account);
+      if (earnTokenName === 'CRS') {
+        return await pool.pendingCRS(poolId, account);
       } else {
         return await pool.pendingShare(poolId, account);
       }
@@ -679,33 +569,15 @@ export class PushFinance {
 
     const lastRewardsReceived = lastHistory[1];
 
-    const PSHAREPrice = (await this.getShareStat()).priceInDollars;
-    const PUSHPrice = (await this.getPushStat()).priceInDollars;
+    const DIAPrice = (await this.getShareStat()).priceInDollars;
+    const CRSPrice = (await this.getCrystalStat()).priceInDollars;
     const epochRewardsPerShare = lastRewardsReceived / 1e18;
 
     //Mgod formula
-    const amountOfRewardsPerDay = epochRewardsPerShare * Number(PUSHPrice) * 4;
-    const boardroompShareBalanceOf = await this.PSHARE.balanceOf(Boardroom.address);
-    const boardroomTVL = Number(getDisplayBalance(boardroompShareBalanceOf, this.PSHARE.decimal)) * Number(PSHAREPrice);
+    const amountOfRewardsPerDay = epochRewardsPerShare * Number(CRSPrice) * 4;
+    const boardroomDIABalanceOf = await this.DIA.balanceOf(Boardroom.address);
+    const boardroomTVL = Number(getDisplayBalance(boardroomDIABalanceOf, this.DIA.decimal)) * Number(DIAPrice);
     const realAPR = ((amountOfRewardsPerDay * 100) / boardroomTVL) * 365;
-    return realAPR;
-  }
-
-  async getPushStakeAPR() {
-    const Boardroom = this.currentBoardroom();
-    const latestSnapshotIndex = await Boardroom.latestSnapshotIndex();
-    const lastHistory = await Boardroom.boardroomHistory(latestSnapshotIndex);
-
-    const lastRewardsReceived = lastHistory[1];
-
-    const PUSHPrice = (await this.getPushStat()).priceInDollars;
-    const epochRewardsPerShare = lastRewardsReceived / 1e18;
-
-    //Mgod formula
-    const amountOfRewardsPerDay = epochRewardsPerShare * Number(PUSHPrice) * 4;
-    const xPushPushBalanceOf = await this.PUSH.balanceOf(this.XPUSH.address);
-    const pushTVL = Number(getDisplayBalance(xPushPushBalanceOf, this.XPUSH.decimal)) * Number(PUSHPrice);
-    const realAPR = ((amountOfRewardsPerDay * 100 * 0.2) / pushTVL) * 365;
     return realAPR;
   }
 
@@ -726,7 +598,7 @@ export class PushFinance {
     const Boardroom = this.currentBoardroom();
     const canWithdraw = await Boardroom.canWithdraw(this.myAccount);
     const stakedAmount = await this.getStakedSharesOnBoardroom();
-    const notStaked = Number(getDisplayBalance(stakedAmount, this.PSHARE.decimal)) === 0;
+    const notStaked = Number(getDisplayBalance(stakedAmount, this.DIA.decimal)) === 0;
     const result = notStaked ? true : canWithdraw;
     return result;
   }
@@ -744,15 +616,10 @@ export class PushFinance {
 
   async stakeShareToBoardroom(amount: string): Promise<TransactionResponse> {
     if (this.isOldBoardroomMember()) {
-      throw new Error("you're using old boardroom. please withdraw and deposit the PSHARE again.");
+      throw new Error("you're using old boardroom. please withdraw and deposit the DIA again.");
     }
     const Boardroom = this.currentBoardroom();
     return await Boardroom.stake(decimalToBalance(amount));
-  }
-
-  async stakeToPush(amount: string): Promise<TransactionResponse> {
-    const Xpush = this.contracts.xPUSH;
-    return await Xpush.enter(decimalToBalance(amount));
   }
 
   async getStakedSharesOnBoardroom(): Promise<BigNumber> {
@@ -761,31 +628,6 @@ export class PushFinance {
       return await Boardroom.getShareOf(this.myAccount);
     }
     return await Boardroom.balanceOf(this.myAccount);
-  }
-
-  async getStakedPush(): Promise<BigNumber> {
-    const Xpush = this.contracts.xPUSH;
-    return await Xpush.balanceOf(this.myAccount);
-  }
-
-  async getTotalStakedPush(): Promise<BigNumber> {
-    const Xpush = this.contracts.xPUSH;
-    const push = this.PUSH;
-    return await push.balanceOf(Xpush.address);
-  }
-
-  async getXpushExchange(): Promise<BigNumber> {
-    const Xpush = this.contracts.xPUSH;
-    const XpushExchange = await Xpush.getExchangeRate();
-
-    const xPushPerPush = parseFloat(XpushExchange) / 1000000000000000000;
-    const xPushRate = xPushPerPush.toString();
-    return parseUnits(xPushRate, 18);
-  }
-
-  async withdrawFromPush(amount: string): Promise<TransactionResponse> {
-    const Xpush = this.contracts.xPUSH;
-    return await Xpush.leave(decimalToBalance(amount));
   }
 
   async getEarningsOnBoardroom(): Promise<BigNumber> {
@@ -893,18 +735,12 @@ export class PushFinance {
     if (ethereum && ethereum.networkVersion === config.chainId.toString()) {
       let asset;
       let assetUrl;
-      if (assetName === 'PUSH') {
-        asset = this.PUSH;
-        assetUrl = 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/push_501x501.png';
-      } else if (assetName === 'PSHARE') {
-        asset = this.PSHARE;
-        assetUrl = 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/pshare_501x501.png';
-      } else if (assetName === 'PBOND') {
-        asset = this.PBOND;
-        assetUrl = 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/pbond_501x501.png';
-      } else if (assetName === 'XPUSH') {
-        asset = this.XPUSH;
-        assetUrl = 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/xpush_501x501.png';
+      if (assetName === 'CRS') {
+        asset = this.CRS;
+        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/crystal_512x512.png';
+      } else if (assetName === 'DIA') {
+        asset = this.DIA;
+        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/diamond_512x512.png';
       } else if (assetName === 'BTCB') {
         asset = this.BTC;
         assetUrl = 'https://bscscan.com/token/images/btcb_32.png';
@@ -925,102 +761,29 @@ export class PushFinance {
     return true;
   }
 
-  async providePushFtmLP(ftmAmount: string, pushAmount: BigNumber): Promise<TransactionResponse> {
+  async provideCrystalBusdLP(busdAmount: string, crsAmount: BigNumber): Promise<TransactionResponse> {
     const { TaxOffice } = this.contracts;
     let overrides = {
-      value: parseUnits(ftmAmount, 18),
+      value: parseUnits(busdAmount, 18),
     };
     return await TaxOffice.addLiquidityETHTaxFree(
-      pushAmount,
-      pushAmount.mul(992).div(1000),
-      parseUnits(ftmAmount, 18).mul(992).div(1000),
+      crsAmount,
+      crsAmount.mul(992).div(1000),
+      parseUnits(busdAmount, 18).mul(992).div(1000),
       overrides,
     );
   }
 
   async quoteFromSpooky(tokenAmount: string, tokenName: string): Promise<string> {
     const { SpookyRouter } = this.contracts;
-    const { _reserve0, _reserve1 } = await this.PUSHBTCB_LP.getReserves();
+    const { _reserve0, _reserve1 } = await this.CRSBTCB_LP.getReserves();
     let quote;
-    if (tokenName === 'PUSH') {
+    if (tokenName === 'CRS') {
       quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve0, _reserve1);
     } else {
       quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
     }
     return (quote / 1e18).toString();
-  }
-
-  /**
-   * @returns an array of the regulation events till the most up to date epoch
-   */
-  async listenForRegulationsEvents(): Promise<any> {
-    const { Treasury } = this.contracts;
-
-    const treasuryDaoFundedFilter = Treasury.filters.DaoFundFunded();
-    const treasuryDevFundedFilter = Treasury.filters.DevFundFunded();
-    const treasuryBoardroomFundedFilter = Treasury.filters.BoardroomFunded();
-    const boughtBondsFilter = Treasury.filters.BoughtBonds();
-    const redeemBondsFilter = Treasury.filters.RedeemedBonds();
-
-    let epochBlocksRanges: any[] = [];
-    let boardroomFundEvents = await Treasury.queryFilter(treasuryBoardroomFundedFilter);
-    var events: any[] = [];
-    boardroomFundEvents.forEach(function callback(value, index) {
-      events.push({ epoch: index + 1 });
-      events[index].boardroomFund = getDisplayBalance(value.args[1]);
-      if (index === 0) {
-        epochBlocksRanges.push({
-          index: index,
-          startBlock: value.blockNumber,
-          boughBonds: 0,
-          redeemedBonds: 0,
-        });
-      }
-      if (index > 0) {
-        epochBlocksRanges.push({
-          index: index,
-          startBlock: value.blockNumber,
-          boughBonds: 0,
-          redeemedBonds: 0,
-        });
-        epochBlocksRanges[index - 1].endBlock = value.blockNumber;
-      }
-    });
-
-    epochBlocksRanges.forEach(async (value, index) => {
-      events[index].bondsBought = await this.getBondsWithFilterForPeriod(
-        boughtBondsFilter,
-        value.startBlock,
-        value.endBlock,
-      );
-      events[index].bondsRedeemed = await this.getBondsWithFilterForPeriod(
-        redeemBondsFilter,
-        value.startBlock,
-        value.endBlock,
-      );
-    });
-    let DEVFundEvents = await Treasury.queryFilter(treasuryDevFundedFilter);
-    DEVFundEvents.forEach(function callback(value, index) {
-      events[index].devFund = getDisplayBalance(value.args[1]);
-    });
-    let DAOFundEvents = await Treasury.queryFilter(treasuryDaoFundedFilter);
-    DAOFundEvents.forEach(function callback(value, index) {
-      events[index].daoFund = getDisplayBalance(value.args[1]);
-    });
-    return events;
-  }
-
-  /**
-   * Helper method
-   * @param filter applied on the query to the treasury events
-   * @param from block number
-   * @param to block number
-   * @returns the amount of bonds events emitted based on the filter provided during a specific period
-   */
-  async getBondsWithFilterForPeriod(filter: EventFilter, from: number, to: number): Promise<number> {
-    const { Treasury } = this.contracts;
-    const bondsAmount = await Treasury.queryFilter(filter, from, to);
-    return bondsAmount.length;
   }
 
   async estimateZapIn(tokenName: string, lpName: string, amount: string): Promise<number[]> {
@@ -1030,7 +793,7 @@ export class PushFinance {
     if (tokenName === BNB_TICKER) {
       estimate = await zapper.estimateZapIn(lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
     } else {
-      const token = tokenName === PUSH_TICKER ? this.PUSH : this.PSHARE;
+      const token = tokenName === CRS_TICKER ? this.CRS : this.DIA;
       estimate = await zapper.estimateZapInToken(
         token.address,
         lpToken.address,
@@ -1049,7 +812,7 @@ export class PushFinance {
       };
       return await zapper.zapIn(lpToken.address, SPOOKY_ROUTER_ADDR, this.myAccount, overrides);
     } else {
-      const token = tokenName === PUSH_TICKER ? this.PUSH : this.PSHARE;
+      const token = tokenName === CRS_TICKER ? this.CRS : this.DIA;
       return await zapper.zapInToken(
         token.address,
         parseUnits(amount, 18),
@@ -1058,36 +821,5 @@ export class PushFinance {
         this.myAccount,
       );
     }
-  }
-  async swapPBondToPShare(pbondAmount: BigNumber): Promise<TransactionResponse> {
-    const { PShareSwapper } = this.contracts;
-    return await PShareSwapper.swapPBondToPShare(pbondAmount);
-  }
-  async estimateAmountOfPShare(pbondAmount: string): Promise<string> {
-    const { PShareSwapper } = this.contracts;
-    try {
-      const estimateBN = await PShareSwapper.estimateAmountOfPShare(parseUnits(pbondAmount, 18));
-      return getDisplayBalance(estimateBN, 18, 6);
-    } catch (err) {
-      console.error(`Failed to fetch estimate Pshare amount: ${err}`);
-    }
-  }
-
-  async getPShareSwapperStat(address: string): Promise<PShareSwapperStat> {
-    const { PShareSwapper } = this.contracts;
-    const pshareBalanceBN = await PShareSwapper.getPShareBalance();
-    const pbondBalanceBN = await PShareSwapper.getPBondBalance(address);
-    // const pushPriceBN = await PShareSwapper.getPushPrice();
-    // const PsharePriceBN = await PShareSwapper.getPSharePrice();
-    const ratePSharePerPushBN = await PShareSwapper.getPShareAmountPerPush();
-    const pshareBalance = getDisplayBalance(pshareBalanceBN, 18, 5);
-    const pbondBalance = getDisplayBalance(pbondBalanceBN, 18, 5);
-    return {
-      pshareBalance: pshareBalance.toString(),
-      pbondBalance: pbondBalance.toString(),
-      // pushPrice: pushPriceBN.toString(),
-      // PsharePrice: PsharePriceBN.toString(),
-      ratePSharePerPush: ratePSharePerPushBN.toString(),
-    };
   }
 }

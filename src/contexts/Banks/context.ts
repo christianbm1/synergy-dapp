@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import {Bank} from '../../push-finance';
+import {Bank} from '../../synergy-finance';
 
 export interface BanksContext {
   banks: Bank[];

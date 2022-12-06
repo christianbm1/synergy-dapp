@@ -1,6 +1,5 @@
-export const PUSH_TICKER = 'PUSH';
-export const PSHARE_TICKER = 'PSHARE';
-export const PBOND_TICKER = 'PBOND';
+export const CRS_TICKER = 'CRS';
+export const DIA_TICKER = 'DIA';
 export const BNB_TICKER = 'BNB';
 export const WBNB_TICKER = 'WBNB';
 export const BTC_TICKER = 'BTCB';

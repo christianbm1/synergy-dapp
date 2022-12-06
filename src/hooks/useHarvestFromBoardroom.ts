@@ -1,14 +1,14 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useHarvestFromBoardroom = () => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleReward = useCallback(() => {
-    handleTransactionReceipt(pushFinance.harvestCashFromBoardroom(), 'Claim PUSH from Boardroom');
-  }, [pushFinance, handleTransactionReceipt]);
+    handleTransactionReceipt(synergyFinance.harvestCashFromBoardroom(), 'Claim CRS from Boardroom');
+  }, [synergyFinance, handleTransactionReceipt]);
 
   return {onReward: handleReward};
 };

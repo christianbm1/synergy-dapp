@@ -1,18 +1,18 @@
 import {useEffect, useState} from 'react';
 import {BigNumber} from 'ethers';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useRefresh from './useRefresh';
 
 const useTotalStakedOnBoardroom = () => {
   const [totalStaked, setTotalStaked] = useState(BigNumber.from(0));
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const {slowRefresh} = useRefresh();
-  const isUnlocked = pushFinance?.isUnlocked;
+  const isUnlocked = synergyFinance?.isUnlocked;
 
   useEffect(() => {
     async function fetchTotalStaked() {
       try {
-        setTotalStaked(await pushFinance.getTotalStakedInBoardroom());
+        setTotalStaked(await synergyFinance.getTotalStakedInBoardroom());
       } catch (err) {
         console.error(err);
       }
@@ -20,7 +20,7 @@ const useTotalStakedOnBoardroom = () => {
     if (isUnlocked) {
       fetchTotalStaked();
     }
-  }, [isUnlocked, slowRefresh, pushFinance]);
+  }, [isUnlocked, slowRefresh, synergyFinance]);
 
   return totalStaked;
 };

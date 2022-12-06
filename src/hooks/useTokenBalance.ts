@@ -1,17 +1,17 @@
 import {useCallback, useEffect, useState} from 'react';
 import {BigNumber} from 'ethers';
-import ERC20 from '../push-finance/ERC20';
-import usePushFinance from './usePushFinance';
+import ERC20 from '../synergy-finance/ERC20';
+import useSynergyFinance from './useSynergyFinance';
 import config from '../config';
 
 const useTokenBalance = (token: ERC20) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
-  const pushFinance = usePushFinance();
-  const isUnlocked = pushFinance?.isUnlocked;
+  const synergyFinance = useSynergyFinance();
+  const isUnlocked = synergyFinance?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
-    setBalance(await token.balanceOf(pushFinance.myAccount));
-  }, [token, pushFinance.myAccount]);
+    setBalance(await token.balanceOf(synergyFinance.myAccount));
+  }, [token, synergyFinance.myAccount]);
 
   useEffect(() => {
     if (isUnlocked) {
@@ -19,7 +19,7 @@ const useTokenBalance = (token: ERC20) => {
       let refreshInterval = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshInterval);
     }
-  }, [isUnlocked, token, fetchBalance, pushFinance]);
+  }, [isUnlocked, token, fetchBalance, synergyFinance]);
 
   return balance;
 };

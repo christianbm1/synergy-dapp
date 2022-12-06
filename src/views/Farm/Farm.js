@@ -138,7 +138,7 @@ const Farm = () => {
 
                 <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 1).length === 0}>
                   <Typography severity="info" variant="h4" gutterBottom style={{ marginTop: '20px' }}>
-                    Earn PUSH by staking LP
+                    Earn CRS by staking LP
                   </Typography>
                   <Alert variant="filled" severity="info">
                     This Farm will be started Aprial 2th 2022 and will alive for 2 weeks.

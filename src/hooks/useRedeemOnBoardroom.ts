@@ -1,15 +1,15 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useRedeemOnBoardroom = (description?: string) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleRedeem = useCallback(() => {
-    const alertDesc = description || 'Redeem PSHARE from Boardroom';
-    handleTransactionReceipt(pushFinance.exitFromBoardroom(), alertDesc);
-  }, [pushFinance, description, handleTransactionReceipt]);
+    const alertDesc = description || 'Redeem DIA from Boardroom';
+    handleTransactionReceipt(synergyFinance.exitFromBoardroom(), alertDesc);
+  }, [synergyFinance, description, handleTransactionReceipt]);
   return {onRedeem: handleRedeem};
 };
 

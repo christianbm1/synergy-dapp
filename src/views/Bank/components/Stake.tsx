@@ -28,7 +28,7 @@ import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import ZapModal from './ZapModal';
 import TokenSymbol from '../../../components/TokenSymbol';
-import {Bank} from '../../../push-finance';
+import {Bank} from '../../../synergy-finance';
 
 interface StakeProps {
   bank: Bank;
@@ -140,8 +140,8 @@ const Stake: React.FC<StakeProps> = ({bank}) => {
                 <IconButton
                   disabled={
                     bank.closedForStaking ||
-                    bank.depositTokenName === 'PUSH-PSHARE-LP' ||
-                    bank.depositTokenName === 'PUSH-BTCB-LP'
+                    bank.depositTokenName === 'CRS-DIA-LP' ||
+                    bank.depositTokenName === 'CRS-BTCB-LP'
                   }
                   onClick={() => (bank.closedForStaking ? null : onPresentZap())}
                 >

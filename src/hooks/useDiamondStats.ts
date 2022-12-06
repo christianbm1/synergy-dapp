@@ -1,23 +1,23 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
-import {TokenStat} from '../push-finance/types';
+import useSynergyFinance from './useSynergyFinance';
+import {TokenStat} from '../synergy-finance/types';
 import useRefresh from './useRefresh';
 
 const useShareStats = () => {
   const [stat, setStat] = useState<TokenStat>();
   const {slowRefresh} = useRefresh();
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
     async function fetchSharePrice() {
       try {
-        setStat(await pushFinance.getShareStat());
+        setStat(await synergyFinance.getShareStat());
       } catch (err) {
         console.error(err);
       }
     }
     fetchSharePrice();
-  }, [setStat, pushFinance, slowRefresh]);
+  }, [setStat, synergyFinance, slowRefresh]);
 
   return stat;
 };

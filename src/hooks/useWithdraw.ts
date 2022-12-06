@@ -1,22 +1,22 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
-import {Bank} from '../push-finance';
+import useSynergyFinance from './useSynergyFinance';
+import {Bank} from '../synergy-finance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import {parseUnits} from 'ethers/lib/utils';
 
 const useWithdraw = (bank: Bank) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleWithdraw = useCallback(
     (amount: string) => {
       const amountBn = parseUnits(amount, bank.depositToken.decimal);
       handleTransactionReceipt(
-        pushFinance.unstake(bank.contract, bank.poolId, amountBn),
+        synergyFinance.unstake(bank.contract, bank.poolId, amountBn),
         `Withdraw ${amount} ${bank.depositTokenName} from ${bank.contract}`,
       );
     },
-    [bank, pushFinance, handleTransactionReceipt],
+    [bank, synergyFinance, handleTransactionReceipt],
   );
   return {onWithdraw: handleWithdraw};
 };

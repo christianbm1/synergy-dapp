@@ -1,18 +1,18 @@
 import {useCallback, useEffect, useState} from 'react';
 
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import config from '../config';
-import ERC20 from '../push-finance/ERC20';
+import ERC20 from '../synergy-finance/ERC20';
 
 const useStakedTokenPriceInDollars = (stakedTokenName: string, stakedToken: ERC20) => {
   const [stakedTokenPriceInDollars, setStakedTokenPriceInDollars] = useState('0');
-  const pushFinance = usePushFinance();
-  const isUnlocked = pushFinance?.isUnlocked;
+  const synergyFinance = useSynergyFinance();
+  const isUnlocked = synergyFinance?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
-    const balance = await pushFinance.getDepositTokenPriceInDollars(stakedTokenName, stakedToken);
+    const balance = await synergyFinance.getDepositTokenPriceInDollars(stakedTokenName, stakedToken);
     setStakedTokenPriceInDollars(balance);
-  }, [stakedToken, stakedTokenName, pushFinance]);
+  }, [stakedToken, stakedTokenName, synergyFinance]);
 
   useEffect(() => {
     if (isUnlocked) {
@@ -21,7 +21,7 @@ const useStakedTokenPriceInDollars = (stakedTokenName: string, stakedToken: ERC2
       const refreshStakedTokenPriceInDollars = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshStakedTokenPriceInDollars);
     }
-  }, [isUnlocked, setStakedTokenPriceInDollars, pushFinance, fetchBalance]);
+  }, [isUnlocked, setStakedTokenPriceInDollars, synergyFinance, fetchBalance]);
 
   return stakedTokenPriceInDollars;
 };

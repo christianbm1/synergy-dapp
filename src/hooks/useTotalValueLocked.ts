@@ -1,22 +1,22 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useRefresh from './useRefresh';
 
 const useTotalValueLocked = () => {
   const [totalValueLocked, setTotalValueLocked] = useState<Number>(0);
   const {slowRefresh} = useRefresh();
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
     async function fetchTVL() {
       try {
-        setTotalValueLocked(await pushFinance.getTotalValueLocked());
+        setTotalValueLocked(await synergyFinance.getTotalValueLocked());
       } catch (err) {
         console.error(err);
       }
     }
     fetchTVL();
-  }, [setTotalValueLocked, pushFinance, slowRefresh]);
+  }, [setTotalValueLocked, synergyFinance, slowRefresh]);
 
   return totalValueLocked;
 };

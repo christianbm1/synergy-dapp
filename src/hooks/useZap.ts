@@ -1,20 +1,20 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
-import {Bank} from '../push-finance';
+import useSynergyFinance from './useSynergyFinance';
+import {Bank} from '../synergy-finance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useZap = (bank: Bank) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleZap = useCallback(
     (zappingToken: string, tokenName: string, amount: string) => {
       handleTransactionReceipt(
-        pushFinance.zapIn(zappingToken, tokenName, amount),
+        synergyFinance.zapIn(zappingToken, tokenName, amount),
         `Zap ${amount} in ${bank.depositTokenName}.`,
       );
     },
-    [bank, pushFinance, handleTransactionReceipt],
+    [bank, synergyFinance, handleTransactionReceipt],
   );
   return {onZap: handleZap};
 };

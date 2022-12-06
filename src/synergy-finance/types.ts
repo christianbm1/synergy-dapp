@@ -45,11 +45,3 @@ export type AllocationTime = {
   from: Date;
   to: Date;
 };
-
-export type PShareSwapperStat = {
-  pshareBalance: string;
-  pbondBalance: string;
-  // pushPrice: string;
-  // psharePrice: string;
-  ratePSharePerPush: string;
-};

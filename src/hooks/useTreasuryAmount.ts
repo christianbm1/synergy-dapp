@@ -1,17 +1,17 @@
 import {useEffect, useState} from 'react';
 import {BigNumber} from 'ethers';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 
 const useTreasuryAmount = () => {
   const [amount, setAmount] = useState(BigNumber.from(0));
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
-    if (pushFinance) {
-      const {Treasury} = pushFinance.contracts;
-      pushFinance.PUSH.balanceOf(Treasury.address).then(setAmount);
+    if (synergyFinance) {
+      const {Treasury} = synergyFinance.contracts;
+      synergyFinance.CRS.balanceOf(Treasury.address).then(setAmount);
     }
-  }, [pushFinance]);
+  }, [synergyFinance]);
   return amount;
 };
 

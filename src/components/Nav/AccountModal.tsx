@@ -6,25 +6,19 @@ import {getDisplayBalance} from '../../utils/formatBalance';
 import Label from '../Label';
 import Modal, {ModalProps} from '../Modal';
 import ModalTitle from '../ModalTitle';
-import usePushFinance from '../../hooks/usePushFinance';
+import useSynergyFinance from '../../hooks/useSynergyFinance';
 import TokenSymbol from '../TokenSymbol';
 import {useMediaQuery} from '@material-ui/core';
 
 
 const AccountModal: React.FC<ModalProps> = ({onDismiss}) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
-  const pushBalance = useTokenBalance(pushFinance.PUSH);
-  const displayPushBalance = useMemo(() => getDisplayBalance(pushBalance, 18, 2), [pushBalance]);
+  const crsBalance = useTokenBalance(synergyFinance.CRS);
+  const displayCRSBalance = useMemo(() => getDisplayBalance(crsBalance, 18, 2), [crsBalance]);
 
-  const pshareBalance = useTokenBalance(pushFinance.PSHARE);
-  const displayPshareBalance = useMemo(() => getDisplayBalance(pshareBalance, 18, 2), [pshareBalance]);
-
-  const pbondBalance = useTokenBalance(pushFinance.PBOND);
-  const displayPbondBalance = useMemo(() => getDisplayBalance(pbondBalance, 18, 2), [pbondBalance]);
-
-  const xpushBalance = useTokenBalance(pushFinance.XPUSH);
-  const displayXpushBalance = useMemo(() => getDisplayBalance(xpushBalance, 18, 2), [xpushBalance]);
+  const diaBalance = useTokenBalance(synergyFinance.DIA);
+  const displayDIABalance = useMemo(() => getDisplayBalance(diaBalance, 18, 2), [diaBalance]);
 
   const matches = useMediaQuery('(min-width:900px)');
 
@@ -34,32 +28,18 @@ const AccountModal: React.FC<ModalProps> = ({onDismiss}) => {
 
       <Balances style={{display: 'flex', flexDirection: matches ? 'row' : 'column'}}>
         <StyledBalanceWrapper style={{paddingBottom: '15px'}}>
-          <TokenSymbol symbol="PUSH" />
+          <TokenSymbol symbol="CRS" />
           <StyledBalance>
-            <StyledValue>{displayPushBalance}</StyledValue>
-            <Label text="PUSH Available" />
+            <StyledValue>{displayCRSBalance}</StyledValue>
+            <Label text="CRS Available" />
           </StyledBalance>
         </StyledBalanceWrapper>
 
         <StyledBalanceWrapper style={{paddingBottom: '15px'}}>
-          <TokenSymbol symbol="PSHARE" />
+          <TokenSymbol symbol="DIA" />
           <StyledBalance>
-            <StyledValue>{displayPshareBalance}</StyledValue>
-            <Label text="PSHARE Available" />
-          </StyledBalance>
-        </StyledBalanceWrapper>
-        <StyledBalanceWrapper style={{paddingBottom: '15px'}}>
-          <TokenSymbol symbol="XPUSH" />
-          <StyledBalance>
-            <StyledValue>{displayXpushBalance}</StyledValue>
-            <Label text="XPUSH Available" />
-          </StyledBalance>
-        </StyledBalanceWrapper>
-        <StyledBalanceWrapper style={{paddingBottom: '15px'}}>
-          <TokenSymbol symbol="PBOND" />
-          <StyledBalance>
-            <StyledValue>{displayPbondBalance}</StyledValue>
-            <Label text="PBOND Available" />
+            <StyledValue>{displayDIABalance}</StyledValue>
+            <Label text="DIA Available" />
           </StyledBalance>
         </StyledBalanceWrapper>
       </Balances>

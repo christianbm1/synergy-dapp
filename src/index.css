@@ -176,15 +176,3 @@ code {
   background-position: center;
   overflow: hidden;
 }
-
-.push {
-  background-image: url('/push.png');
-}
-
-.pshare {
-  background-image: url('/pshare.png');
-}
-
-.btc {
-  background-image: url('/btc.png');
-}

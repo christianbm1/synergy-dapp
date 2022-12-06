@@ -1,7 +1,6 @@
-import {TokenStat} from '../../push-finance/types';
+import {TokenStat} from '../../synergy-finance/types';
 
 export interface OverviewData {
   cash?: TokenStat;
-  bond?: TokenStat;
   share?: TokenStat;
 }

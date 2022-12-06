@@ -1,23 +1,22 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
-//import {TokenStat} from '../push-finance/types';
+import useSynergyFinance from './useSynergyFinance';
 import useRefresh from './useRefresh';
 
 const useBtcStats = () => {
   const [stat, setStat] = useState<Number>();
   const {slowRefresh} = useRefresh();
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
     async function fetchSharePrice() {
       try {
-        setStat(await pushFinance.getBTCPriceUSD());
+        setStat(await synergyFinance.getBTCPriceUSD());
       } catch (err) {
         console.error(err);
       }
     }
     fetchSharePrice();
-  }, [setStat, pushFinance, slowRefresh]);
+  }, [setStat, synergyFinance, slowRefresh]);
 
   return stat;
 };

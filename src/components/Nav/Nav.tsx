@@ -16,9 +16,6 @@ import {
 } from '@material-ui/core';
 
 import ListItemLink from '../ListItemLink';
-import usePushStats from '../../hooks/usePushStats';
-import useBtcStats from '../../hooks/useBtcStats';
-import useShareStats from '../../hooks/usepShareStats';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -99,11 +96,6 @@ const Nav = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const pushStats = usePushStats();
-  const btcStats = useBtcStats();
-  const shareStats = useShareStats();
-
-  // const [connected, setConnected] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -113,23 +105,12 @@ const Nav = () => {
     setOpen(false);
   };
 
-  const btcPriceInDollars = useMemo(() => (btcStats ? Number(btcStats).toFixed(2) : null), [btcStats]);
-  const pushPriceInDollars = useMemo(
-    () => (pushStats ? Number(pushStats.priceInDollars).toFixed(2) : null),
-    [pushStats],
-  );
-  const sharePriceInDollars = useMemo(
-    () => (shareStats ? Number(shareStats.priceInDollars).toFixed(2) : null),
-    [shareStats],
-  );
-
   return (
     <AppBar position="sticky" elevation={0} className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
         {matches ? (
           <>
             <Typography variant="h6" color="inherit" noWrap style={{ flexGrow: '0' }} className={classes.toolbarTitle}>
-              {/* <a className={ classes.brandLink } href="/">Push Money</a> */}
               <Link to="/" color="inherit" className={classes.brandLink}>
                 <img alt="Synergy" src={synergyLogo} height="60px" />
               </Link>

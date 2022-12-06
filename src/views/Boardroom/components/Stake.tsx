@@ -21,7 +21,7 @@ import {getDisplayBalance} from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import usePushFinance from '../../../hooks/usePushFinance';
+import useSynergyFinance from '../../../hooks/useSynergyFinance';
 import ProgressCountdown from './ProgressCountdown';
 import useStakedBalanceOnBoardroom from '../../../hooks/useStakedBalanceOnBoardroom';
 import useStakedTokenPriceInDollars from '../../../hooks/useStakedTokenPriceInDollars';
@@ -31,14 +31,14 @@ import useStakeToBoardroom from '../../../hooks/useStakeToBoardroom';
 import useWithdrawFromBoardroom from '../../../hooks/useWithdrawFromBoardroom';
 
 const Stake: React.FC = () => {
-  const pushFinance = usePushFinance();
-  const [approveStatus, approve] = useApprove(pushFinance.PSHARE, pushFinance.contracts.Boardroom.address);
+  const synergyFinance = useSynergyFinance();
+  const [approveStatus, approve] = useApprove(synergyFinance.DIA, synergyFinance.contracts.Boardroom.address);
 
-  const tokenBalance = useTokenBalance(pushFinance.PSHARE);
+  const tokenBalance = useTokenBalance(synergyFinance.DIA);
   const stakedBalance = useStakedBalanceOnBoardroom();
   const {from, to} = useUnstakeTimerBoardroom();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('PSHARE', pushFinance.PSHARE);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
   const tokenPriceInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
@@ -81,11 +81,11 @@ const Stake: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="PSHARE" />
+                <TokenSymbol symbol="DIA" />
               </CardIcon>
               <Value value={getDisplayBalance(stakedBalance)} />
               <Label text={`≈ $${tokenPriceInDollars}`} variant="yellow" />
-              <Label text={'PSHARE Staked'} variant="yellow" />
+              <Label text={'DIA Staked'} variant="yellow" />
             </StyledCardHeader>
             <StyledCardActions>
               {approveStatus !== ApprovalState.APPROVED ? (
@@ -95,7 +95,7 @@ const Stake: React.FC = () => {
                   style={{marginTop: '20px'}}
                   onClick={approve}
                 >
-                  Approve PSHARE
+                  Approve DIA
                 </Button>
               ) : (
                 <>

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
-import {AllocationTime} from '../push-finance/types';
+import useSynergyFinance from './useSynergyFinance';
+import {AllocationTime} from '../synergy-finance/types';
 import useRefresh from './useRefresh';
 
 const useTreasuryAllocationTimes = () => {
@@ -9,12 +9,12 @@ const useTreasuryAllocationTimes = () => {
     from: new Date(),
     to: new Date(),
   });
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   useEffect(() => {
-    if (pushFinance) {
-      pushFinance.getTreasuryNextAllocationTime().then(setTime);
+    if (synergyFinance) {
+      synergyFinance.getTreasuryNextAllocationTime().then(setTime);
     }
-  }, [pushFinance, slowRefresh]);
+  }, [synergyFinance, slowRefresh]);
   return time;
 };
 

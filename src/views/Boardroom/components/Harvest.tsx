@@ -12,18 +12,18 @@ import useClaimRewardCheck from '../../../hooks/boardroom/useClaimRewardCheck';
 import ProgressCountdown from './ProgressCountdown';
 import useHarvestFromBoardroom from '../../../hooks/useHarvestFromBoardroom';
 import useEarningsOnBoardroom from '../../../hooks/useEarningsOnBoardroom';
-import usePushStats from '../../../hooks/usePushStats';
+import useCrystalStats from '../../../hooks/useCrystalStats';
 import {getDisplayBalance} from '../../../utils/formatBalance';
 
 const Harvest: React.FC = () => {
-  const pushStats = usePushStats();
+  const crsStats = useCrystalStats();
   const {onReward} = useHarvestFromBoardroom();
   const earnings = useEarningsOnBoardroom();
   const canClaimReward = useClaimRewardCheck();
 
   const tokenPriceInDollars = useMemo(
-    () => (pushStats ? Number(pushStats.priceInDollars).toFixed(2) : null),
-    [pushStats],
+    () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : null),
+    [crsStats],
   );
 
   const earnedInDollars = (Number(tokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
@@ -37,11 +37,11 @@ const Harvest: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="PUSH" />
+                <TokenSymbol symbol="CRS" />
               </CardIcon>
               <Value value={getDisplayBalance(earnings)} />
               <Label text={`≈ $${earnedInDollars}`} variant="yellow" />
-              <Label text="PUSH Earned" variant="yellow" />
+              <Label text="CRS Earned" variant="yellow" />
             </StyledCardHeader>
             <StyledCardActions>
               <Button

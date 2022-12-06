@@ -40,7 +40,7 @@ const Footer = () => {
             <Typography variant="body2" color="textPrimary" align="left">
               {'Copyright © '}
               <Link color="inherit" href="/">
-                Push Money
+                Synergy Finance
               </Link>{' '}
               {new Date().getFullYear()}
             </Typography>

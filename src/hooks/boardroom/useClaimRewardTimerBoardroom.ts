@@ -1,19 +1,19 @@
 import {useEffect, useState} from 'react';
-import usePushFinance from '../usePushFinance';
-import {AllocationTime} from '../../push-finance/types';
+import useSynergyFinance from '../useSynergyFinance';
+import {AllocationTime} from '../../synergy-finance/types';
 
 const useClaimRewardTimerBoardroom = () => {
   const [time, setTime] = useState<AllocationTime>({
     from: new Date(),
     to: new Date(),
   });
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   useEffect(() => {
-    if (pushFinance) {
-      pushFinance.getUserClaimRewardTime().then(setTime);
+    if (synergyFinance) {
+      synergyFinance.getUserClaimRewardTime().then(setTime);
     }
-  }, [pushFinance]);
+  }, [synergyFinance]);
   return time;
 };
 

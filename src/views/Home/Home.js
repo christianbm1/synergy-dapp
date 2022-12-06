@@ -1,26 +1,9 @@
 import React, { useMemo } from 'react';
 import Page from '../../components/Page';
 import styled, { createGlobalStyle } from 'styled-components';
-import CountUp from 'react-countup';
-import CardIcon from '../../components/CardIcon';
-import TokenSymbol from '../../components/TokenSymbol';
-import usePushStats from '../../hooks/usePushStats';
-import useLpStats from '../../hooks/useLpStats';
-import useLpStatsBTC from '../../hooks/useLpStatsBTC';
-import useModal from '../../hooks/useModal';
-import useZap from '../../hooks/useZap';
-import useBondStats from '../../hooks/useBondStats';
-import usepShareStats from '../../hooks/usepShareStats';
-import useTotalValueLocked from '../../hooks/useTotalValueLocked';
-import { Push as pushTesting } from '../../push-finance/deployments/deployments.testing.json';
-import { Push as pushProd } from '../../push-finance/deployments/deployments.mainnet.json';
-import { roundAndFormatNumber } from '../../0x';
-import MetamaskFox from '../../assets/img/metamask-fox.svg';
-import { Box, Button, Card, CardContent, Container, Grid, Paper, Typography } from '@material-ui/core';
-import ZapModal from '../Bank/components/ZapModal';
+import { Box, Card, Container, Grid, Typography } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
-import usePushFinance from '../../hooks/usePushFinance';
 import { Helmet } from 'react-helmet';
 import SynergyHomeTitle from '../../assets/img/home-title.png';
 import VideoBG from '../../assets/img/background/main.mp4';

@@ -29,7 +29,6 @@ import { Helmet } from 'react-helmet'
 
 import BGImage from '../../assets/img/background/ark.png';
 import Triangle from '../../assets/img/triangle.png';
-import ActionPanel from './components/ActionPanel';
 
 const BackgroundImage = createGlobalStyle`
   body {

@@ -1,18 +1,18 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
-import {Bank} from '../push-finance';
+import {Bank} from '../synergy-finance';
 
 const useHarvest = (bank: Bank) => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleReward = useCallback(() => {
     handleTransactionReceipt(
-      pushFinance.harvest(bank.contract, bank.poolId),
+      synergyFinance.harvest(bank.contract, bank.poolId),
       `Claim ${bank.earnTokenName} from ${bank.contract}`,
     );
-  }, [bank, pushFinance, handleTransactionReceipt]);
+  }, [bank, synergyFinance, handleTransactionReceipt]);
 
   return {onReward: handleReward};
 };

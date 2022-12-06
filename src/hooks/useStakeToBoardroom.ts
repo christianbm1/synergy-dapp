@@ -1,16 +1,16 @@
 import {useCallback} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useStakeToBoardroom = () => {
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleStake = useCallback(
     (amount: string) => {
-      handleTransactionReceipt(pushFinance.stakeShareToBoardroom(amount), `Stake ${amount} PSHARE to the boardroom`);
+      handleTransactionReceipt(synergyFinance.stakeShareToBoardroom(amount), `Stake ${amount} DIA to the boardroom`);
     },
-    [pushFinance, handleTransactionReceipt],
+    [synergyFinance, handleTransactionReceipt],
   );
   return {onStake: handleStake};
 };

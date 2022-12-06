@@ -15,8 +15,8 @@ import Stake from './components/Stake';
 import useBank from '../../hooks/useBank';
 import useStatsForPool from '../../hooks/useStatsForPool';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank as BankEntity } from '../../push-finance';
-import usePushFinance from '../../hooks/usePushFinance';
+import { Bank as BankEntity } from '../../synergy-finance';
+import useSynergyFinance from '../../hooks/useSynergyFinance';
 import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
@@ -111,23 +111,23 @@ const Bank: React.FC = () => {
 };
 
 const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
-  const pushFinance = usePushFinance();
-  const pushAddr = pushFinance.PUSH.address;
-  const pshareAddr = pushFinance.PSHARE.address;
+  const synergyFinance = useSynergyFinance();
+  const crsAddr = synergyFinance.CRS.address;
+  const diaAddr = synergyFinance.DIA.address;
 
   let pairName: string;
   let uniswapUrl: string;
-  if (bank.depositTokenName.includes('PUSH-BTCB')) {
-    pairName = 'PUSH-BTCB pair';
-    uniswapUrl = 'https://pancakeswap.finance/add/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c/' + pushAddr;
+  if (bank.depositTokenName.includes('CRS-BTCB')) {
+    pairName = 'CRS-BTCB pair';
+    uniswapUrl = 'https://pancakeswap.finance/add/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c/' + crsAddr;
   }
-  else if (bank.depositTokenName.includes('PUSH-PSHARE')) {
-    pairName = 'PUSH-PSHARE pair';
-    uniswapUrl = 'https://pancakeswap.finance/add/' + pushAddr + '/' + pshareAddr;
+  else if (bank.depositTokenName.includes('CRS-DIA')) {
+    pairName = 'CRS-DIA pair';
+    uniswapUrl = 'https://pancakeswap.finance/add/' + crsAddr + '/' + diaAddr;
   }
   else {
-    pairName = 'PSHARE-BNB pair';
-    uniswapUrl = 'https://pancakeswap.finance/add/BNB/' + pshareAddr;
+    pairName = 'DIA-BNB pair';
+    uniswapUrl = 'https://pancakeswap.finance/add/BNB/' + diaAddr;
 
   }
   return (

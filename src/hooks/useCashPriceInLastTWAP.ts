@@ -1,21 +1,21 @@
 import {useCallback, useEffect, useState} from 'react';
-import usePushFinance from './usePushFinance';
+import useSynergyFinance from './useSynergyFinance';
 import config from '../config';
 import {BigNumber} from 'ethers';
 
 const useCashPriceInLastTWAP = () => {
   const [price, setPrice] = useState<BigNumber>(BigNumber.from(0));
-  const pushFinance = usePushFinance();
+  const synergyFinance = useSynergyFinance();
 
   const fetchCashPrice = useCallback(async () => {
-    setPrice(await pushFinance.getPushPriceInLastTWAP());
-  }, [pushFinance]);
+    setPrice(await synergyFinance.getCRSPriceInLastTWAP());
+  }, [synergyFinance]);
 
   useEffect(() => {
-    fetchCashPrice().catch((err) => console.error(`Failed to fetch PUSH price: ${err.stack}`));
+    fetchCashPrice().catch((err) => console.error(`Failed to fetch Crystal price: ${err.stack}`));
     const refreshInterval = setInterval(fetchCashPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setPrice, pushFinance, fetchCashPrice]);
+  }, [setPrice, synergyFinance, fetchCashPrice]);
 
   return price;
 };

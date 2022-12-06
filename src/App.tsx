@@ -6,7 +6,7 @@ import {ThemeProvider as TP1} from 'styled-components';
 import {UseWalletProvider} from 'use-wallet';
 import usePromptNetwork from './hooks/useNetworkPrompt';
 import BanksProvider from './contexts/Banks';
-import PushFinanceProvider from './contexts/PushFinanceProvider';
+import SynergyFinanceProvider from './contexts/SynergyFinanceProvider';
 import ModalsProvider from './contexts/Modals';
 import store from './state';
 import theme from './theme';
@@ -15,7 +15,6 @@ import config from './config';
 import Updaters from './state/Updaters';
 import Loader from './components/Loader';
 import Popups from './components/Popups';
-//import Regulations from './views/Regulations/Regulations';
 import {RefreshContextProvider} from './contexts/RefreshContext';
 
 const Home = lazy(() => import('./views/Home'));
@@ -78,14 +77,14 @@ const Providers: React.FC = ({children}) => {
             walletlink: {
               url: config.defaultProvider,
               appName: 'synergy',
-              appLogoUrl: 'https://raw.githubusercontent.com/PUSH-MONEY/push-assets/main/logo_256x256.png',
+              appLogoUrl: 'https://raw.githubusercontent.com/levintech/synergy-assets/main/logo_256x256.png',
             },
           }}
         >
           <Provider store={store}>
             <Updaters />
             <RefreshContextProvider>
-              <PushFinanceProvider>
+              <SynergyFinanceProvider>
                 <ModalsProvider>
                   <BanksProvider>
                     <>
@@ -94,7 +93,7 @@ const Providers: React.FC = ({children}) => {
                     </>
                   </BanksProvider>
                 </ModalsProvider>
-              </PushFinanceProvider>
+              </SynergyFinanceProvider>
             </RefreshContextProvider>
           </Provider>
         </UseWalletProvider>

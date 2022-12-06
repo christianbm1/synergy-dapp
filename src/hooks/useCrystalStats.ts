@@ -3,23 +3,23 @@ import useSynergyFinance from './useSynergyFinance';
 import {TokenStat} from '../synergy-finance/types';
 import useRefresh from './useRefresh';
 
-const useCashPriceInEstimatedTWAP = () => {
+const useCrystalStats = () => {
   const [stat, setStat] = useState<TokenStat>();
+  const {fastRefresh} = useRefresh();
   const synergyFinance = useSynergyFinance();
-  const {slowRefresh} = useRefresh();
 
   useEffect(() => {
-    async function fetchCashPrice() {
+    async function fetchCrystalPrice() {
       try {
-        setStat(await synergyFinance.getCRSStatInEstimatedTWAP());
+        setStat(await synergyFinance.getCrystalStat());
       } catch (err) {
         console.error(err);
       }
     }
-    fetchCashPrice();
-  }, [setStat, synergyFinance, slowRefresh]);
+    fetchCrystalPrice();
+  }, [setStat, synergyFinance, fastRefresh]);
 
   return stat;
 };
 
-export default useCashPriceInEstimatedTWAP;
+export default useCrystalStats;
