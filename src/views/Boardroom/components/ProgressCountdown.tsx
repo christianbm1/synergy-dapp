@@ -22,7 +22,7 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hi
     const s = String(seconds);
     return (
       <StyledCountdown>
-        {h.padStart(2, '0')}:{m.padStart(2, '0')}:{s.padStart(2, '0')}
+        {h.padStart(2, '0')} : {m.padStart(2, '0')} : {s.padStart(2, '0')}
       </StyledCountdown>
     );
   };
@@ -44,10 +44,10 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hi
 };
 
 const StyledCountdown = styled.p`
-  // font-size: 14px;
+  font-size: 28px;
   font-weight: 700;
   // color: ${(props) => props.theme.color.grey[100]};
-  margin: 0 0 6px 0;
+  margin: 0 0 0 0;
 `;
 
 const StyledProgressOuter = styled.div`

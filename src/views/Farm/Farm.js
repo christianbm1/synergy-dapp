@@ -16,14 +16,20 @@ import { createGlobalStyle } from 'styled-components';
 import useBanks from '../../hooks/useBanks';
 import { Helmet } from 'react-helmet'
 
-import HomeImage from '../../assets/img/background.png';
-const BackgroundImage = createGlobalStyle`
-  body {
-    background: url(${HomeImage}) repeat !important;
-    background-size: cover !important;
-    background-color: #171923;
-  }
-`;
+// import HomeImage from '../../assets/img/background/connection.png';
+import Triangle from '../../assets/img/triangle.png';
+import TitleImage from '../../assets/img/farm-title.png';
+import AvatarImage from '../../assets/img/farm-avatar.jpg';
+import PrimaryFarmCard from './PrimaryFarmCard';
+
+// const BackgroundImage = createGlobalStyle`
+//   body {
+//     background: url(${HomeImage}) repeat !important;
+//     background-size: cover !important;
+//     background-position-y: top !important;
+//     background-color: #171923;
+//   }
+// `;
 
 const TITLE = 'Synergy | Farms'
 
@@ -37,12 +43,60 @@ const Farm = () => {
     <Switch>
       <Page>
         <Route exact path={path}>
-          <BackgroundImage />
+          {/* <BackgroundImage /> */}
           <Helmet>
             <title>{TITLE}</title>
           </Helmet>
+          <Box style={{ position: 'absolute', top: '110px', right: '-4%', zIndex: -1 }}>
+            <img src={AvatarImage} width={250}/>
+          </Box>
           {!!account ? (
-            <Container maxWidth="lg">
+            <Container maxWidth="xl" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+              <Box>
+                <img src={TitleImage} alt="Farm Title" style={{ maxHeight: '70px' }} />
+                <Box
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Typography align="left" variant="h4">
+                    FARM
+                  </Typography>
+                </Box>
+                <Box
+                  style={{
+                    display: 'flex',
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
+                  <Box
+                    style={{
+                      color: "white",
+                      marginLeft: 5,
+                    }}
+                  >
+                    <Typography align="left">
+                      Stake CRYSTAL or DIAMOND
+                    </Typography>
+                    <Typography align="left">
+                      with BUSD or BNB and get DIAMONDS as reward
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Grid container spacing={6} style={{ marginTop: '20px' }}>
+                {activeBanks
+                  .filter((bank) => bank.sectionInUI === 3)
+                  .map((bank) => (
+                    <React.Fragment key={bank.name}>
+                      <PrimaryFarmCard bank={bank} />
+                    </React.Fragment>
+                  ))}
+              </Grid>
+
               <Box mt={5}>
                 <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 3).length === 0}>
                   <Typography severity="info" align="center" variant="h4" gutterBottom>
@@ -127,7 +181,7 @@ const Farm = () => {
           )}
         </Route>
         <Route path={`${path}/:bankId`}>
-          <BackgroundImage />
+          {/* <BackgroundImage /> */}
           <Bank />
         </Route>
       </Page>
