@@ -1,21 +1,11 @@
 import React, { useMemo } from 'react';
 import { useWallet } from 'use-wallet';
 import moment from 'moment';
-import styled from 'styled-components';
-import Spacer from '../../components/Spacer';
-import Harvest from './components/Harvest';
-import Stake from './components/Stake';
-import { makeStyles } from '@material-ui/core/styles';
-
-import { Box, Card, CardContent, CardActions, Button, Typography, Grid, Container, CardHeader, Divider } from '@material-ui/core';
-
-import { Alert } from '@material-ui/lab';
+import { Box, Card, CardContent, CardActions, Typography, Container, Divider } from '@material-ui/core';
 
 import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
 
-import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
-import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useCurrentEpoch from '../../hooks/useCurrentEpoch';
 import useFetchBoardroomAPR from '../../hooks/useFetchBoardroomAPR';
@@ -29,6 +19,7 @@ import { Helmet } from 'react-helmet'
 
 import BGImage from '../../assets/img/background/ark.png';
 import Triangle from '../../assets/img/triangle.png';
+import ActionPanel from './components/ActionPanel';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -40,35 +31,8 @@ const BackgroundImage = createGlobalStyle`
 
 const TITLE = 'Synergy | ARK'
 
-const useStyles = makeStyles((theme) => ({
-  gridItem: {
-    height: '100%',
-    [theme.breakpoints.up('md')]: {
-      height: '90px',
-    },
-  },
-  stake: {
-    fontSize: '1rem !important',
-    minWidth: '48px !important',
-    backgroundColor: '#232227 !important',
-    color: 'white !important',
-  },
-  claim: {
-    fontSize: '1rem !important',
-    backgroundColor: '#232227 !important',
-    color: 'white !important',
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderRadius: 4,
-    flexGrow: 1,
-  },
-}));
-
 const Boardroom = () => {
-  const classes = useStyles();
   const { account } = useWallet();
-  const { onRedeem } = useRedeemOnBoardroom();
-  const stakedBalance = useStakedBalanceOnBoardroom();
   const currentEpoch = useCurrentEpoch();
   const cashStat = useCashPriceInEstimatedTWAP();
   const totalStaked = useTotalStakedOnBoardroom();
@@ -76,7 +40,6 @@ const Boardroom = () => {
   const boardroomEpochAPR = boardroomAPR / 1095;
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
   const { to } = useTreasuryAllocationTimes();
-  console.log("Boardroom / to : ", to);
 
   return (
     <Page>
@@ -85,7 +48,7 @@ const Boardroom = () => {
         <title>{TITLE}</title>
       </Helmet>
       {!!account ? (
-        <Container maxWidth="xl" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+        <Container maxWidth="lg" style={{ paddingRight: '100px' }}>
           <Box>
             <Box
               style={{
@@ -217,50 +180,11 @@ const Boardroom = () => {
                 </Box>
                 <Divider variant="middle" style={{ margin: '10px 0px 10px 0px', backgroundColor: 'grey' }} />
               </CardContent>
-              <CardActions style={{justifyContent: 'space-between', padding: 0}}>
-                <Button className={classes.stake}>
-                  -
-                </Button>
-                <Button className={classes.claim}>
-                  Claim
-                </Button>
-                <Button className={classes.stake}>
-                  +
-                </Button>
+              <CardActions style={{ justifyContent: 'space-between', padding: 8 }}>
+                <ActionPanel />
               </CardActions>
             </Card>
           </Box>
-          {/* <Box mt={5}>
-            <Box mt={4}>
-              <StyledBoardroom>
-                <StyledCardsWrapper>
-                  <StyledCardWrapper>
-                    <Harvest />
-                  </StyledCardWrapper>
-                  <Spacer />
-                  <StyledCardWrapper>
-                    <Stake />
-                  </StyledCardWrapper>
-                </StyledCardsWrapper>
-              </StyledBoardroom>
-            </Box>
-          </Box>
-
-          <Box mt={5}>
-            <Grid container justifyContent="center" spacing={3} mt={10}>
-              <Button
-                disabled={stakedBalance.eq(0) || (!canWithdraw && !canClaimReward)}
-                onClick={onRedeem}
-                className={
-                  stakedBalance.eq(0) || (!canWithdraw && !canClaimReward)
-                    ? 'shinyButtonDisabledSecondary'
-                    : 'shinyButtonSecondary'
-                }
-              >
-                Claim &amp; Withdraw
-              </Button>
-            </Grid>
-          </Box> */}
         </Container>
       ) : (
         <UnlockWallet />
@@ -268,33 +192,5 @@ const Boardroom = () => {
     </Page >
   );
 };
-
-const StyledBoardroom = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const StyledCardsWrapper = styled.div`
-  display: flex;
-  width: 600px;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
-`;
-
-const StyledCardWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 80%;
-  }
-`;
 
 export default Boardroom;

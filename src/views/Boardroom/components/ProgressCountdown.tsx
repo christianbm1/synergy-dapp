@@ -7,13 +7,16 @@ interface ProgressCountdownProps {
   deadline: Date;
   hideBar?: boolean;
   description: string;
+  fontSize?: string;
 }
 
-const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hideBar, description}) => {
+const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hideBar, description, fontSize}) => {
   const percentage =
     Date.now() >= deadline.getTime()
       ? 100
       : ((Date.now() - base.getTime()) / (deadline.getTime() - base.getTime())) * 100;
+  
+  const fontsize = fontSize ? fontSize : "28px";
 
   const countdownRenderer = (countdownProps: CountdownRenderProps) => {
     const {days, hours, minutes, seconds} = countdownProps;
@@ -21,7 +24,7 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hi
     const m = String(minutes);
     const s = String(seconds);
     return (
-      <StyledCountdown>
+      <StyledCountdown fontsize={fontsize}>
         {h.padStart(2, '0')} : {m.padStart(2, '0')} : {s.padStart(2, '0')}
       </StyledCountdown>
     );
@@ -43,8 +46,8 @@ const ProgressCountdown: React.FC<ProgressCountdownProps> = ({base, deadline, hi
   );
 };
 
-const StyledCountdown = styled.p`
-  font-size: 28px;
+const StyledCountdown = styled.p<{fontsize: string}>`
+  font-size: ${(props) => props.fontsize};
   font-weight: 700;
   // color: ${(props) => props.theme.color.grey[100]};
   margin: 0 0 0 0;
