@@ -1,22 +1,18 @@
 import React, { useMemo } from 'react';
-import Page from '../../components/Page';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Box, Button, Card, CardContent, Container, Grid, Paper, Typography } from '@material-ui/core';
-
+import { Box, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
+import useWallet from 'use-wallet';
 
+import useBanks from '../../hooks/useBanks';
+import UnlockWallet from '../../components/UnlockWallet';
+import Page from '../../components/Page';
 import PoolCard from './PoolCard';
 
 import TitleImage from '../../assets/img/gpool-title.png';
 import BGImage from '../../assets/img/background/gpool.png';
 import Triangle from '../../assets/img/triangle.png';
-import Row from '../../components/Row';
-import { white } from '../../theme/colors';
-import useBanks from '../../hooks/useBanks';
-import { useRouteMatch } from 'react-router-dom';
-import useWallet from 'use-wallet';
-import UnlockWallet from '../../components/UnlockWallet';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -37,10 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-    const classes = useStyles();
     const [banks] = useBanks();
-    console.log("Genesis / banks : ", banks)
-    const { path } = useRouteMatch();
     const { account } = useWallet();
     const activeBanks = banks.filter((bank) => !bank.finished);
 
@@ -65,7 +58,7 @@ const Home = () => {
                             <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
                             <Box
                                 style={{
-                                    color: white,
+                                    color: 'white',
                                     marginLeft: 5,
                                 }}
                             >
@@ -91,9 +84,7 @@ const Home = () => {
                                     </React.Fragment>
                                 ))}
                         </Grid>
-                        {/* <img src={Character} style={{position: 'absolute', width: "100%", bottom: '0'}}/> */}
                     </Box>
-
                 </Container>
             ) : (
                 <UnlockWallet />
