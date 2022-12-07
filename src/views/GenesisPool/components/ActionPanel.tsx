@@ -108,9 +108,4 @@ const StyledCardActions = styled.div`
   margin-bottom: 10px;
 `;
 
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`;
-
 export default ActionPanel;

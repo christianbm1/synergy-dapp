@@ -11,7 +11,6 @@ const Banks: React.FC = ({children}) => {
 
   const fetchPools = useCallback(async () => {
     const banks: Bank[] = [];
-    console.log("fetchPools / bankDefinition : ", bankDefinitions);
 
     for (const bankInfo of Object.values(bankDefinitions)) {
       if (bankInfo.finished) {
@@ -27,7 +26,7 @@ const Banks: React.FC = ({children}) => {
           continue;
         }
       }
-      console.log("fetchPools / bankInfo : ", bankInfo);
+
       banks.push({
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,

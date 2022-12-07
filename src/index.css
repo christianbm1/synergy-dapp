@@ -89,6 +89,7 @@ code {
   margin-top: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
+  min-width: 48px!important;
 
   border-radius: 15px;
   font-size: 1rem !important;
