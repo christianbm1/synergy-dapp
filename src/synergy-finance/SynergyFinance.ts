@@ -53,7 +53,7 @@ export class SynergyFinance {
     this.BTC = this.externalTokens['BTCB'];
 
     // Uniswap V2 Pair
-    this.CRSBTCB_LP = new Contract(externalTokens['CRS-BTCB-LP'][0], IUniswapV2PairABI, provider);
+    this.CRSBTCB_LP = new Contract(externalTokens['CRYSTAL/BTCB'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -322,11 +322,11 @@ export class SynergyFinance {
     if (tokenName === 'WBNB') {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
-      if (tokenName === 'CRS-BTCB-LP') {
+      if (tokenName === 'CRYSTAL/BTCB') {
         tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
-      } else if (tokenName === 'DIA-BNB-LP') {
+      } else if (tokenName === 'DIAMOND/BNB') {
         tokenPrice = await this.getLPTokenPrice(token, this.DIA, false);
-      } else if (tokenName === 'CRS-DIA-LP') {
+      } else if (tokenName === 'CRYSTAL/DIAMOND') {
         tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
@@ -530,7 +530,7 @@ export class SynergyFinance {
     if (!ready) return;
     const { WBNB, BUSD } = this.externalTokens;
     try {
-      const busd_wftm_lp_pair = this.externalTokens['USDT-BNB-LP'];
+      const busd_wftm_lp_pair = this.externalTokens['USDT/BNB'];
       let ftm_amount_BN = await WBNB.balanceOf(busd_wftm_lp_pair.address);
       let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WBNB.decimal));
       let busd_amount_BN = await BUSD.balanceOf(busd_wftm_lp_pair.address);

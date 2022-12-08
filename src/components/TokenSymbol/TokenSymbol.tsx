@@ -28,10 +28,10 @@ const logosBySymbol: {[title: string]: string} = {
   EMP: empLogo,
   DIBS: dibsLogo,
   PAPER: paperLogo,
-  'CRS-BTCB-LP': pushFtmLpLogo,
-  'CRS-DIA-LP': pushPshareLpLogo,
-  'DIA-CRS-LP': pushFtmLpLogo,
-  'DIA-BNB-LP': pshareFtmLpLogo,
+  'CRYSTAL/BTCB': pushFtmLpLogo,
+  'CRYSTAL/DIAMOND': pushPshareLpLogo,
+  'DIAMOND/CRYSTAL': pushFtmLpLogo,
+  'DIAMOND/BNB': pshareFtmLpLogo,
 };
 
 type LogoProps = {

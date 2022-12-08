@@ -36,8 +36,8 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
   const [zappingTokenBalance, setZappingTokenBalance] = useState(ftmBalance);
   const [estimate, setEstimate] = useState({token0: '0', token1: '0'}); // token0 will always be BNB in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  const crsFtmLpStats = useLpStats('CRS-BTCB-LP');
-  const pShareFtmLpStats = useLpStats('DIA-BNB-LP');
+  const crsFtmLpStats = useLpStats('CRYSTAL/BTCB');
+  const pShareFtmLpStats = useLpStats('DIAMOND/BNB');
   const crsLPStats = useMemo(() => (crsFtmLpStats ? crsFtmLpStats : null), [crsFtmLpStats]);
   const pshareLPStats = useMemo(() => (pShareFtmLpStats ? pShareFtmLpStats : null), [pShareFtmLpStats]);
   const ftmAmountPerLP = tokenName.startsWith(CRS_TICKER) ? crsLPStats?.ftmAmount : pshareLPStats?.ftmAmount;
