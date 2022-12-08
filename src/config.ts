@@ -5,7 +5,7 @@ const configurations: { [env: string]: Configuration } = {
   development: {
     chainId: 56,
     networkName: 'BSC Mainnet',
-    ftmscanUrl: 'https://bscscan.com',
+    bscscanUrl: 'https://bscscan.com',
     defaultProvider: 'https://bsc-dataseed.binance.org/',
     deployments: require('./synergy-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
@@ -15,7 +15,7 @@ const configurations: { [env: string]: Configuration } = {
       EMP: ['0x3b248CEfA87F836a4e6f6d6c9b42991b88Dc1d58', 18],
       DIBS: ['0xFd81Ef21EA7CF1dC00e9c6Dd261B4F3BE0341d5c', 18],
       PAPER: ['0xE239b561369aeF79eD55DFdDed84848A3bF60480', 18],
-      'USDT/BNB': ['0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16', 18],
+      'BUSD/BNB': ['0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16', 18],
       'USDT/BTCB': ['0x3f803ec2b816ea7f06ec76aa2b6f2532f9892d62', 18],
       'CRYSTAL/BTCB': ['0x593E9b3E1955e7Ab0C93Bf9b07478b7F6E5e8550', 18],
       'CRYSTAL/DIAMOND': ['0xB45CaC7809442e6280Ff485142B465D174d4eEcd', 18],
@@ -26,7 +26,7 @@ const configurations: { [env: string]: Configuration } = {
   production: {
     chainId: 56,
     networkName: 'BSC Mainnet',
-    ftmscanUrl: 'https://bscscan.com',
+    bscscanUrl: 'https://bscscan.com',
     defaultProvider: 'https://bsc-dataseed.binance.org/',
     deployments: require('./synergy-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
@@ -36,7 +36,7 @@ const configurations: { [env: string]: Configuration } = {
       EMP: ['0x3b248CEfA87F836a4e6f6d6c9b42991b88Dc1d58', 18],
       DIBS: ['0xFd81Ef21EA7CF1dC00e9c6Dd261B4F3BE0341d5c', 18],
       PAPER: ['0xE239b561369aeF79eD55DFdDed84848A3bF60480', 18],
-      'USDT/BNB': ['0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16', 18],
+      'BUSD/BNB': ['0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16', 18],
       'USDT/BTCB': ['0x3f803ec2b816ea7f06ec76aa2b6f2532f9892d62', 18],
       'CRYSTAL/BTCB': ['0x593E9b3E1955e7Ab0C93Bf9b07478b7F6E5e8550', 18],
       'CRYSTAL/DIAMOND': ['0xB45CaC7809442e6280Ff485142B465D174d4eEcd', 18],
