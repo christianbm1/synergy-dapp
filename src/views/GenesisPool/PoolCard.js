@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
+import useWallet from 'use-wallet';
 import { Box, Card, CardActions, CardContent, Typography, Grid } from '@material-ui/core';
 
-import TokenSymbol from '../../components/TokenSymbol';
 import useStatsForPool from '../../hooks/useStatsForPool';
-import ActionPanel from './components/ActionPanel';
-import useWallet from 'use-wallet';
 import useStakedBalance from '../../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDollars';
-import { getDisplayBalance } from '../../utils/formatBalance';
 import useEarnings from '../../hooks/useEarnings';
 import useCrystalStats from '../../hooks/useCrystalStats';
+import ActionPanel from './components/ActionPanel';
+import TokenSymbol from '../../components/TokenSymbol';
+import { getDisplayBalance } from '../../utils/formatBalance';
 
 const PoolCard = ({ bank }) => {
   const { account } = useWallet();

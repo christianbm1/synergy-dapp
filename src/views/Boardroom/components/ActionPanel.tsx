@@ -30,7 +30,7 @@ const ActionPanel: React.FC = () => {
 
 	const tokenBalance = useTokenBalance(synergyFinance.DIA);
 	const stakedBalance = useStakedBalanceOnBoardroom();
-	const { from : withdrawFrom, to : withdrawTo} = useUnstakeTimerBoardroom();
+	const { from: withdrawFrom, to: withdrawTo } = useUnstakeTimerBoardroom();
 
 	const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
 	const tokenPriceInDollars = useMemo(
@@ -40,27 +40,27 @@ const ActionPanel: React.FC = () => {
 				: null,
 		[stakedTokenPriceInDollars, stakedBalance],
 	);
-  const stakedInDollars = (
-    Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, 18))
-  ).toFixed(2);
+	const stakedInDollars = (
+		Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, 18))
+	).toFixed(2);
 
 	const { onStake } = useStakeToBoardroom();
 	const { onWithdraw } = useWithdrawFromBoardroom();
 	const canWithdrawFromBoardroom = useWithdrawCheck();
 
-  const crsStats = useCrystalStats();
-	const {onReward} = useHarvestFromBoardroom();
-  const earnings = useEarningsOnBoardroom();
-  const canClaimReward = useClaimRewardCheck();
-  
+	const crsStats = useCrystalStats();
+	const { onReward } = useHarvestFromBoardroom();
+	const earnings = useEarningsOnBoardroom();
+	const canClaimReward = useClaimRewardCheck();
+
 	const crsPriceInDollars = useMemo(
-    () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : null),
-    [crsStats],
-  );
+		() => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : null),
+		[crsStats],
+	);
 
-  const earnedInDollars = (Number(crsPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
+	const earnedInDollars = (Number(crsPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
 
-  const {from : claimFrom, to : claimTo} = useClaimRewardTimerBoardroom();
+	const { from: claimFrom, to: claimTo } = useClaimRewardTimerBoardroom();
 
 
 	const [onPresentDeposit, onDismissDeposit] = useModal(
@@ -90,49 +90,49 @@ const ActionPanel: React.FC = () => {
 			<StyledCardContentInner>
 				<Box style={{ padding: '0px 5px', flexGrow: 1 }}>
 					<Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-						<Typography style={{width: 100}}>Reward:</Typography>
+						<Typography style={{ width: 100 }}>Reward:</Typography>
 						<Typography style={{ color: '#f9d749' }}>
 							{getDisplayBalance(earnings, 18, 2)} CRS {`(${earnedInDollars}$)`}
 						</Typography>
 					</Box>
 					<Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-						<Typography style={{width: 100}}>Claim:</Typography>
+						<Typography style={{ width: 100 }}>Claim:</Typography>
 						<Typography style={{ color: '#f9d749' }}>
-						<ProgressCountdown hideBar={true} base={claimFrom} deadline={claimTo} description="Claim available in" fontSize='16px' />
+							<ProgressCountdown hideBar={true} base={claimFrom} deadline={claimTo} description="Claim available in" fontSize='16px' />
 						</Typography>
 					</Box>
 					<Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-						<Typography style={{width: 100}}>Withdraw:</Typography>
+						<Typography style={{ width: 100 }}>Withdraw:</Typography>
 						<Typography style={{ color: '#f9d749', fontSize: '20px!important' }}>
 							<ProgressCountdown hideBar={true} base={withdrawFrom} deadline={withdrawTo} description="Withdraw available in" fontSize='16px' />
 						</Typography>
 					</Box>
 					<Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-						<Typography style={{width: 100}}>Staking:</Typography>
+						<Typography style={{ width: 100 }}>Staking:</Typography>
 						<Typography style={{ color: '#f9d749' }}>
-						{getDisplayBalance(stakedBalance, 18, 2)} DIA {`(${stakedInDollars}$)`}
+							{getDisplayBalance(stakedBalance, 18, 2)} DIA {`(${stakedInDollars}$)`}
 						</Typography>
 					</Box>
 				</Box>
 				<Box style={{ margin: '-10px 20px 0px 10px' }}>
 					<TokenSymbol symbol="CRS" />
 				</Box>
-			</StyledCardContentInner>			
+			</StyledCardContentInner>
 			<StyledCardActions>
 				{approveStatus !== ApprovalState.APPROVED ? (
 					<Button
 						disabled={approveStatus !== ApprovalState.NOT_APPROVED}
 						className={approveStatus === ApprovalState.NOT_APPROVED ? 'shinyButton' : 'shinyButtonDisabled'}
-						style={{width: '-webkit-fill-available'}}
+						style={{ width: '-webkit-fill-available' }}
 						onClick={approve}
 					>
 						Approve DIAMOND
 					</Button>
 				) : (
 					<>
-						<Button 
-							className={'shinyButton'} 
-							disabled={!canWithdrawFromBoardroom} 
+						<Button
+							className={'shinyButton'}
+							disabled={!canWithdrawFromBoardroom}
 							onClick={onPresentWithdraw}
 						>
 							-

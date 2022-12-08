@@ -140,8 +140,8 @@ const Stake: React.FC<StakeProps> = ({bank}) => {
                 <IconButton
                   disabled={
                     bank.closedForStaking ||
-                    bank.depositTokenName === 'CRS-DIA-LP' ||
-                    bank.depositTokenName === 'CRS-BTCB-LP'
+                    bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
+                    bank.depositTokenName === 'CRYSTAL/BTCB'
                   }
                   onClick={() => (bank.closedForStaking ? null : onPresentZap())}
                 >
