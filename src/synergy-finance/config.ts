@@ -4,7 +4,7 @@ import {ChainId} from '@pancakeswap/sdk';
 export type Configuration = {
   chainId: ChainId;
   networkName: string;
-  ftmscanUrl: string;
+  bscscanUrl: string;
   defaultProvider: string;
   deployments: Deployments;
   externalTokens: {[contractName: string]: [string, number]};

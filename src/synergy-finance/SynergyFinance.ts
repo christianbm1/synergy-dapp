@@ -530,12 +530,12 @@ export class SynergyFinance {
     if (!ready) return;
     const { WBNB, BUSD } = this.externalTokens;
     try {
-      const busd_wftm_lp_pair = this.externalTokens['USDT/BNB'];
-      let ftm_amount_BN = await WBNB.balanceOf(busd_wftm_lp_pair.address);
-      let ftm_amount = Number(getFullDisplayBalance(ftm_amount_BN, WBNB.decimal));
-      let busd_amount_BN = await BUSD.balanceOf(busd_wftm_lp_pair.address);
+      const busd_wbnb_lp_pair = this.externalTokens['BUSD/BNB'];
+      let bnb_amount_BN = await WBNB.balanceOf(busd_wbnb_lp_pair.address);
+      let bnb_amount = Number(getFullDisplayBalance(bnb_amount_BN, WBNB.decimal));
+      let busd_amount_BN = await BUSD.balanceOf(busd_wbnb_lp_pair.address);
       let busd_amount = Number(getFullDisplayBalance(busd_amount_BN, BUSD.decimal));
-      return (busd_amount / ftm_amount).toString();
+      return (busd_amount / bnb_amount).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of WBNB: ${err}`);
     }
