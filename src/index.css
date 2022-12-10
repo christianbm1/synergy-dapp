@@ -178,3 +178,25 @@ code {
   background-position: center;
   overflow: hidden;
 }
+
+/* nav dropdown */
+.nav-dropdown {
+  display: inline-block;
+}
+
+.nav-dropdown-mobile {
+  display: block;
+  width: 100%;
+}
+
+.nav-dropdown-mobile>div {
+  position: initial !important;
+  transform: none !important;
+}
+
+.nav-dropdown-mobile #composition-button,
+.nav-dropdown-mobile #composition-button1 {
+  padding: 0;
+  width: 100%;
+  justify-content: space-between;
+}

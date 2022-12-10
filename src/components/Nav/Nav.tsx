@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -13,10 +13,17 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Button,
+  Popper,
+  Grow,
+  MenuList,
+  MenuItem,
 } from '@material-ui/core';
 
 import ListItemLink from '../ListItemLink';
 
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { ClickAwayListener } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -72,11 +79,25 @@ const useStyles = makeStyles((theme) => ({
     color: '#f9d749',
     fontSize: '24px',
     marginTop: '15px',
+    margin: theme.spacing(10, 1, 1, 1),
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'none',
+    },
+  },
+  more: {
+    display: 'flex',
+    alignItems: 'center',
+    textTransform: 'uppercase',
+    color: '#f9d749',
+    fontSize: '24px',
+    marginTop: '15px',
     margin: theme.spacing(10, 2, 1, 2),
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'none',
     },
+    cursor: 'pointer'
   },
   socialLink: {
     margin: '6px 4px 4px 4px',
@@ -89,6 +110,25 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'none',
     },
   },
+  linkDropDown: {
+    color: 'white',
+    fontSize: '14px',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'none',
+      color: 'black'
+    },
+  },
+  linkDropPanel: {
+    backgroundColor: '#000000a1',
+    border: '1px solid grey',
+  },
+  menuItem: {
+    '&:hover a': {
+      color: 'black'
+    },
+    borderBottom: '1px solid grey',
+  }
 }));
 
 const Nav = () => {
@@ -96,6 +136,7 @@ const Nav = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,6 +144,14 @@ const Nav = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleClick = () => {
+    setOpen1((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen1(false);
   };
 
   return (
@@ -115,7 +164,7 @@ const Nav = () => {
                 <img alt="Synergy" src={synergyLogo} height="60px" />
               </Link>
             </Typography>
-            <Box style={{ paddingLeft: '30px', fontSize: '1rem', flexGrow: '1' }}>
+            <Box style={{ paddingLeft: '30px', fontSize: '1rem', flexGrow: '1', display: 'flex', alignItems: 'center' }}>
               <Link to="/gpool" className={'navLink ' + classes.link}>
                 Genesis Pools
               </Link>
@@ -125,17 +174,82 @@ const Nav = () => {
               <Link to="/boardroom" className={'navLink ' + classes.link}>
                 ARK
               </Link>
-              <Link to="/" className={'navLink ' + classes.link}>
-                Lottery
-              </Link>
-              <Link to="/" className={'navLink ' + classes.link}>
-                NFT
-              </Link>
-              <Link to="/" className={'navLink ' + classes.link}>
-                Portfolio
-              </Link>
+              <div className="nav-dropdown">
+                <Typography
+                  id="composition-button1"
+                  aria-controls={open1 ? 'composition-menu1' : undefined}
+                  aria-expanded={open1 ? 'true' : undefined}
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  className={'navLink ' + classes.more}
+                >
+                  More <KeyboardArrowDownIcon />
+                </Typography>
+                <Popper
+                  open={open1}
+                  role={undefined}
+                  placement="bottom-start"
+                  transition
+                  disablePortal
+                  style={{ top: "auto", left: "auto", marginLeft: '15px' }}
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === 'bottom-start' ? 'left top' : 'left bottom',
+                      }}
+                    >
+                      <div className={classes.linkDropPanel}>
+                        <ClickAwayListener onClickAway={handleClickAway}>
+                          <MenuList
+                            autoFocusItem={open1}
+                            id="composition-menu1"
+                            aria-labelledby="composition-button1"
+                            style={{padding: '0'}}
+                          >
+                            <MenuItem onClick={handleClick} className={classes.menuItem}>
+                              <NavLink
+                                style={{ fontSize: '18px' }}
+                                color="textPrimary"
+                                to="/"
+                                className={classes.linkDropDown}
+                                activeClassName="active"
+                              >
+                                Lottery
+                              </NavLink>
+                            </MenuItem>
+                            <MenuItem onClick={handleClick} className={classes.menuItem}>
+                              <NavLink
+                                style={{ fontSize: '18px' }}
+                                color="textPrimary"
+                                to="/"
+                                className={classes.linkDropDown}
+                                activeClassName="active"
+                              >
+                                NFT
+                              </NavLink>
+                            </MenuItem>
+                            <MenuItem onClick={handleClick} className={classes.menuItem}>
+                              <NavLink
+                                style={{ fontSize: '18px' }}
+                                color="textPrimary"
+                                to="/"
+                                className={classes.linkDropDown}
+                                activeClassName="active"
+                              >
+                                Portfolio
+                              </NavLink>
+                            </MenuItem>
+                          </MenuList>
+                        </ClickAwayListener>
+                      </div>
+                    </Grow>
+                  )}
+                </Popper>
+              </div>
             </Box>
-
             <Box
               style={{
                 flexGrow: '0',
@@ -153,18 +267,18 @@ const Nav = () => {
               >
                 <img alt="Reddit" src={IconReddit} height="45px" />
               </a>
-              <a 
-                href="https://t.me/SynergyCOFP" 
-                rel="noopener noreferrer" 
-                target="_blank" 
+              <a
+                href="https://t.me/SynergyCOFP"
+                rel="noopener noreferrer"
+                target="_blank"
                 className={classes.socialLink}
               >
                 <img alt="Telegram" src={IconTelegram} height="45px" />
               </a>
-              <a 
-                href="https://discord.gg/nczxGjeTSv" 
-                rel="noopener noreferrer" 
-                target="_blank" 
+              <a
+                href="https://discord.gg/nczxGjeTSv"
+                rel="noopener noreferrer"
+                target="_blank"
                 className={classes.socialLink}
               >
                 <img alt="Discord" src={IconDiscord} height="45px" />
@@ -225,12 +339,59 @@ const Nav = () => {
                   <AccountButton text="Connect" />
                 </ListItem>
                 <ListItemLink primary="Home" to="/" />
+                <ListItemLink primary="Genesis Pools" to="/gpool" />
                 <ListItemLink primary="Farm" to="/farm" />
-                <ListItemLink primary="Boardroom" to="/boardroom" />
+                <ListItemLink primary="ARK" to="/boardroom" />
+                <ListItemLink primary="Lottery" to="/" />
+                <ListItemLink primary="NFT" to="/" />
+                <ListItemLink primary="Portofolio" to="/" />
                 <ListItem button component="a" href="https://">
                   <ListItemText>Documentation</ListItemText>
                 </ListItem>
               </List>
+              <Box
+                style={{
+                  flexGrow: '0',
+                  paddingLeft: '15px',
+                  fontSize: '1rem',
+                  paddingRight: '15px',
+                  display: 'flex',
+                  marginTop: 'auto',
+                }}
+              >
+                <a
+                  href="https://www.reddit.com/r/SynergyCOFP/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className={classes.socialLink}
+                >
+                  <img alt="Reddit" src={IconReddit} height="45px" />
+                </a>
+                <a
+                  href="https://t.me/SynergyCOFP"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className={classes.socialLink}
+                >
+                  <img alt="Telegram" src={IconTelegram} height="45px" />
+                </a>
+                <a
+                  href="https://discord.gg/nczxGjeTSv"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className={classes.socialLink}
+                >
+                  <img alt="Discord" src={IconDiscord} height="45px" />
+                </a>
+                <a
+                  href="https://twitter.com/SynergyCOFP"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className={classes.socialLink}
+                >
+                  <img alt="Twitter" src={IconTwitter} height="45px" />
+                </a>
+              </Box>
             </Drawer>
           </>
         )}
