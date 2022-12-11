@@ -73,6 +73,7 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
               ? 'shinyButtonDisabled'
               : 'shinyButton'
           }
+          style={{width: '-webkit-fill-available'}}
         >
           {`Approve ${bank.depositTokenName}`}
         </Button>
@@ -103,9 +104,10 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
 
 const StyledCardActions = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+	gap: 10px;
 `;
 
 export default ActionPanel;

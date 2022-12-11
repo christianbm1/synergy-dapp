@@ -4,7 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Helmet } from 'react-helmet'
 
-import { Box, Container, Typography, Grid } from '@material-ui/core';
+import { Box, Container, Typography, Grid, makeStyles } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import useBanks from '../../hooks/useBanks';
@@ -31,8 +31,17 @@ const BackgroundImage = createGlobalStyle`
 
 const TITLE = 'Synergy | Farms'
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    [theme.breakpoints.up('xl')]: {
+      paddingLeft: '60px',
+      paddingRight: '60px'
+    },
+  },
+}));
 
 const Farm = () => {
+  const classes = useStyles();
   const [banks] = useBanks();
   const { path } = useRouteMatch();
   const { account } = useWallet();
@@ -49,7 +58,7 @@ const Farm = () => {
             <img src={AvatarImage} width={250} />
           </Box>
           {!!account ? (
-            <Container maxWidth="xl" style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+            <Container maxWidth="xl" className={classes.container}>
               <Box>
                 <img src={TitleImage} alt="Farm Title" style={{ maxHeight: '70px' }} />
                 <Box style={{ marginTop: 10 }}>

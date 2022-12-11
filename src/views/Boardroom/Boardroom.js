@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useWallet } from 'use-wallet';
 import moment from 'moment';
-import { Box, Card, CardContent, CardActions, Typography, Container, Divider } from '@material-ui/core';
+import { Box, Card, CardContent, CardActions, Typography, Container, Divider, makeStyles } from '@material-ui/core';
 
 import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
@@ -31,7 +31,22 @@ const BackgroundImage = createGlobalStyle`
 
 const TITLE = 'Synergy | ARK'
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: '60px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: '100px',
+    },
+    [theme.breakpoints.up('xl')]: {
+      paddingLeft: '200px',
+    },
+  },
+}));
+
 const Boardroom = () => {
+  const classes = useStyles();
   const { account } = useWallet();
   const currentEpoch = useCurrentEpoch();
   const cashStat = useCashPriceInEstimatedTWAP();
@@ -48,17 +63,11 @@ const Boardroom = () => {
         <title>{TITLE}</title>
       </Helmet>
       {!!account ? (
-        <Container maxWidth="lg" style={{ paddingRight: '100px' }}>
+        <Container maxWidth='xl' className={classes.container}>
           <Box>
-            <Box
-              style={{
-                marginTop: 10,
-              }}
-            >
-              <Typography align="left" variant="h4">
-                ARK
-              </Typography>
-            </Box>
+            <Typography align="left" variant="h4">
+              ARK
+            </Typography>
             <Box
               style={{
                 display: 'flex',
@@ -105,7 +114,15 @@ const Boardroom = () => {
             </Box>
           </Box>
           <Box style={{ marginTop: '50px', maxWidth: "400px" }}>
-            <Card variant="outlined" style={{ borderRadius: 12, border: '2px solid grey', backgroundColor: 'black' }}>
+            <Card 
+              variant="outlined" 
+              style={{ 
+                borderRadius: 12, 
+                border: '2px solid grey', 
+                backgroundColor: 'black',
+                boxShadow: '#4a4a49 0px 0px 5px 5px'
+              }}
+            >
               <CardContent style={{ padding: 8, display: 'flex', flexDirection: 'column' }}>
                 <Box
                   style={{

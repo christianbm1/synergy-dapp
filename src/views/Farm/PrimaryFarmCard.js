@@ -27,7 +27,7 @@ const PrimaryFarmCard = ({ bank }) => {
         : '0px 0px 0px 0px transparent';
 
   return (
-    <Grid item xs={12} md={4} lg={4} xl={3}>
+    <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
       <Card
         style={{
           backgroundColor: '#000008',
