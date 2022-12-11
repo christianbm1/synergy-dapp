@@ -77,9 +77,9 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textTransform: 'uppercase',
     color: '#f9d749',
-    fontSize: '24px',
+    fontSize: '20px',
     marginTop: '15px',
-    margin: theme.spacing(10, 1, 1, 1),
+    margin: '80px 14px 8px 14px',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'none',
@@ -90,9 +90,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     textTransform: 'uppercase',
     color: '#f9d749',
-    fontSize: '24px',
+    fontSize: '20px',
     marginTop: '15px',
-    margin: theme.spacing(10, 2, 1, 2),
+    margin: '80px 14px 8px 14px',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'none',
