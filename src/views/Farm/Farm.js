@@ -54,86 +54,88 @@ const Farm = () => {
           <Helmet>
             <title>{TITLE}</title>
           </Helmet>
-          <Box style={{ position: 'absolute', top: '110px', right: '-4%', zIndex: -1 }}>
-            <img src={AvatarImage} width={250} />
-          </Box>
           {!!account ? (
-            <Container maxWidth="xl" className={classes.container}>
-              <Box>
-                <img src={TitleImage} alt="Farm Title" style={{ maxHeight: '70px' }} />
-                <Box style={{ marginTop: 10 }}>
-                  <Typography align="left" variant="h4">
-                    FARM
-                  </Typography>
-                </Box>
-                <Box
-                  style={{
-                    display: 'flex',
-                    marginBottom: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-                  <Box style={{ color: "white", marginLeft: 5 }}>
-                    <Typography align="left">
-                      Stake CRYSTAL or DIAMOND
-                    </Typography>
-                    <Typography align="left">
-                      with BUSD or BNB and get DIAMONDS as reward
+            <>
+              <Box style={{ position: 'absolute', top: '110px', right: '-4%', zIndex: -1 }}>
+                <img src={AvatarImage} width={250} />
+              </Box>
+              <Container maxWidth="xl" className={classes.container}>
+                <Box>
+                  <img src={TitleImage} alt="Farm Title" style={{ maxHeight: '70px' }} />
+                  <Box style={{ marginTop: 10 }}>
+                    <Typography align="left" variant="h4">
+                      FARM
                     </Typography>
                   </Box>
-                </Box>
-              </Box>
-              <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                {activeBanks
-                  .filter((bank) => bank.sectionInUI === 1)
-                  .map((bank) => (
-                    <React.Fragment key={bank.name}>
-                      <PrimaryFarmCard bank={bank} />
-                    </React.Fragment>
-                  ))}
-              </Grid>
-              <Box style={{ marginTop: '80px' }}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'bottom', gap: '5px' }}>
-                  <Typography align="left" variant="h4">
-                    Partner Farms
-                  </Typography>
-                  <img src={Partner} alt="Partner" style={{ maxHeight: '35px' }} />
-                </Box>
-                <Box
-                  style={{
-                    display: 'flex',
-                    marginBottom: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-                  <Box style={{ color: "white", marginLeft: 5 }}>
-                    <Typography align="left">
-                      Combine your token with CRYSTAL
-                    </Typography>
-                    <Typography align="left">
-                      and take DIAMONDs as reward
-                    </Typography>
+                  <Box
+                    style={{
+                      display: 'flex',
+                      marginBottom: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
+                    <Box style={{ color: "white", marginLeft: 5 }}>
+                      <Typography align="left">
+                        Stake CRYSTAL or DIAMOND
+                      </Typography>
+                      <Typography align="left">
+                        with BUSD or BNB and get DIAMONDS as reward
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-              <Box mt={5}>
-                <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 2).length === 0}>
-                  <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                    {activeBanks
-                      .filter((bank) => bank.sectionInUI === 2)
-                      .map((bank) => (
-                        <React.Fragment key={bank.name}>
-                          <FarmCard bank={bank} />
-                        </React.Fragment>
-                      ))}
-                  </Grid>
-                </div>
-              </Box>
-            </Container>
+                <Grid container spacing={3} style={{ marginTop: '20px' }}>
+                  {activeBanks
+                    .filter((bank) => bank.sectionInUI === 1)
+                    .map((bank) => (
+                      <React.Fragment key={bank.name}>
+                        <PrimaryFarmCard bank={bank} />
+                      </React.Fragment>
+                    ))}
+                </Grid>
+                <Box style={{ marginTop: '80px' }}>
+                  <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'bottom', gap: '5px' }}>
+                    <Typography align="left" variant="h4">
+                      Partner Farms
+                    </Typography>
+                    <img src={Partner} alt="Partner" style={{ maxHeight: '35px' }} />
+                  </Box>
+                  <Box
+                    style={{
+                      display: 'flex',
+                      marginBottom: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
+                    <Box style={{ color: "white", marginLeft: 5 }}>
+                      <Typography align="left">
+                        Combine your token with CRYSTAL
+                      </Typography>
+                      <Typography align="left">
+                        and take DIAMONDs as reward
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box mt={5}>
+                  <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 2).length === 0}>
+                    <Grid container spacing={3} style={{ marginTop: '20px' }}>
+                      {activeBanks
+                        .filter((bank) => bank.sectionInUI === 2)
+                        .map((bank) => (
+                          <React.Fragment key={bank.name}>
+                            <FarmCard bank={bank} />
+                          </React.Fragment>
+                        ))}
+                    </Grid>
+                  </div>
+                </Box>
+              </Container>
+            </>
           ) : (
             <UnlockWallet />
           )}

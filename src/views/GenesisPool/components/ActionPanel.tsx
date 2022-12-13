@@ -86,6 +86,7 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
             onClick={onReward}
             disabled={earnings.eq(0)}
             className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButton'}
+            style={{width: '-webkit-fill-available'}}
           >
             Claim
           </Button>
@@ -107,6 +108,7 @@ const StyledCardActions = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+	gap: 10px;
 `;
 
 export default ActionPanel;

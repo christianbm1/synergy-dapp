@@ -37,6 +37,7 @@ const StyledInput = styled.input`
   margin: 0;
   padding: 0;
   outline: none;
+  overflow: hidden;
 `;
 
 export default Input;

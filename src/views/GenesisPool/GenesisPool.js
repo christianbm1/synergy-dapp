@@ -75,7 +75,7 @@ const Home = () => {
                 }}
               >
                 <Typography align="left">
-                  Deposit seleted tokens
+                  Deposit selected tokens
                 </Typography>
                 <Typography align="left">
                   and get CRYSTALS as reward
@@ -84,7 +84,7 @@ const Home = () => {
             </Box>
           </Box>
           <Box className={classes.poolContainer}>
-            <Typography variant="h4" align="left">
+            <Typography variant="h4" align="left" style={{fontSize: '28px'}}>
               Ends in 121h 34m 6s
             </Typography>
             <Grid container spacing={3} style={{marginTop: '30px', rowGap: '20px'}}>

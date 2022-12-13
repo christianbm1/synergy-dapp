@@ -52,7 +52,7 @@ const Home = () => {
             alignItems: 'center',
           }}
         >
-          <img src={SynergyHomeTitle} alt="Synergy" style={{ maxHeight: '150px' }} />
+          <img src={SynergyHomeTitle} alt="Synergy" style={{ maxHeight: '150px', maxWidth: '100%' }} />
           <Box
             style={{
               color: white,
@@ -64,7 +64,7 @@ const Home = () => {
             }}
           >
             <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-            <Typography style={{marginLeft: '5px', marginRight: '5px', fontSize: '18px'}}>
+            <Typography style={{marginLeft: '5px', marginRight: '5px', fontSize: '18px', textAlign: 'center'}}>
               Without the real world application, cryptocurrency can't develop to its full potential
             </Typography>
             <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px', transform: 'rotate(180deg)' }} />
@@ -72,7 +72,7 @@ const Home = () => {
         </Container>
         <Grid container spacing={6} style={{ marginTop: '40px', color: 'white' }}>
           <Grid item xs={12} md={4} lg={4}>
-            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '30px'}}>
+            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '26px'}}>
               What Is Our Mission
             </Typography>
             <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '14px'}}>
@@ -81,7 +81,7 @@ const Home = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
-            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '30px'}}>
+            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '26px'}}>
               Power Of Blockchain
             </Typography>
             <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '14px'}}>
@@ -91,7 +91,7 @@ const Home = () => {
             </Typography>          
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
-            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '30px'}}>
+            <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '26px'}}>
               Purpose Of Crypto
             </Typography>
             <Typography align="left" style={{marginLeft: '10px', marginRight: '10px', fontSize: '14px'}}>
