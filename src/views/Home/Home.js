@@ -22,13 +22,31 @@ const useStyles = makeStyles((theme) => ({
       // marginTop: '10px'
     },
   },
+  subtitle: {
+    marginLeft: '5px', 
+    marginRight: '5px', 
+    textAlign: 'center',
+    fontSize: '18px',
+    [theme.breakpoints.down('430')]: {
+      fontSize: '14px',
+    },
+  },
   video: {
     position: 'fixed',
     left: '50%',
     transform: 'translateX(-50%)',
     bottom: '-30%',
-    minWidth: '100%',
+    width: '100%',
     zIndex: -1,
+    [theme.breakpoints.down('1450')]: {
+      bottom: '-20%',
+    },
+    [theme.breakpoints.down('1000')]: {
+      bottom: '-10%',
+    },
+    [theme.breakpoints.down('700')]: {
+      bottom: '-5%',
+    },
   }
 }));
 
@@ -64,7 +82,7 @@ const Home = () => {
             }}
           >
             <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-            <Typography style={{marginLeft: '5px', marginRight: '5px', fontSize: '18px', textAlign: 'center'}}>
+            <Typography className={classes.subtitle}>
               Without the real world application, cryptocurrency can't develop to its full potential
             </Typography>
             <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px', transform: 'rotate(180deg)' }} />
