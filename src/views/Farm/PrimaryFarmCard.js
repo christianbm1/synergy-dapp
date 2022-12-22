@@ -11,18 +11,18 @@ import useStatsForPool from '../../hooks/useStatsForPool';
 import PrimaryActionPanel from './components/PrimaryActionPanel';
 
 const mediaBySymbol = {
-  'CRYSTAL/BTCB': CRS_BUSD_LOGO,
-  'CRYSTAL/DIAMOND': CRS_BNB_LOGO,
-  'DIAMOND/CRYSTAL': DIA_BUSD_LOGO,
-  'DIAMOND/BNB': DIA_BNB_LOGO,
+  'CRS/BUSD': CRS_BUSD_LOGO,
+  'CRS/BNB': CRS_BNB_LOGO,
+  'DIA/BUSD': DIA_BUSD_LOGO,
+  'DIA/BNB': DIA_BNB_LOGO,
 };
 
 const PrimaryFarmCard = ({ bank }) => {
   const statsOnPool = useStatsForPool(bank);
   const shadowStyle = 
-    bank.depositTokenName.includes("CRYSTAL") 
+    bank.depositTokenName.includes("CRS") 
       ? '0px 0px 5px 5px #062f5b' 
-      : bank.depositTokenName.includes("DIAMOND") 
+      : bank.depositTokenName.includes("DIA") 
         ? '0px 0px 5px 5px #5a063a' 
         : '0px 0px 0px 0px transparent';
 

@@ -3,7 +3,7 @@ import {useCallback, useMemo} from 'react';
 import {useHasPendingApproval, useTransactionAdder} from '../state/transactions/hooks';
 import useAllowance from './useAllowance';
 import ERC20 from '../synergy-finance/ERC20';
-import {BNB_TICKER, CRS_TICKER, DIA_TICKER, BTC_TICKER, ZAPPER_ROUTER_ADDR} from '../utils/constants';
+import {BNB_TICKER, CRS_TICKER, DIA_TICKER, BUSD_TICKER, ZAPPER_ROUTER_ADDR} from '../utils/constants';
 import useSynergyFinance from './useSynergyFinance';
 
 const APPROVE_AMOUNT = ethers.constants.MaxUint256;
@@ -23,7 +23,7 @@ function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<v
   if (zappingToken === BNB_TICKER) token = synergyFinance.BNB;
   else if (zappingToken === CRS_TICKER) token = synergyFinance.CRS;
   else if (zappingToken === DIA_TICKER) token = synergyFinance.DIA;
-  else if (zappingToken === BTC_TICKER) token = synergyFinance.externalTokens[BTC_TICKER];
+  else if (zappingToken === BUSD_TICKER) token = synergyFinance.externalTokens[BUSD_TICKER];
   const pendingApproval = useHasPendingApproval(token.address, ZAPPER_ROUTER_ADDR);
   const currentAllowance = useAllowance(token, ZAPPER_ROUTER_ADDR, pendingApproval);
 

@@ -15,7 +15,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance';
 import useSynergyFinance from '../../../hooks/useSynergyFinance';
 import {useWallet} from 'use-wallet';
 import useApproveZapper, {ApprovalState} from '../../../hooks/useApproveZapper';
-import {CRS_TICKER, DIA_TICKER, BNB_TICKER, BTC_TICKER} from '../../../utils/constants';
+import {CRS_TICKER, DIA_TICKER, BNB_TICKER, BUSD_TICKER} from '../../../utils/constants';
 import {Alert} from '@material-ui/lab';
 
 interface ZapProps extends ModalProps {
@@ -30,14 +30,14 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
   const ftmBalance = (Number(balance) / 1e18).toFixed(4).toString();
   const crsBalance = useTokenBalance(synergyFinance.CRS);
   const pshareBalance = useTokenBalance(synergyFinance.DIA);
-  const btcBalance = useTokenBalance(synergyFinance.BTC);
+  const btcBalance = useTokenBalance(synergyFinance.BUSD);
   const [val, setVal] = useState('');
   const [zappingToken, setZappingToken] = useState(BNB_TICKER);
   const [zappingTokenBalance, setZappingTokenBalance] = useState(ftmBalance);
   const [estimate, setEstimate] = useState({token0: '0', token1: '0'}); // token0 will always be BNB in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  const crsFtmLpStats = useLpStats('CRYSTAL/BTCB');
-  const pShareFtmLpStats = useLpStats('DIAMOND/BNB');
+  const crsFtmLpStats = useLpStats('CRS/BUSD');
+  const pShareFtmLpStats = useLpStats('DIA/BNB');
   const crsLPStats = useMemo(() => (crsFtmLpStats ? crsFtmLpStats : null), [crsFtmLpStats]);
   const pshareLPStats = useMemo(() => (pShareFtmLpStats ? pShareFtmLpStats : null), [pShareFtmLpStats]);
   const ftmAmountPerLP = tokenName.startsWith(CRS_TICKER) ? crsLPStats?.ftmAmount : pshareLPStats?.ftmAmount;
@@ -59,7 +59,7 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
     if (event.target.value === CRS_TICKER) {
       setZappingTokenBalance(getDisplayBalance(crsBalance, decimals));
     }
-    if (event.target.value === BTC_TICKER) {
+    if (event.target.value === BUSD_TICKER) {
       setZappingTokenBalance(getDisplayBalance(btcBalance, decimals));
     }
   };
@@ -92,7 +92,7 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
       <Select onChange={handleChangeAsset} style={{color: '#2c2560'}} labelId="label" id="select" value={zappingToken}>
         <StyledMenuItem value={BNB_TICKER}>BNB</StyledMenuItem>
         <StyledMenuItem value={DIA_TICKER}>DIA</StyledMenuItem>
-        {/* <StyledMenuItem value={BTC_TICKER}>BTC</StyledMenuItem> */}
+        {/* <StyledMenuItem value={BUSD_TICKER}>BUSD</StyledMenuItem> */}
         {/* Push as an input for zapping will be disabled due to issues occuring with the Gatekeeper system */}
         {/* <StyledMenuItem value={CRS_TICKER}>CRS</StyledMenuItem> */}
       </Select>

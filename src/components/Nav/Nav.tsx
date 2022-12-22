@@ -345,7 +345,7 @@ const Nav = () => {
                 <ListItemLink primary="Lottery" to="/" />
                 <ListItemLink primary="NFT" to="/" />
                 <ListItemLink primary="Portofolio" to="/" />
-                <ListItem button component="a" href="https://">
+                <ListItem button component="a" href="https://synergy-2.gitbook.io/the-book-of-synergy/">
                   <ListItemText>Documentation</ListItemText>
                 </ListItem>
               </List>

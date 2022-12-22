@@ -9,12 +9,9 @@ import pshareFtmLpLogo from '../../assets/img/pshare-bnb-LP.png';
 import pushPshareLpLogo from '../../assets/img/push-pshare-LP.png';
 
 import bnbLogo from '../../assets/img/bnb.png';
-import btcLogo from '../../assets/img/BCTB-icon.png';
-import busdLogo from '../../assets/img/BUSD-icon.png'
+import daiLogo from '../../assets/img/dai.png';
+import busdLogo from '../../assets/img/busd.png'
 
-import empLogo from '../../assets/img/emp.png';
-import dibsLogo from '../../assets/img/dibs.png';
-import paperLogo from '../../assets/img/paper.png';
 
 const logosBySymbol: {[title: string]: string} = {
   //Real tokens
@@ -23,15 +20,11 @@ const logosBySymbol: {[title: string]: string} = {
   DIA: diaLogo,
   WBNB: bnbLogo,
   BUSD: busdLogo,
-  BTCB: btcLogo,
-  BTC: btcLogo,
-  EMP: empLogo,
-  DIBS: dibsLogo,
-  PAPER: paperLogo,
-  'CRYSTAL/BTCB': pushFtmLpLogo,
+  DAI: daiLogo,
+  'CRS/BUSD': pushFtmLpLogo,
   'CRYSTAL/DIAMOND': pushPshareLpLogo,
   'DIAMOND/CRYSTAL': pushFtmLpLogo,
-  'DIAMOND/BNB': pshareFtmLpLogo,
+  'DIA/BNB': pshareFtmLpLogo,
 };
 
 type LogoProps = {

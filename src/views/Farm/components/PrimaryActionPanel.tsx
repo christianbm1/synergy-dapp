@@ -163,12 +163,12 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
               disabled={
                 bank.closedForStaking ||
                 bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                bank.depositTokenName === 'CRYSTAL/BTCB'
+                bank.depositTokenName === 'CRS/BUSD'
               }
               className={
                 bank.closedForStaking ||
                 bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                bank.depositTokenName === 'CRYSTAL/BTCB'
+                bank.depositTokenName === 'CRS/BUSD'
                   ? 'shinyButtonDisabled'
                   : 'shinyButton'
               }

@@ -4,6 +4,7 @@ import { Box, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
 import useWallet from 'use-wallet';
+import moment from 'moment';
 
 import useBanks from '../../hooks/useBanks';
 import UnlockWallet from '../../components/UnlockWallet';
@@ -13,6 +14,8 @@ import PoolCard from './PoolCard';
 import TitleImage from '../../assets/img/gpool-title.png';
 import BGImage from '../../assets/img/background/gpool.png';
 import Triangle from '../../assets/img/triangle.png';
+import ProgressCountdown from './components/ProgressCountdown';
+import useGPoolTimes from '../../hooks/useGPoolTimes';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -48,6 +51,7 @@ const Home = () => {
   const [banks] = useBanks();
   const { account } = useWallet();
   const activeBanks = banks.filter((bank) => !bank.finished);
+  const { from, to } = useGPoolTimes();
 
   return (
     <Page>
@@ -84,8 +88,20 @@ const Home = () => {
             </Box>
           </Box>
           <Box className={classes.poolContainer}>
-            <Typography variant="h4" align="left" style={{fontSize: '28px'}}>
-              Ends in 121h 34m 6s
+            <Typography variant="h4" align="left" style={{fontSize: '28px', display: 'flex', gap: '10px'}}>
+              {
+                Date.now() < from.getTime() 
+                  ?
+                    <>
+                      {"Starts in "}
+                      <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={from} description="GPool start time" />
+                    </> 
+                  :
+                    <>
+                      {"Ends in "}
+                      <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="GPool end time" />
+                    </> 
+              }
             </Typography>
             <Grid container spacing={3} style={{marginTop: '30px', rowGap: '20px'}}>
               {banks

@@ -53,7 +53,7 @@ const Boardroom = () => {
   const totalStaked = useTotalStakedOnBoardroom();
   const boardroomAPR = useFetchBoardroomAPR();
   const boardroomEpochAPR = boardroomAPR / 1095;
-  const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
+  const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(2) : null), [cashStat]);
   const { to } = useTreasuryAllocationTimes();
 
   return (

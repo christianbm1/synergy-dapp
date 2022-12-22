@@ -2,7 +2,7 @@ export const CRS_TICKER = 'CRS';
 export const DIA_TICKER = 'DIA';
 export const BNB_TICKER = 'BNB';
 export const WBNB_TICKER = 'WBNB';
-export const BTC_TICKER = 'BTCB';
+export const BUSD_TICKER = 'BUSD';
 
 export const SPOOKY_ROUTER_ADDR = '0x10ED43C718714eb63d5aA57B78B54704E256024E';
 export const ZAPPER_ROUTER_ADDR = '0xB0a544607487f6047B2c17c54d89F05cce4CaD15';

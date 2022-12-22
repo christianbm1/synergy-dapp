@@ -66,7 +66,6 @@ const App: React.FC = () => {
 };
 
 const Providers: React.FC = ({ children }) => {
-  console.log("App / chainId : ", config);
   return (
     <TP1 theme={theme}>
       <TP theme={newTheme}>

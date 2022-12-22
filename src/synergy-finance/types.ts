@@ -23,6 +23,7 @@ export interface Bank extends BankInfo {
 export type PoolStats = {
   dailyAPR: string;
   yearlyAPR: string;
+  weeklyAPR: string;
   TVL: string;
 };
 

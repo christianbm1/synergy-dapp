@@ -117,8 +117,8 @@ const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
 
   let pairName: string;
   let uniswapUrl: string;
-  if (bank.depositTokenName.includes('CRS-BTCB')) {
-    pairName = 'CRS-BTCB pair';
+  if (bank.depositTokenName.includes('CRS-BUSD')) {
+    pairName = 'CRS-BUSD pair';
     uniswapUrl = 'https://pancakeswap.finance/add/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c/' + crsAddr;
   }
   else if (bank.depositTokenName.includes('CRS-DIA')) {

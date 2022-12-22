@@ -10,7 +10,7 @@ const useBtcStats = () => {
   useEffect(() => {
     async function fetchSharePrice() {
       try {
-        setStat(await synergyFinance.getBTCPriceUSD());
+        setStat(await synergyFinance.getBUSDPriceUSD());
       } catch (err) {
         console.error(err);
       }

@@ -3,7 +3,7 @@ import useSynergyFinance from './useSynergyFinance';
 import {LPStat} from '../synergy-finance/types';
 import useRefresh from './useRefresh';
 
-const useLpStatsBTC = (lpTicker: string) => {
+const useLpStatsBUSD = (lpTicker: string) => {
   const [stat, setStat] = useState<LPStat>();
   const {slowRefresh} = useRefresh();
   const synergyFinance = useSynergyFinance();
@@ -11,7 +11,7 @@ const useLpStatsBTC = (lpTicker: string) => {
   useEffect(() => {
     async function fetchLpPrice() {
       try {
-        setStat(await synergyFinance.getLPStatBTC(lpTicker));
+        setStat(await synergyFinance.getLPStatBUSD(lpTicker));
       } catch (err) {
         console.error(err);
       }
@@ -22,4 +22,4 @@ const useLpStatsBTC = (lpTicker: string) => {
   return stat;
 };
 
-export default useLpStatsBTC;
+export default useLpStatsBUSD;

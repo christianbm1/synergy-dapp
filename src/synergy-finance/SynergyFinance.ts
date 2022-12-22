@@ -28,11 +28,11 @@ export class SynergyFinance {
   externalTokens: { [name: string]: ERC20 };
   boardroomVersionOfUser?: string;
 
-  CRSBTCB_LP: Contract;
+  CRSBUSD_LP: Contract;
   CRS: ERC20;
   DIA: ERC20;
   BNB: ERC20;
-  BTC: ERC20;
+  BUSD: ERC20;
 
   constructor(cfg: Configuration) {
     const { deployments, externalTokens } = cfg;
@@ -50,10 +50,10 @@ export class SynergyFinance {
     this.CRS = new ERC20(deployments.Crystal.address, provider, 'CRS');
     this.DIA = new ERC20(deployments.Diamond.address, provider, 'DIA');
     this.BNB = this.externalTokens['WBNB'];
-    this.BTC = this.externalTokens['BTCB'];
+    this.BUSD = this.externalTokens['BUSD'];
 
     // Uniswap V2 Pair
-    this.CRSBTCB_LP = new Contract(externalTokens['CRYSTAL/BTCB'][0], IUniswapV2PairABI, provider);
+    this.CRSBUSD_LP = new Contract(externalTokens['CRS/BUSD'][0], IUniswapV2PairABI, provider);
 
     this.config = cfg;
     this.provider = provider;
@@ -74,7 +74,7 @@ export class SynergyFinance {
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    this.CRSBTCB_LP = this.CRSBTCB_LP.connect(this.signer);
+    this.CRSBUSD_LP = this.CRSBUSD_LP.connect(this.signer);
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -95,27 +95,25 @@ export class SynergyFinance {
   //===================================================================
 
   async getCrystalStat(): Promise<TokenStat> {
-    const { CrystalRewardPool, CrystalGenesisRewardPool } = this.contracts;
+    const { CrystalGenesisRewardPool } = this.contracts;
     const supply = await this.CRS.totalSupply();
     const crsRewardPoolSupply = await this.CRS.balanceOf(CrystalGenesisRewardPool.address);
-    const crsRewardPoolSupply2 = await this.CRS.balanceOf(CrystalRewardPool.address);
-    const crsCirculatingSupply = supply.sub(crsRewardPoolSupply).sub(crsRewardPoolSupply2);
-    const priceInBTC = await this.getTokenPriceFromPancakeswapBTC(this.CRS);
-    const priceOfOneBTC = await this.getBTCBPriceFromPancakeswap();
-    const priceOfCrystalInDollars = ((Number(priceInBTC) * Number(priceOfOneBTC)) / 10000).toFixed(2);
+    const crsCirculatingSupply = supply.sub(crsRewardPoolSupply);
+    const priceInBUSD = await this.getTokenPriceFromPancakeswapBUSD(this.CRS);
+    const priceOfOneBUSD = await this.getBUSDPriceFromPancakeswap();
+    const priceOfCrystalInDollars = (Number(priceInBUSD) * Number(priceOfOneBUSD)).toFixed(2);
 
     return {
-      //  tokenInFtm: (Number(priceInBNB) * 100).toString(),
-      tokenInFtm: priceInBTC.toString(),
+      tokenInFtm: priceInBUSD.toString(),
       priceInDollars: priceOfCrystalInDollars,
       totalSupply: getDisplayBalance(supply, this.CRS.decimal, 0),
       circulatingSupply: getDisplayBalance(crsCirculatingSupply, this.CRS.decimal, 0),
     };
   }
 
-  async getBTCPriceUSD(): Promise<Number> {
-    const priceOfOneBTC = await this.getBTCBPriceFromPancakeswap();
-    return Number(priceOfOneBTC);
+  async getBUSDPriceUSD(): Promise<Number> {
+    const priceOfOneBUSD = await this.getBUSDPriceFromPancakeswap();
+    return Number(priceOfOneBUSD);
   }
 
   /**
@@ -150,7 +148,7 @@ export class SynergyFinance {
     };
   }
 
-  async getLPStatBTC(name: string): Promise<LPStat> {
+  async getLPStatBUSD(name: string): Promise<LPStat> {
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
@@ -159,7 +157,7 @@ export class SynergyFinance {
     const tokenAmountBN = await token0.balanceOf(lpToken.address);
     const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
-    const btcAmountBN = await this.BTC.balanceOf(lpToken.address);
+    const btcAmountBN = await this.BUSD.balanceOf(lpToken.address);
     const btcAmount = getDisplayBalance(btcAmountBN, 18);
     const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
     const ftmAmountInOneLP = Number(btcAmount) / Number(lpTokenSupply);
@@ -205,12 +203,12 @@ export class SynergyFinance {
   }
 
   async getCRSStatInEstimatedTWAP(): Promise<TokenStat> {
-    const { Oracle, CrystalRewardPool } = this.contracts;
-    const expectedPrice = await Oracle.twap(this.CRS.address, ethers.utils.parseEther('10000'));
+    const { Oracle, Treasury } = this.contracts;
+    const expectedPrice = await Oracle.twap(this.CRS.address, ethers.utils.parseEther('1'));
 
     const supply = await this.CRS.totalSupply();
-    const crsRewardPoolSupply = await this.CRS.balanceOf(CrystalRewardPool.address);
-    const crsCirculatingSupply = supply.sub(crsRewardPoolSupply);
+    const crsCirculatingSupply = await Treasury.getCRSCirculatingSupply();
+
     return {
       tokenInFtm: getDisplayBalance(expectedPrice),
       priceInDollars: getDisplayBalance(expectedPrice),
@@ -238,23 +236,25 @@ export class SynergyFinance {
     const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
     const stat = bank.earnTokenName === 'CRS' ? await this.getCrystalStat() : await this.getShareStat();
     const tokenPerSecond = await this.getTokenPerSecond(
-      bank.earnTokenName,
-      bank.contract,
+      bank.poolId,
       poolContract,
-      bank.depositTokenName,
     );
 
     const tokenPerHour = tokenPerSecond.mul(60).mul(60);
     const totalRewardPricePerYear =
       Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
+    const totalRewardPricePerWeek =
+    Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(7)));
     const totalRewardPricePerDay = Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24)));
     const totalStakingTokenInPool =
       Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
     const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
     const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
+    const weeklyAPR = (totalRewardPricePerWeek / totalStakingTokenInPool) * 100;
     return {
       dailyAPR: dailyAPR.toFixed(2).toString(),
       yearlyAPR: yearlyAPR.toFixed(2).toString(),
+      weeklyAPR: weeklyAPR.toFixed(2).toString(),
       TVL: TVL.toFixed(2).toString(),
     };
   }
@@ -267,45 +267,13 @@ export class SynergyFinance {
    * @returns
    */
   async getTokenPerSecond(
-    earnTokenName: string,
-    contractName: string,
+    poolId: number,
     poolContract: Contract,
-    depositTokenName: string,
   ) {
-    if (earnTokenName === 'CRS') {
-      if (!contractName.endsWith('CrystalRewardPool')) {
-        const rewardPerSecond = await poolContract.pushPerSecond();
-        if (depositTokenName === 'BTCB') {
-          return rewardPerSecond.mul(2200).div(11000);
-        } else if (depositTokenName === 'WBNB') {
-          return rewardPerSecond.mul(1650).div(11000);
-        } else if (depositTokenName === 'BUSD') {
-          return rewardPerSecond.mul(1650).div(11000);
-        } else if (depositTokenName === 'EMP') {
-          return rewardPerSecond.mul(2200).div(11000);
-        } else if (depositTokenName === 'DIBS') {
-          return rewardPerSecond.mul(1650).div(11000);
-        } else if (depositTokenName === 'PAPER') {
-          return rewardPerSecond.mul(1650).div(11000);
-        }
-        return rewardPerSecond;
-      }
-      const poolStartTime = await poolContract.poolStartTime();
-      const startDateTime = new Date(poolStartTime.toNumber() * 1000);
-      const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-      if (Date.now() - startDateTime.getTime() > ONE_WEEK) {
-        return await poolContract.epochPushPerSecond(1);
-      }
-      return await poolContract.epochPushPerSecond(0);
-    }
-    const rewardPerSecond = await poolContract.pSharePerSecond();
-    if (depositTokenName.startsWith('CRS-BTCB')) {
-      return rewardPerSecond.mul(29750).div(59500);
-    } else if (depositTokenName.startsWith('CRS-DIA')) {
-      return rewardPerSecond.mul(14875).div(59500);
-    } else {
-      return rewardPerSecond.mul(14875).div(59500);
-    }
+    const totalAllockPoint = await poolContract.totalAllocPoint();
+    const rewardPerSecond = await poolContract.diamondPerSecond();
+    const poolInfo = await poolContract.poolInfo(poolId);
+    return rewardPerSecond.mul(poolInfo.allocPoint).div(totalAllockPoint);
   }
 
   /**
@@ -322,12 +290,10 @@ export class SynergyFinance {
     if (tokenName === 'WBNB') {
       tokenPrice = priceOfOneFtmInDollars;
     } else {
-      if (tokenName === 'CRYSTAL/BTCB') {
+      if (tokenName === 'CRS/BUSD' || tokenName === 'CRS/BNB') {
         tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
-      } else if (tokenName === 'DIAMOND/BNB') {
+      } else if (tokenName === 'DIA/BUSD' || tokenName === 'DIA/BNB') {
         tokenPrice = await this.getLPTokenPrice(token, this.DIA, false);
-      } else if (tokenName === 'CRYSTAL/DIAMOND') {
-        tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
       } else {
         tokenPrice = await this.getTokenPriceFromPancakeswap(token);
         tokenPrice = (Number(tokenPrice) * Number(priceOfOneFtmInDollars)).toString();
@@ -498,8 +464,8 @@ export class SynergyFinance {
     //const { chainId } = this.config;
     const { WBNB } = this.config.externalTokens;
 
-    const wftm = new Token(56, WBNB[0], WBNB[1], 'WBNB');
-    const token = new Token(56, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
+    const wftm = new Token(config.chainId, WBNB[0], WBNB[1], 'WBNB');
+    const token = new Token(config.chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
       const wftmToToken = await Fetcher.fetchPairData(wftm, token, this.provider);
       const priceInBUSD = new Route([wftmToToken], token);
@@ -509,16 +475,16 @@ export class SynergyFinance {
     }
   }
 
-  async getTokenPriceFromPancakeswapBTC(tokenContract: ERC20): Promise<string> {
+  async getTokenPriceFromPancakeswapBUSD(tokenContract: ERC20): Promise<string> {
     const ready = await this.provider.ready;
     if (!ready) return;
-    const btcb = new Token(56, this.BTC.address, this.BTC.decimal, 'BTCB', 'BTCB');
-    const token = new Token(56, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
+    const busd = new Token(config.chainId, this.BUSD.address, this.BUSD.decimal, 'BUSD', 'BUSD Token');
+    const token = new Token(config.chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
     try {
-      const btcbToToken = await Fetcher.fetchPairData(btcb, token, this.provider);
-      const priceInBUSD = new Route([btcbToToken], token);
+      const crs_busd_pair = await Fetcher.fetchPairData(busd, token, this.provider);
+      const priceInBUSD = new Route([crs_busd_pair], token);
 
-      const priceForPeg = Number(priceInBUSD.midPrice.toFixed(12)) * 10000;
+      const priceForPeg = Number(priceInBUSD.midPrice.toFixed(12));
       return priceForPeg.toFixed(4);
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
@@ -541,18 +507,18 @@ export class SynergyFinance {
     }
   }
 
-  async getBTCBPriceFromPancakeswap(): Promise<string> {
+  async getBUSDPriceFromPancakeswap(): Promise<string> {
     const ready = await this.provider.ready;
     if (!ready) return;
-    const { BTCB } = this.externalTokens;
+    const { BUSD } = this.externalTokens;
     try {
-      const btcPriceInBNB = await this.getTokenPriceFromPancakeswap(BTCB);
+      const btcPriceInBNB = await this.getTokenPriceFromPancakeswap(BUSD);
       const wbnbPrice = await this.getWBNBPriceFromPancakeswap();
 
       const btcprice = (Number(btcPriceInBNB) * Number(wbnbPrice)).toFixed(2).toString();
       return btcprice;
     } catch (err) {
-      console.error(`Failed to fetch token price of BTCB: ${err}`);
+      console.error(`Failed to fetch token price of BUSD: ${err}`);
     }
   }
 
@@ -565,7 +531,7 @@ export class SynergyFinance {
   async getBoardroomAPR() {
     const Boardroom = this.currentBoardroom();
     const latestSnapshotIndex = await Boardroom.latestSnapshotIndex();
-    const lastHistory = await Boardroom.boardroomHistory(latestSnapshotIndex);
+    const lastHistory = await Boardroom.arkHistory(latestSnapshotIndex);
 
     const lastRewardsReceived = lastHistory[1];
 
@@ -656,6 +622,16 @@ export class SynergyFinance {
     return await Boardroom.exit();
   }
 
+  async getGpoolTimes(): Promise<AllocationTime> {
+    const { CrystalGenesisRewardPool } = this.contracts;
+    const start: BigNumber = await CrystalGenesisRewardPool.poolStartTime();
+    const end: BigNumber = await CrystalGenesisRewardPool.poolEndTime();
+    const startAllocation = new Date(start.mul(1000).toNumber());
+    const endAllocation = new Date(end.mul(1000).toNumber());
+
+    return { from: startAllocation, to: endAllocation };
+  }
+
   async getTreasuryNextAllocationTime(): Promise<AllocationTime> {
     const { Treasury } = this.contracts;
     const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
@@ -676,7 +652,7 @@ export class SynergyFinance {
     const currentEpoch = await Boardroom.epoch();
     const mason = await Boardroom.members(this.myAccount);
     const startTimeEpoch = mason.epochTimerStart;
-    const period = await Treasury.PERIOD();
+    const period = await Treasury.EPOCH_DURATION();
     const periodInHours = period / 60 / 60; // 6 hours, period is displayed in seconds which is 21600
     const rewardLockupEpochs = await Boardroom.rewardLockupEpochs();
     const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(rewardLockupEpochs);
@@ -709,7 +685,7 @@ export class SynergyFinance {
     const currentEpoch = await Boardroom.epoch();
     const mason = await Boardroom.members(this.myAccount);
     const startTimeEpoch = mason.epochTimerStart;
-    const period = await Treasury.PERIOD();
+    const period = await Treasury.EPOCH_DURATION();
     const PeriodInHours = period / 60 / 60;
     const withdrawLockupEpochs = await Boardroom.withdrawLockupEpochs();
     const fromDate = new Date(Date.now());
@@ -741,8 +717,8 @@ export class SynergyFinance {
       } else if (assetName === 'DIA') {
         asset = this.DIA;
         assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/diamond_512x512.png';
-      } else if (assetName === 'BTCB') {
-        asset = this.BTC;
+      } else if (assetName === 'BUSD') {
+        asset = this.BUSD;
         assetUrl = 'https://bscscan.com/token/images/btcb_32.png';
       }
       await ethereum.request({
@@ -775,13 +751,13 @@ export class SynergyFinance {
   }
 
   async quoteFromSpooky(tokenAmount: string, tokenName: string): Promise<string> {
-    const { SpookyRouter } = this.contracts;
-    const { _reserve0, _reserve1 } = await this.CRSBTCB_LP.getReserves();
+    const { PancakeRouter } = this.contracts;
+    const { _reserve0, _reserve1 } = await this.CRSBUSD_LP.getReserves();
     let quote;
     if (tokenName === 'CRS') {
-      quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve0, _reserve1);
+      quote = await PancakeRouter.quote(parseUnits(tokenAmount), _reserve0, _reserve1);
     } else {
-      quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
+      quote = await PancakeRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
     }
     return (quote / 1e18).toString();
   }

@@ -55,7 +55,7 @@ const PoolCard = ({ bank }) => {
             APR
           </Typography>
           <Typography variant="inherit" color="primary">
-            {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
+            {bank.closedForStaking ? '0.00' : statsOnPool?.weeklyAPR}%
           </Typography>
           <Typography variant="inherit" color="textSecondary">
             TVL
