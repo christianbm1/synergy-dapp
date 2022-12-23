@@ -13,6 +13,8 @@ import useFetchBoardroomAPR from '../../hooks/useFetchBoardroomAPR';
 import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import useTotalStakedOnBoardroom from '../../hooks/useTotalStakedOnBoardroom';
+import useExpansionRate from '../../hooks/useExpansionRate';
+import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDollars';
 import ProgressCountdown from './components/ProgressCountdown';
 import { createGlobalStyle } from 'styled-components';
 import { Helmet } from 'react-helmet'
@@ -20,6 +22,8 @@ import { Helmet } from 'react-helmet'
 import BGImage from '../../assets/img/background/ark.png';
 import Triangle from '../../assets/img/triangle.png';
 import ActionPanel from './components/ActionPanel';
+import useSynergyFinance from '../../hooks/useSynergyFinance';
+import useShareStats from '../../hooks/useDiamondStats';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -48,13 +52,30 @@ const useStyles = makeStyles((theme) => ({
 const Boardroom = () => {
   const classes = useStyles();
   const { account } = useWallet();
+  const synergyFinance = useSynergyFinance();
   const currentEpoch = useCurrentEpoch();
   const cashStat = useCashPriceInEstimatedTWAP();
+  const shareStat = useShareStats();
   const totalStaked = useTotalStakedOnBoardroom();
   const boardroomAPR = useFetchBoardroomAPR();
   const boardroomEpochAPR = boardroomAPR / 1095;
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(2) : null), [cashStat]);
+  const crsCirculatingSupply = useMemo(() => (cashStat ? Number(cashStat.circulatingSupply).toFixed(2) : null), [cashStat]);
+  const diaCirculatingSupply = useMemo(() => (shareStat ? Number(shareStat.circulatingSupply).toFixed(2) : null), [shareStat]);
+  const expansionRate = Number(useExpansionRate(scalingFactor)) * 100 / 10000;
   const { to } = useTreasuryAllocationTimes();
+
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
+  const tokenPriceInDollars = useMemo(
+    () =>
+      stakedTokenPriceInDollars
+        ? (Number(stakedTokenPriceInDollars) * Number(getDisplayBalance(totalStaked))).toFixed(2).toString()
+        : null,
+    [stakedTokenPriceInDollars, totalStaked],
+  );
+  const stakedInDollars = (
+    Number(tokenPriceInDollars) * Number(getDisplayBalance(totalStaked, 18))
+  ).toFixed(2);
 
   return (
     <Page>
@@ -176,11 +197,13 @@ const Boardroom = () => {
                   </Box>
                   <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography>DIAMONDS stacked:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{getDisplayBalance(totalStaked)}</Typography>
+                    <Typography style={{ color: '#f9d749' }}>{stakedInDollars}$</Typography>
                   </Box>
                   <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography>Total DIAMONDS staked:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>637%</Typography>
+                    <Typography style={{ color: '#f9d749' }}>
+                      {(Number(getDisplayBalance(totalStaked)) / Number(diaCirculatingSupply) * 100).toFixed(2)}%
+                    </Typography>
                   </Box>
                   <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                     <Typography>TWAP:</Typography>
@@ -188,11 +211,11 @@ const Boardroom = () => {
                   </Box>
                   <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                     <Typography>Expansion Rate:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>637%</Typography>
+                    <Typography style={{ color: '#f9d749' }}>{expansionRate.toFixed(2)}%</Typography>
                   </Box>
                   <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                     <Typography>Next expansion amount:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>637%</Typography>
+                    <Typography style={{ color: '#f9d749' }}>{(expansionRate * crsCirculatingSupply / 100).toFixed(2)} CRS</Typography>
                   </Box>
                 </Box>
                 <Divider variant="middle" style={{ margin: '10px 0px 10px 0px', backgroundColor: 'grey' }} />

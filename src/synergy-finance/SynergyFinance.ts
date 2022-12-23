@@ -312,6 +312,11 @@ export class SynergyFinance {
     return Treasury.epoch();
   }
 
+  async getExpansionRate(_crystalPrice: string): Promise<BigNumber> {
+    const { Treasury } = this.contracts;
+    return Treasury.getNextExpansionRate(decimalToBalance(_crystalPrice));
+  }
+
   async getTotalValueLocked(): Promise<Number> {
     let totalValue = 0;
     for (const bankInfo of Object.values(bankDefinitions)) {
@@ -656,9 +661,10 @@ export class SynergyFinance {
     const periodInHours = period / 60 / 60; // 6 hours, period is displayed in seconds which is 21600
     const rewardLockupEpochs = await Boardroom.rewardLockupEpochs();
     const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(rewardLockupEpochs);
+    const stakedAmount = await this.getStakedSharesOnBoardroom();
 
     const fromDate = new Date(Date.now());
-    if (targetEpochForClaimUnlock - currentEpoch <= 0) {
+    if (currentEpoch <= targetEpochForClaimUnlock && Number(stakedAmount) === 0) {
       return { from: fromDate, to: fromDate };
     } else if (targetEpochForClaimUnlock - currentEpoch === 1) {
       const toDate = new Date(nextEpochTimestamp * 1000);
