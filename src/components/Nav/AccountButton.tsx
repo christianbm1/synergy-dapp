@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button} from '@material-ui/core';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import {useWallet} from 'use-wallet';
 import useModal from '../../hooks/useModal';
 import WalletProviderModal from '../WalletProviderModal';
@@ -36,11 +37,18 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
   return (
     <div>
       {!account ? (
-        <Button onClick={handleWalletProviderOpen} className="shinyButtonSecondary">
+        <Button 
+          onClick={handleWalletProviderOpen} 
+          className="shinyButtonSecondary" 
+          startIcon={<AccountBalanceWalletIcon />}
+          style={{
+            height: "42px",
+          }}
+        >
           {buttonText}
         </Button>
       ) : (
-        <Button onClick={onPresentAccountModal} className="shinyButtonSecondary">
+        <Button onClick={onPresentAccountModal} className="shinyButtonSecondary" style={{height: '42px'}}>
           <div className="account">
             <Davatar size={20} address={account} />
             <span>{ensName || shorten(account)}</span>

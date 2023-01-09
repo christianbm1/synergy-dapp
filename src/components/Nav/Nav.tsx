@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     color: '#f9d749',
     'background-color': 'transparent',
+    maxWidth: '1440px',
     padding: '10px',
     marginBottom: '3rem',
     position: 'static',
@@ -68,16 +69,22 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     flexWrap: 'wrap',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   toolbarTitle: {
-    fontFamily: 'Rubik',
-    fontSize: '0px',
-    flexGrow: 1,
+    fontFamily: 'Bakbak One',
+    color: 'white',
+    fontSize: '32px',
+    fontWeight: 400,
+    lineHeight: '42px',
   },
   link: {
     textTransform: 'uppercase',
-    color: '#f9d749',
-    fontSize: '20px',
+    fontSize: '18px',
+    fontWeight: 400,
+    lineHeight: '24px',
+    letterSpacing: '0.1em',
     marginTop: '15px',
     margin: '80px 14px 8px 14px',
     textDecoration: 'none',
@@ -90,7 +97,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     textTransform: 'uppercase',
     color: '#f9d749',
-    fontSize: '20px',
+    fontSize: '18px',
+    fontWeight: 400,
+    lineHeight: '24px',
+    letterSpacing: '0.1em',
     marginTop: '15px',
     margin: '80px 14px 8px 14px',
     textDecoration: 'none',
@@ -100,10 +110,13 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer'
   },
   socialLink: {
-    margin: '6px 4px 4px 4px',
+    margin: '6px 8px 4px 0px',
     textDecoration: 'none',
   },
   brandLink: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
     textDecoration: 'none',
     color: '#f9d749',
     '&:hover': {
@@ -159,12 +172,13 @@ const Nav = () => {
       <Toolbar className={classes.toolbar}>
         {matches ? (
           <>
-            <Typography variant="h6" color="inherit" noWrap style={{ flexGrow: '0' }} className={classes.toolbarTitle}>
-              <Link to="/" color="inherit" className={classes.brandLink}>
-                <img alt="Synergy" src={synergyLogo} height="60px" />
-              </Link>
-            </Typography>
-            <Box style={{ paddingLeft: '30px', fontSize: '1rem', flexGrow: '1', display: 'flex', alignItems: 'center' }}>
+            <Link to="/" color="inherit" className={classes.brandLink}>
+              <img alt="Synergy" src={synergyLogo} width="36px" height="40px"/>
+              <Typography variant="h6" color="inherit" noWrap  className={classes.toolbarTitle}>
+                SYNERGY
+              </Typography>
+            </Link>
+            <Box style={{ paddingLeft: '30px', fontSize: '1rem', display: 'flex', alignItems: 'center' }}>
               <Link to="/gpool" className={'navLink ' + classes.link}>
                 Genesis Pools
               </Link>
@@ -250,13 +264,14 @@ const Nav = () => {
                 </Popper>
               </div>
             </Box>
-            <Box
+            <AccountButton text="Connect"/>
+            {/* <Box
               style={{
-                flexGrow: '0',
                 paddingLeft: '15px',
                 fontSize: '1rem',
                 paddingRight: '15px',
                 display: 'flex',
+                alignItems: 'center',
               }}
             >
               <a
@@ -291,8 +306,7 @@ const Nav = () => {
               >
                 <img alt="Twitter" src={IconTwitter} height="45px" />
               </a>
-            </Box>
-            <AccountButton text="Connect" />
+            </Box> */}
           </>
         ) : (
           <>

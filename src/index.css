@@ -5,7 +5,7 @@ h2,
 h3,
 h4 {
   margin: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Bakbak One', sans-serif;
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif; */
@@ -45,7 +45,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Rubik', cursive !important;
+  font-family: 'Bakbak One', cursive !important;
   text-transform: uppercase;
   color: white;
 }
@@ -62,12 +62,12 @@ h6 {
 }
 
 code {
-  font-family: 'Rubik', monospace;
+  font-family: 'Bakbak One', monospace;
 }
 
 .wallet-button {
   color: white;
-  font-family: 'Rubik', sans-serif !important;
+  font-family: 'Bakbak One', sans-serif !important;
   font-size: 1.2rem !important;
   text-align: left !important;
   justify-content: flex-start !important;
@@ -129,14 +129,12 @@ code {
 }
 
 .shinyButtonSecondary {
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-  border-radius: 15px;
-  font-size: 1rem !important;
-  padding-left: 5px;
-  background-color: #eee5de !important;
-  color: #171923 !important;
+  padding: 12px 24px!important;
+  gap: 8px;
+  font-size: 18px !important;
+  line-height: 24px;
+  background-color: #21E786 !important;
+  color: #141B22 !important;
   /* box-shadow: 0px 0px 5px 0px rgba(251,221,76,1); */
 }
 
@@ -158,8 +156,8 @@ code {
 }
 
 .shinyButtonSecondary:hover {
-  background-color: #f9d749 !important;
-  color: #171923 !important;
+  background-color: #21E786 !important;
+  color: #141B22 !important;
   box-shadow: 0px 0px 5px 0px rgba(166, 166, 166, 1);
 }
 
