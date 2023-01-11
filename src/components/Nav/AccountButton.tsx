@@ -39,7 +39,7 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
       {!account ? (
         <Button 
           onClick={handleWalletProviderOpen} 
-          className="shinyButtonSecondary" 
+          className="shinyButtonPrimary" 
           startIcon={<AccountBalanceWalletIcon />}
           style={{
             height: "42px",

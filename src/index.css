@@ -123,9 +123,21 @@ code {
   color: #171923 !important;
 }
 
-.shinyButtonGreen:hover {
-  background-color: #00ff00 !important;
-  color: #171923 !important;
+.shinyButtonPrimary {
+  padding: 12px 24px!important;
+  gap: 8px;
+  font-size: 18px !important;
+  line-height: 24px;
+  background-color: #21E786 !important;
+  color: #141B22 !important;
+  border-radius: 0px !important;
+  /* box-shadow: 0px 0px 5px 0px rgba(251,221,76,1); */
+}
+
+.shinyButtonPrimary:hover {
+  background-color: #21E786 !important;
+  color: #141B22 !important;
+  border-radius: 0px !important;
 }
 
 .shinyButtonSecondary {
@@ -133,9 +145,17 @@ code {
   gap: 8px;
   font-size: 18px !important;
   line-height: 24px;
+  border: 2px solid #21E786 !important;
+  background-color: transparent !important;
+  color: white !important;
+  border-radius: 0px !important;
+  /* box-shadow: 0px 0px 5px 0px rgba(251,221,76,1); */
+}
+
+.shinyButtonSecondary:hover {
   background-color: #21E786 !important;
   color: #141B22 !important;
-  /* box-shadow: 0px 0px 5px 0px rgba(251,221,76,1); */
+  border-radius: 0px !important;
 }
 
 .account {
@@ -153,12 +173,6 @@ code {
 
   color: grey !important;
   box-shadow: 0px 0px 5px 0px grey;
-}
-
-.shinyButtonSecondary:hover {
-  background-color: #21E786 !important;
-  color: #141B22 !important;
-  box-shadow: 0px 0px 5px 0px rgba(166, 166, 166, 1);
 }
 
 .navTokenPrice {

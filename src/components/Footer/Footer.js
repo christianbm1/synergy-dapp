@@ -4,15 +4,13 @@ import {Container, Grid, Typography, Link} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    position: 'absolute',
-    bottom: '0',
+    height: '100px',
     paddingTop: '15px',
     paddingBottom: '15px',
     width: '100%',
     color: 'white',
     // backgroundColor: '#191b26',
     textAlign: 'center',
-    height: '1.3rem',
     [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
