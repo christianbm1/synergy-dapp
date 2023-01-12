@@ -28,6 +28,49 @@ const BackgroundImage = createGlobalStyle`
 const TITLE = 'Synergy | Genesis Pools';
 
 const useStyles = makeStyles((theme) => ({
+  titleSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '200px 0px 50px 0px',
+    gap: '10px',
+  },
+  poolSection: {
+    display: 'flex',
+    padding: '12px',
+    marginBottom: '60px',
+  },
+  title: {
+    color: 'white',
+    fontSize: '80px',
+    lineHeight: '80px',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  subtitle: {
+    color: 'white',
+    fontFamily: 'Poppins',
+    fontSize: '20px',
+    lineHeight: '30px',
+    textAlign: 'center',
+    [theme.breakpoints.down('430')]: {
+      fontSize: '14px',
+    },
+  },
+  timer: {
+    display: 'flex',
+    justifyContent: 'center',
+    color: 'white',
+    fontSize: '40px',
+    lineHeight: '40px',
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    marginTop: '20px',
+    gap: '15px',
+    [theme.breakpoints.down('430')]: {
+      fontSize: '14px',
+    },
+  },
   container: {
     [theme.breakpoints.up('md')]: {
       paddingLeft: '60px'
@@ -58,65 +101,47 @@ const Home = () => {
       <Helmet>
         <title>{TITLE}</title>
       </Helmet>
-      <BackgroundImage />
-      {!!account ? (
-        <Container maxWidth="xl" className={classes.container}>
-          <Box>
-            <img src={TitleImage} alt="Genesis Pool" style={{ maxHeight: '70px' }} />
-            <Box
-              style={{
-                display: 'flex',
-                marginBottom: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-              <Box
-                style={{
-                  color: 'white',
-                  marginLeft: 5,
-                }}
-              >
-                <Typography align="left">
-                  Deposit selected tokens
-                </Typography>
-                <Typography align="left">
-                  and get CRYSTALS as reward
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-          <Box className={classes.poolContainer}>
-            <Typography variant="h4" align="left" style={{fontSize: '28px', display: 'flex', gap: '10px'}}>
-              {
-                Date.now() < from.getTime() 
-                  ?
-                    <>
-                      {"Starts in "}
-                      <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={from} description="GPool start time" />
-                    </> 
-                  :
-                    <>
-                      {"Ends in "}
-                      <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="GPool end time" />
-                    </> 
-              }
-            </Typography>
-            <Grid container spacing={3} style={{marginTop: '30px', rowGap: '20px'}}>
-              {banks
-                .filter((bank) => bank.sectionInUI === 0)
-                .map((bank) => (
-                  <React.Fragment key={bank.name}>
-                    <PoolCard bank={bank} />
-                  </React.Fragment>
-                ))}
-            </Grid>
-          </Box>
-        </Container>
-      ) : (
-        <UnlockWallet />
-      )}
+      <Box className={classes.titleSection}>
+        <Typography className={classes.title}>
+          Genesis Pools
+        </Typography>
+        <Typography className={classes.subtitle}>
+          Deposit selected tokens & get CRYSTALs as reward. <br/>
+          In day 3 CRS/BSD LP will become available for early stake.
+        </Typography>
+        <Typography className={classes.timer}>
+          {
+            Date.now() < from.getTime() 
+              ?
+                <>
+                  {"Starts in"}
+                  <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={from} description="GPool start time" fontSize='40px' />
+                </> 
+              :
+                <>
+                  {"Ends in"}
+                  <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="GPool end time" fontSize='40px'/>
+                </> 
+          }
+        </Typography>
+      </Box>
+      <Box className={classes.poolSection}>
+        <Grid container spacing={4} style={{marginTop: '30px', rowGap: '20px'}}>
+          {banks
+            .filter((bank) => bank.sectionInUI === 0)
+            .map((bank) => (
+              <React.Fragment key={bank.name}>
+                <PoolCard bank={bank} />
+              </React.Fragment>
+            ))}
+        </Grid>
+      </Box>
+      <Box>
+        <Typography className={classes.subtitle}>
+          Each partner token will have its own LP<br/>
+          right after Genesis pool ends
+        </Typography>
+      </Box>
     </Page>
   );
 };

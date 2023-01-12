@@ -280,7 +280,7 @@ const Home = () => {
           <Grid item xs={12} md={6} lg={6} style={{ display: 'flex', alignItems: 'center' }}>
             <Box>
               <Typography style={{ fontSize: '44px', }}>
-                What Is Our Mission
+                Our Mission
               </Typography>
               <Typography style={{ fontSize: '18px', fontFamily: 'Poppins', color: '#C2C3C5' }}>
                 We want to bridge the gap between the cryptocurrency marke and everyday consumer.
@@ -290,18 +290,18 @@ const Home = () => {
               <Box style={{ display: 'flex', gap: '50px' }}>
                 <Box style={{ marginTop: '40px' }}>
                   <Typography style={{ fontSize: '20px', color: '#C2C3C5' }}>
-                    Total Users
+                    TVL
                   </Typography>
                   <Typography style={{ fontSize: '56px', textShadow: '0px 4px 16px rgba(255,255,255,0.4)' }}>
-                    2240+
+                    1000+
                   </Typography>
                 </Box>
                 <Box style={{ marginTop: '40px' }}>
                   <Typography style={{ fontSize: '20px', color: '#C2C3C5' }}>
-                    Total Pools & Farms
+                    Community members
                   </Typography>
                   <Typography style={{ fontSize: '56px', textShadow: '0px 4px 16px rgba(255,255,255,0.4)' }}>
-                    1000+
+                    2240+
                   </Typography>
                 </Box>
               </Box>
