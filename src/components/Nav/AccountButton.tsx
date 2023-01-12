@@ -41,9 +41,6 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
           onClick={handleWalletProviderOpen} 
           className="shinyButtonPrimary" 
           startIcon={<AccountBalanceWalletIcon />}
-          style={{
-            height: "42px",
-          }}
         >
           {buttonText}
         </Button>
