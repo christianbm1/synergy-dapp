@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import useWallet from 'use-wallet';
 import { Box, Button, Typography, useMediaQuery } from '@material-ui/core';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 
 import useModal from '../../../hooks/useModal';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
@@ -23,11 +25,14 @@ import TokenSymbol from '../../../components/TokenSymbol';
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import ProgressCountdown from './ProgressCountdown';
+import WalletProviderModal from '../../../components/WalletProviderModal';
 
 const ActionPanel: React.FC = () => {
   const small = useMediaQuery('(min-width:425px)');
   const xsmall = useMediaQuery('(min-width:325px)');
   const synergyFinance = useSynergyFinance();
+  const { account } = useWallet();
+  const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
   const [approveStatus, approve] = useApprove(synergyFinance.DIA, synergyFinance.contracts.Boardroom.address);
 
   const tokenBalance = useTokenBalance(synergyFinance.DIA);
@@ -64,6 +69,13 @@ const ActionPanel: React.FC = () => {
 
   const { from: claimFrom, to: claimTo } = useClaimRewardTimerBoardroom();
 
+  const handleWalletProviderOpen = () => {
+    setWalletProviderOpen(true);
+  };
+
+  const handleWalletProviderClose = () => {
+    setWalletProviderOpen(false);
+  };
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -90,38 +102,42 @@ const ActionPanel: React.FC = () => {
   return (
     <StyledContainer>
       <StyledCardContentInner>
-        <Box style={{ padding: '0px 5px', flexGrow: 1 }}>
-          <Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-            <Typography style={{ width: 90 }}>Reward:</Typography>
-            <Typography style={{ color: '#f9d749' }}>
-              {getDisplayBalance(earnings, 18, 2)} CRS {`(${earnedInDollars}$)`}
-            </Typography>
-          </Box>
-          <Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-            <Typography style={{ width: 90 }}>Claim:</Typography>
-            <Typography style={{ color: '#f9d749' }}>
-              <ProgressCountdown hideBar={true} base={claimFrom} deadline={claimTo} description="Claim available in" fontSize='16px' />
-            </Typography>
-          </Box>
-          <Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-            <Typography style={{ width: 90 }}>Withdraw:</Typography>
-            <Typography style={{ color: '#f9d749', fontSize: '20px!important' }}>
-              <ProgressCountdown hideBar={true} base={withdrawFrom} deadline={withdrawTo} description="Withdraw available in" fontSize='16px' />
-            </Typography>
-          </Box>
-          <Box style={{ display: 'flex', justifyContent: 'space-start' }}>
-            <Typography style={{ width: 90 }}>Staking:</Typography>
-            <Typography style={{ color: '#f9d749' }}>
-              {getDisplayBalance(stakedBalance, 18, 2)} DIA {`(${stakedInDollars}$)`}
-            </Typography>
-          </Box>
-        </Box>
-        <div style={{margin: small ? '-10px 20px 0px 10px' : '0', display: xsmall ? 'flex' : 'none'}} >
-          <TokenSymbol symbol="CRS" size={small ? 80 : 60}/>
-        </div>
+        <StyledRow>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Reward:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+            {getDisplayBalance(earnings, 18, 2)} CRS {`(${earnedInDollars}$)`}
+          </Typography>
+        </StyledRow>
+        <StyledRow>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Claim:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+            <ProgressCountdown hideBar={true} base={claimFrom} deadline={claimTo} description="Claim available in" fontSize='24px' />
+          </Typography>
+        </StyledRow>
+        <StyledRow>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Withdraw:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+            <ProgressCountdown hideBar={true} base={withdrawFrom} deadline={withdrawTo} description="Withdraw available in" fontSize='24px' />
+          </Typography>
+        </StyledRow>
+        <StyledRow>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Staking:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+            {getDisplayBalance(stakedBalance, 18, 2)} DIA {`(${stakedInDollars}$)`}
+          </Typography>
+        </StyledRow>
       </StyledCardContentInner>
       <StyledCardActions>
-        {approveStatus !== ApprovalState.APPROVED ? (
+        {!account ? (
+          <Button
+            onClick={handleWalletProviderOpen}
+            className="shinyButtonPrimary"
+            startIcon={<AccountBalanceWalletIcon />}
+            style={{ width: '-webkit-fill-available' }}
+          >
+            Connect
+          </Button>
+        ) : (approveStatus !== ApprovalState.APPROVED) ? (
           <Button
             disabled={approveStatus !== ApprovalState.NOT_APPROVED}
             className={approveStatus === ApprovalState.NOT_APPROVED ? 'shinyButton' : 'shinyButtonDisabled'}
@@ -131,14 +147,24 @@ const ActionPanel: React.FC = () => {
             Approve DIAMOND
           </Button>
         ) : (
-          <>
-            <Button
-              className={'shinyButton'}
-              disabled={!canWithdrawFromBoardroom}
-              onClick={onPresentWithdraw}
-            >
-              -
-            </Button>
+          <Box style={{display: 'flex', flexDirection: 'column', width: '-webkit-fill-available', gap: '10px'}}>
+            <Box style={{display: 'flex', justifyContent: 'space-between', gap: '20px'}}>
+              <Button
+                className={'shinyButtonPrimary'}
+                onClick={onPresentDeposit}
+                style={{width: '-webkit-fill-available'}}
+              >
+                Deposit
+              </Button>
+              <Button
+                className={stakedBalance.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
+                disabled={!canWithdrawFromBoardroom}
+                onClick={onPresentWithdraw}
+                style={{width: '-webkit-fill-available'}}
+              >
+                Withdraw
+              </Button>
+            </Box>
             <Button
               className={earnings.eq(0) || !canClaimReward ? 'shinyButtonDisabled' : 'shinyButton'}
               disabled={earnings.eq(0) || !canClaimReward}
@@ -147,15 +173,10 @@ const ActionPanel: React.FC = () => {
             >
               Claim
             </Button>
-            <Button
-              className={'shinyButton'}
-              onClick={onPresentDeposit}
-            >
-              +
-            </Button>
-          </>
+          </Box>
         )}
       </StyledCardActions>
+      <WalletProviderModal open={isWalletProviderOpen} handleClose={handleWalletProviderClose} />
     </StyledContainer>
   );
 };
@@ -170,7 +191,7 @@ const StyledCardActions = styled.div`
 
 const StyledCardContentInner = styled.div`
 	display: flex;
-	flex: 1;
+	flex-direction: column;
 	justify-content: space-between;
 	margin-bottom: 30px;
 `;
@@ -179,7 +200,12 @@ const StyledContainer = styled.div`
   display: flex;
   flex: 1;
 	flex-direction: column;
+`;
+
+const StyledRow = styled.div`
+  display: flex;
   justify-content: space-between;
+  padding: 5px 0px;
 `;
 
 const StyledTokenSymbolContainer = styled.div`

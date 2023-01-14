@@ -24,6 +24,8 @@ import Triangle from '../../assets/img/triangle.png';
 import ActionPanel from './components/ActionPanel';
 import useSynergyFinance from '../../hooks/useSynergyFinance';
 import useShareStats from '../../hooks/useDiamondStats';
+import TokenSymbol from '../../components/TokenSymbol';
+import { relative } from 'path';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -36,6 +38,90 @@ const BackgroundImage = createGlobalStyle`
 const TITLE = 'Synergy | ARK'
 
 const useStyles = makeStyles((theme) => ({
+  titleSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '150px 0px 50px 0px',
+    gap: '10px',
+  },
+  cardSection: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  title: {
+    color: 'white',
+    fontSize: '80px',
+    lineHeight: '80px',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  subtitle: {
+    color: 'white',
+    fontFamily: 'Poppins',
+    fontSize: '20px',
+    lineHeight: '30px',
+    textAlign: 'center',
+    [theme.breakpoints.down('430')]: {
+      fontSize: '14px',
+    },
+  },
+  cardContainer: {
+    background: '#141B22',
+    width: '690px',
+    paddingBottom: '5px',
+    display: 'block',
+    position: 'relative'
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '38px 30px 30px 30px',
+
+    // "&:before": {
+    //   width: '124px',
+    //   height: '100px',
+    //   background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+    //   padding: '3px',
+    //   marginLeft: '-3px',
+    //   marginTop: '-3px',
+    //   position: 'absolute',
+    //   zIndex: '-1',
+    //   alignSelf: 'center',
+    //   filter: 'blur(2px)',
+    // }
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '24px 30px 20px 30px',
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '5px 0px',
+  },
+  action: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '0px 30px 24px 30px',
+  },
+  epoch: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    color: 'white',
+    fontFamily: 'Poppins',
+    fontSize: '21px',
+    fontStyle: 'bold',
+    width: 100,
+    height: 100,
+    borderRadius: 0,
+    border: '2px solid #21E786',
+    textAlign: 'center',
+  },
   container: {
     [theme.breakpoints.up('md')]: {
       paddingLeft: '60px',
@@ -79,156 +165,127 @@ const Boardroom = () => {
 
   return (
     <Page>
-      <BackgroundImage />
       <Helmet>
         <title>{TITLE}</title>
       </Helmet>
-      {!!account ? (
-        <Container maxWidth='xl' className={classes.container}>
-          <Box>
-            <Typography align="left" variant="h4">
-              ARK
-            </Typography>
-            <Box
-              style={{
-                display: 'flex',
-                marginTop: 10,
-                marginBottom: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-              <Box
-                style={{
-                  color: "white",
-                  marginLeft: 5,
-                }}
-              >
-                <Typography align="left">
-                  ARK is the only place
-                </Typography>
-                <Typography align="left">
-                  where you get CRYSTALs by staking
-                </Typography>
+      <Box className={classes.titleSection}>
+        <Typography className={classes.title}>
+          ARK
+        </Typography>
+        <Typography className={classes.subtitle}>
+          ARK is the only place where you get CRYSTALs by staking  <br />
+          Stake your DIAMONDs and CRYSTALs as reward!
+        </Typography>
+      </Box>
+      <Box className={classes.cardSection}>
+        <Box className={classes.cardContainer}>
+          <Box 
+            style={{
+              width: '124px', 
+              height: '100px', 
+              background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+              marginLeft: '-3px',
+              marginTop: '-3px',
+              position: 'absolute',
+              zIndex: '-1',
+            }}
+          />
+          <Box 
+            style={{
+              width: '124px', 
+              height: '100px', 
+              background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+              marginLeft: '-3px',
+              marginTop: '-3px',
+              position: 'absolute',
+              zIndex: '-1',
+              filter: 'blur(4px)',
+            }}
+          />
+          <Box className={classes.header}>
+            <TokenSymbol size={100} symbol="CRS" />
+            <Box style={{ display: 'flex', flexDirection: 'row' }}>
+              <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', padding: '12px 30px 0px 0px', alignItems: 'end' }}>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: '18px' }}>Next Seigniorage</Typography>
+                <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="Next Seigniorage" fontSize='40px'/>
               </Box>
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                marginBottom: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-              <Box
-                style={{
-                  color: "white",
-                  marginLeft: 5,
-                }}
-              >
-                <Typography align="left">
-                  Stake your DIAMONDs and CRYSTALs as reward!
-                </Typography>
+              <Box className={classes.epoch}>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: '21px', fontWeight: '600', fontStyle: 'Bold' }}>Epoch</Typography>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: '21px', fontWeight: '600', fontStyle: 'Bold' }}>{Number(currentEpoch)}</Typography>
               </Box>
             </Box>
           </Box>
-          <Box style={{ marginTop: '50px', maxWidth: "400px" }}>
-            <Card 
-              variant="outlined" 
-              style={{ 
-                borderRadius: 12, 
-                border: '2px solid grey', 
-                backgroundColor: 'black',
-                boxShadow: '#4a4a49 0px 0px 5px 5px'
-              }}
-            >
-              <CardContent style={{ padding: 8, display: 'flex', flexDirection: 'column' }}>
-                <Box
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row'
-                  }}
-                >
-                  <Box
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      width: 70,
-                      height: 60,
-                      borderRadius: 12,
-                      backgroundColor: '#272f38',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <Typography style={{ fontWeight: 600 }}>Epoch</Typography>
-                    <Typography style={{ fontWeight: 600 }}>{Number(currentEpoch)}</Typography>
-                  </Box>
-                  <Box
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      borderRadius: 12,
-                      textAlign: 'center',
-                      marginLeft: 10,
-                      flexGrow: 1,
-                    }}
-                  >
-                    <Typography style={{ color: '#f9d749' }}>Next Seigniorage</Typography>
-                    <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="Next Seigniorage" />
-                  </Box>
-                </Box>
-                <Divider variant="middle" style={{ margin: '8px 0px 10px 0px', backgroundColor: 'grey' }} />
-                <Box style={{ padding: '0px 5px' }}>
-                  <Box style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 10 }}>
-                    <Typography style={{ fontSize: 20, fontWeight: 700, marginRight: 10 }} >TVL in ARK:</Typography>
-                    <Typography style={{ fontSize: 20 }}>637%</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography>APR:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{boardroomAPR.toFixed(2)}%</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography>APR per Epoch:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{boardroomEpochAPR.toFixed(2)}%</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography>DIAMONDS stacked:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{stakedInDollars}$</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography>Total DIAMONDS staked:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>
-                      {(Number(getDisplayBalance(totalStaked)) / Number(diaCirculatingSupply) * 100).toFixed(2)}%
-                    </Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Typography>TWAP:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{scalingFactor} BUSD</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Typography>Expansion Rate:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{expansionRate.toFixed(2)}%</Typography>
-                  </Box>
-                  <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Typography>Next expansion amount:</Typography>
-                    <Typography style={{ color: '#f9d749' }}>{(expansionRate * crsCirculatingSupply / 100).toFixed(2)} CRS</Typography>
-                  </Box>
-                </Box>
-                <Divider variant="middle" style={{ margin: '10px 0px 10px 0px', backgroundColor: 'grey' }} />
-              </CardContent>
-              <CardActions style={{ justifyContent: 'space-between', padding: 8 }}>
-                <ActionPanel />
-              </CardActions>
-            </Card>
+          <Box className={classes.content}>
+            <Box style={{display: 'flex', justifyContent: 'flex-start', padding: '10px 0px'}}>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '36px', fontWeight: 700}} >TVL in ARK:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '36px', color: '#21E786', marginLeft: '20px' }}>637%</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>APR:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{boardroomAPR.toFixed(2)}%</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>APR per Epoch:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{boardroomEpochAPR.toFixed(2)}%</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>DIAMONDS stacked:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{stakedInDollars}$</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Total DIAMONDS staked:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+                {(Number(getDisplayBalance(totalStaked)) / Number(diaCirculatingSupply) * 100).toFixed(2)}%
+              </Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>TWAP:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{scalingFactor} BUSD</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Expansion Rate:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{expansionRate.toFixed(2)}%</Typography>
+            </Box>
+            <Box className={classes.row}>
+              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Next expansion amount:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+                {(expansionRate * crsCirculatingSupply / 100).toFixed(2)} CRS
+              </Typography>
+            </Box>
           </Box>
-        </Container>
-      ) : (
-        <UnlockWallet />
-      )}
+          <Divider variant="middle" style={{ margin: '0px 30px 20px', background: 'white', opacity: '0.2' }} />
+          <Box className={classes.action}>
+            <ActionPanel />
+          </Box>
+          <Box 
+            style={{
+              width: '124px', 
+              height: '100px', 
+              background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+              marginRight: '-3px',
+              marginBottom: '-3px',
+              position: 'absolute',
+              zIndex: '-1',
+              bottom: 0,
+              right: 0,
+            }}
+          />
+          <Box 
+            style={{
+              width: '124px', 
+              height: '100px', 
+              background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+              marginRight: '-3px',
+              marginBottom: '-3px',
+              position: 'absolute',
+              zIndex: '-1',
+              bottom: 0,
+              right: 0,
+              filter: 'blur(4px)',
+            }}
+          />
+        </Box>
+      </Box>
     </Page >
   );
 };
