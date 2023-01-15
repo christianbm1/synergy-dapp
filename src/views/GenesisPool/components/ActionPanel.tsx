@@ -11,15 +11,15 @@ import useTokenBalance from '../../../hooks/useTokenBalance';
 import useWithdraw from '../../../hooks/useWithdraw';
 import useEarnings from '../../../hooks/useEarnings';
 import useHarvest from '../../../hooks/useHarvest';
+import useCrystalStats from '../../../hooks/useCrystalStats';
+import WalletProviderModal from '../../../components/WalletProviderModal';
+import { getDisplayBalance } from '../../../utils/formatBalance';
+import { Bank } from '../../../synergy-finance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import { Bank } from '../../../synergy-finance';
 import { Box } from 'react-feather';
-import { getDisplayBalance } from '../../../utils/formatBalance';
-import useCrystalStats from '../../../hooks/useCrystalStats';
 import useWallet from 'use-wallet';
-import WalletProviderModal from '../../../components/WalletProviderModal';
 
 interface StakeProps {
   bank: Bank;
