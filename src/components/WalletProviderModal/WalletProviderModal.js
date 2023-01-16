@@ -34,10 +34,10 @@ const WalletProviderModal = ({ open, handleClose }) => {
       aria-labelledby="connect a wallet"
       aria-describedby="connect your crypto wallet"
       open={open}
-      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}
       onClose={handleClose}
     >
-      <div className={classes.paper}>
+      <div className={classes.paper} style={{maxWidth: '70%'}}>
         <h2>Connect Wallet</h2>
         <List component="nav" aria-label="main mailbox folders">
           <WalletCard

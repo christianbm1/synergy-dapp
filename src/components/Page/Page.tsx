@@ -10,7 +10,7 @@ const Page: React.FC = ({children}) => {
   return (
     <div style={{position: 'relative', minHeight: '100vh'}}>
       <Nav />
-      <Container style={{paddingBottom: '2rem', maxWidth: '1440px'}}>
+      <Container style={{paddingBottom: '2rem', maxWidth: '1440px', padding: '0'}}>
         {children}
       </Container>
       <Footer />

@@ -311,43 +311,40 @@ const Nav = () => {
           </>
         ) : (
           <>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-
             <img
               alt="Synergy"
               src={synergyLogo}
-              style={{ height: '40px', marginTop: '-10px', marginLeft: '10px', marginRight: '15px' }}
+              style={{ height: '40px', marginLeft: '10px', marginRight: '15px' }}
             />
-            <AccountButton text="Connect" />
+            <Box style={{display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'center'}}>
+              <AccountButton text="Connect" />
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(open && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
             <Drawer
               className={classes.drawer}
               onClose={handleDrawerClose}
               // onEscapeKeyDown={handleDrawerClose}
               // onBackdropClick={handleDrawerClose}
               variant="temporary"
-              anchor="left"
+              anchor="right"
               open={open}
               classes={{
                 paper: classes.drawerPaper,
               }}
             >
-              <div>
+              {/* <div>
                 <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'rtl' ? (
-                    <ChevronRightIcon htmlColor="white" />
-                  ) : (
-                    <ChevronLeftIcon htmlColor="white" />
-                  )}
+                  <ChevronRightIcon htmlColor="white" />
                 </IconButton>
-              </div>
+              </div> */}
               <Divider />
               <List>
                 <ListItem>
