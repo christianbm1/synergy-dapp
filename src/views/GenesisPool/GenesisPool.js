@@ -13,8 +13,8 @@ import PoolCard from './PoolCard';
 
 import TitleImage from '../../assets/img/gpool-title.png';
 import BGImage from '../../assets/img/background/gpool.png';
-import LImage from '../../assets/img/background/gpool_left.png';
-import RImage from '../../assets/img/background/gpool_right.png';
+import LImage from '../../assets/img/background/kind.png';
+import RImage from '../../assets/img/background/astronaut.png';
 import Triangle from '../../assets/img/triangle.png';
 import ProgressCountdown from './components/ProgressCountdown';
 import useGPoolTimes from '../../hooks/useGPoolTimes';

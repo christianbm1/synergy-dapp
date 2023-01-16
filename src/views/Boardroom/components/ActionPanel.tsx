@@ -28,8 +28,7 @@ import ProgressCountdown from './ProgressCountdown';
 import WalletProviderModal from '../../../components/WalletProviderModal';
 
 const ActionPanel: React.FC = () => {
-  const small = useMediaQuery('(min-width:425px)');
-  const xsmall = useMediaQuery('(min-width:325px)');
+  const small = useMediaQuery('(max-width:425px)');
   const synergyFinance = useSynergyFinance();
   const { account } = useWallet();
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
@@ -103,26 +102,38 @@ const ActionPanel: React.FC = () => {
     <StyledContainer>
       <StyledCardContentInner>
         <StyledRow>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Reward:</Typography>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px' }}>Reward:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px', color: '#21E786' }}>
             {getDisplayBalance(earnings, 18, 2)} CRS {`(${earnedInDollars}$)`}
           </Typography>
         </StyledRow>
         <StyledRow>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Claim:</Typography>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
-            <ProgressCountdown hideBar={true} base={claimFrom} deadline={claimTo} description="Claim available in" fontSize='24px' />
-          </Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px' }}>Claim:</Typography>
+          <Box style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px', color: '#21E786' }}>
+            <ProgressCountdown 
+              hideBar={true} 
+              base={claimFrom} 
+              deadline={claimTo} 
+              description="Claim available in" 
+              fontSize={small ? '16px' : '24px'}
+            />
+          </Box>
         </StyledRow>
         <StyledRow>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Withdraw:</Typography>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
-            <ProgressCountdown hideBar={true} base={withdrawFrom} deadline={withdrawTo} description="Withdraw available in" fontSize='24px' />
-          </Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px' }}>Withdraw:</Typography>
+          <Box style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px', color: '#21E786' }}>
+            <ProgressCountdown 
+              hideBar={true} 
+              base={withdrawFrom} 
+              deadline={withdrawTo} 
+              description="Withdraw available in" 
+              fontSize={small ? '16px' : '24px'}
+            />
+          </Box>
         </StyledRow>
         <StyledRow>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px' }}>Staking:</Typography>
-          <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px' }}>Staking:</Typography>
+          <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '16px' : '24px', color: '#21E786' }}>
             {getDisplayBalance(stakedBalance, 18, 2)} DIA {`(${stakedInDollars}$)`}
           </Typography>
         </StyledRow>
@@ -147,12 +158,12 @@ const ActionPanel: React.FC = () => {
             Approve DIAMOND
           </Button>
         ) : (
-          <Box style={{display: 'flex', flexDirection: 'column', width: '-webkit-fill-available', gap: '10px'}}>
-            <Box style={{display: 'flex', justifyContent: 'space-between', gap: '20px'}}>
+          <Box style={{ display: 'flex', flexDirection: 'column', width: '-webkit-fill-available', gap: '10px' }}>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
               <Button
                 className={'shinyButtonPrimary'}
                 onClick={onPresentDeposit}
-                style={{width: '-webkit-fill-available'}}
+                style={{ width: '-webkit-fill-available' }}
               >
                 Deposit
               </Button>
@@ -160,7 +171,7 @@ const ActionPanel: React.FC = () => {
                 className={stakedBalance.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
                 disabled={!canWithdrawFromBoardroom}
                 onClick={onPresentWithdraw}
-                style={{width: '-webkit-fill-available'}}
+                style={{ width: '-webkit-fill-available' }}
               >
                 Withdraw
               </Button>

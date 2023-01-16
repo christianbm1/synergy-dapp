@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useWallet } from 'use-wallet';
 import moment from 'moment';
-import { Box, Card, CardContent, CardActions, Typography, Container, Divider, makeStyles } from '@material-ui/core';
+import { Box, Card, CardContent, CardActions, Typography, Container, Divider, makeStyles, useMediaQuery } from '@material-ui/core';
 
 import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
@@ -21,6 +21,8 @@ import { Helmet } from 'react-helmet'
 
 import BGImage from '../../assets/img/background/ark.png';
 import Triangle from '../../assets/img/triangle.png';
+import LImage from '../../assets/img/background/wing.png';
+import RImage from '../../assets/img/background/find.png';
 import ActionPanel from './components/ActionPanel';
 import useSynergyFinance from '../../hooks/useSynergyFinance';
 import useShareStats from '../../hooks/useDiamondStats';
@@ -55,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '80px',
     textAlign: 'center',
     textTransform: 'uppercase',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '40px',
+      lineHeight: '48px',
+    },
   },
   subtitle: {
     color: 'white',
@@ -63,12 +70,14 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '30px',
     textAlign: 'center',
     [theme.breakpoints.down('430')]: {
-      fontSize: '14px',
+      fontSize: '16px',
+      lineHeight: '22px',
     },
   },
   cardContainer: {
     background: '#141B22',
     width: '690px',
+    maxWidth: '90%',
     paddingBottom: '5px',
     display: 'block',
     position: 'relative'
@@ -77,36 +86,53 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     padding: '38px 30px 30px 30px',
+    alignItems: 'center',
 
-    // "&:before": {
-    //   width: '124px',
-    //   height: '100px',
-    //   background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
-    //   padding: '3px',
-    //   marginLeft: '-3px',
-    //   marginTop: '-3px',
-    //   position: 'absolute',
-    //   zIndex: '-1',
-    //   alignSelf: 'center',
-    //   filter: 'blur(2px)',
-    // }
+    [theme.breakpoints.down('450')]: {
+      padding: '20px 15px 15px 15px',
+    },
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
     color: 'white',
     padding: '24px 30px 20px 30px',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '12px 15px 10px 15px',
+    },
   },
   row: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '5px 0px',
   },
+  rowTitle: {
+    fontFamily: 'Poppins', 
+    fontSize: '24px',
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '16px',
+    },
+  },
+  rowValue: {
+    fontFamily: 'Poppins', 
+    fontSize: '24px', 
+    color: '#21E786',
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '16px',
+    },
+  },
   action: {
     display: 'flex',
     flexDirection: 'column',
     color: 'white',
     padding: '0px 30px 24px 30px',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '0px 15px 12px 15px',
+    },
   },
   epoch: {
     display: 'flex',
@@ -121,6 +147,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 0,
     border: '2px solid #21E786',
     textAlign: 'center',
+
+    [theme.breakpoints.down('450')]: {
+      width: 60,
+      height: 60,
+    },
   },
   container: {
     [theme.breakpoints.up('md')]: {
@@ -133,9 +164,67 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: '200px',
     },
   },
+  divider: {
+    margin: '0px 30px 20px', 
+    background: 'white', 
+    opacity: '0.2',
+
+    [theme.breakpoints.down('450')]: {
+      margin: '0px 15px 10px', 
+    },
+  },
+  leftImg: {
+    position: 'absolute',
+    width: '40%',
+    transformOrigin: 'left center',
+    left: '0%',
+    transform: 'translate(-25%, 10%) rotate(45deg)',
+    zIndex: '-1',
+
+    [theme.breakpoints.down('1030')]: {
+      transform: 'translate(-25%, 200%) rotate(45deg)',
+    },
+
+    [theme.breakpoints.down('800')]: {
+      transform: 'translate(-25%, -20%) rotate(45deg)',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      transform: 'translate(-25%, 10%) rotate(45deg)',
+    },
+
+    [theme.breakpoints.down('350')]: {
+      transform: 'translate(-25%, 10%) rotate(45deg)',
+    },
+  },
+  rightImg: {
+    position: 'absolute',
+    width: '30%',
+    transformOrigin: 'right center',
+    right: '0%',
+    transform: 'translate(16%, 75%)',
+    zIndex: '-1',
+
+    [theme.breakpoints.down('1030')]: {
+      transform: 'translate(16%, 100%)',
+    },
+
+    [theme.breakpoints.down('800')]: {
+      transform: 'translate(16%, 30%)',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      transform: 'translate(16%, 60%)',
+    },
+
+    [theme.breakpoints.down('350')]: {
+      transform: 'translate(16%, 100%)',
+    },
+  },
 }));
 
 const Boardroom = () => {
+  const small = useMediaQuery('(max-width:425px)');
   const classes = useStyles();
   const { account } = useWallet();
   const synergyFinance = useSynergyFinance();
@@ -168,6 +257,8 @@ const Boardroom = () => {
       <Helmet>
         <title>{TITLE}</title>
       </Helmet>
+      <img src={LImage} className={classes.leftImg} />
+      <img src={RImage} className={classes.rightImg} />
       <Box className={classes.titleSection}>
         <Typography className={classes.title}>
           ARK
@@ -203,57 +294,63 @@ const Boardroom = () => {
             }}
           />
           <Box className={classes.header}>
-            <TokenSymbol size={100} symbol="CRS" />
-            <Box style={{ display: 'flex', flexDirection: 'row' }}>
-              <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', padding: '12px 30px 0px 0px', alignItems: 'end' }}>
-                <Typography style={{ fontFamily: 'Poppins', fontSize: '18px' }}>Next Seigniorage</Typography>
-                <ProgressCountdown base={moment().toDate()} hideBar={true} deadline={to} description="Next Seigniorage" fontSize='40px'/>
+            <TokenSymbol size={ small ? 60 : 100} symbol="CRS" />
+            <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+              <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'end' }}>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '14px' : '18px' }}>Next Seigniorage</Typography>
+                <ProgressCountdown 
+                  base={moment().toDate()} 
+                  hideBar={true} 
+                  deadline={to} 
+                  description="Next Seigniorage" 
+                  fontSize={small ? '24px' : '40px'}
+                />
               </Box>
               <Box className={classes.epoch}>
-                <Typography style={{ fontFamily: 'Poppins', fontSize: '21px', fontWeight: '600', fontStyle: 'Bold' }}>Epoch</Typography>
-                <Typography style={{ fontFamily: 'Poppins', fontSize: '21px', fontWeight: '600', fontStyle: 'Bold' }}>{Number(currentEpoch)}</Typography>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '14px' : '21px', fontWeight: '600', fontStyle: 'Bold' }}>Epoch</Typography>
+                <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '14px' : '21px', fontWeight: '600', fontStyle: 'Bold' }}>{Number(currentEpoch)}</Typography>
               </Box>
             </Box>
           </Box>
           <Box className={classes.content}>
             <Box style={{display: 'flex', justifyContent: 'flex-start', padding: '10px 0px'}}>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '36px', fontWeight: 700}} >TVL in ARK:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '36px', color: '#21E786', marginLeft: '20px' }}>637%</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '24px' : '36px', fontWeight: 700}} >TVL in ARK:</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '24px' : '36px', color: '#21E786', marginLeft: '20px' }}>637%</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>APR:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{boardroomAPR.toFixed(2)}%</Typography>
+              <Typography className={classes.rowTitle}>APR:</Typography>
+              <Typography className={classes.rowValue}>{boardroomAPR.toFixed(2)}%</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>APR per Epoch:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{boardroomEpochAPR.toFixed(2)}%</Typography>
+              <Typography className={classes.rowTitle}>APR per Epoch:</Typography>
+              <Typography className={classes.rowValue}>{boardroomEpochAPR.toFixed(2)}%</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>DIAMONDS stacked:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{stakedInDollars}$</Typography>
+              <Typography className={classes.rowTitle}>DIAMONDS stacked:</Typography>
+              <Typography className={classes.rowValue}>{stakedInDollars}$</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Total DIAMONDS staked:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+              <Typography className={classes.rowTitle}>Total DIAMONDS staked:</Typography>
+              <Typography className={classes.rowValue}>
                 {(Number(getDisplayBalance(totalStaked)) / Number(diaCirculatingSupply) * 100).toFixed(2)}%
               </Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>TWAP:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{scalingFactor} BUSD</Typography>
+              <Typography className={classes.rowTitle}>TWAP:</Typography>
+              <Typography className={classes.rowValue}>{scalingFactor} BUSD</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Expansion Rate:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>{expansionRate.toFixed(2)}%</Typography>
+              <Typography className={classes.rowTitle}>Expansion Rate:</Typography>
+              <Typography className={classes.rowValue}>{expansionRate.toFixed(2)}%</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography style={{fontFamily: 'Poppins', fontSize: '24px'}}>Next expansion amount:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: '24px', color: '#21E786' }}>
+              <Typography className={classes.rowTitle}>Next expansion amount:</Typography>
+              <Typography className={classes.rowValue}>
                 {(expansionRate * crsCirculatingSupply / 100).toFixed(2)} CRS
               </Typography>
             </Box>
           </Box>
-          <Divider variant="middle" style={{ margin: '0px 30px 20px', background: 'white', opacity: '0.2' }} />
+          <Divider variant="middle" className={classes.divider} />
           <Box className={classes.action}>
             <ActionPanel />
           </Box>
