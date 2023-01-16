@@ -10,8 +10,8 @@ const ModalTitle: React.FC<ModalTitleProps> = ({text}) => <StyledModalTitle>{tex
 const StyledModalTitle = styled.div`
   align-items: center;
   display: flex;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 500;
   height: ${(props) => props.theme.topBarSize}px;
   justify-content: center;
   margin-top: ${(props) => -props.theme.spacing[4]}px;

@@ -134,14 +134,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   linkDropPanel: {
-    backgroundColor: '#000000a1',
-    border: '1px solid grey',
+    backgroundColor: '#141B22',
+    // border: '1px solid grey',
   },
   menuItem: {
     '&:hover a': {
       color: 'black'
     },
-    borderBottom: '1px solid grey',
+    // borderBottom: '1px solid grey',
   }
 }));
 

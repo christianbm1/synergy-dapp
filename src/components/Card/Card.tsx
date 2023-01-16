@@ -4,8 +4,9 @@ import styled from 'styled-components';
 const Card: React.FC = ({children}) => <StyledCard>{children}</StyledCard>;
 
 const StyledCard = styled.div`
-  background-color: rgba(255, 255, 255, 0.9); //${(props) => props.theme.color.grey[800]};
-  color: #2c2560 !important;
+  background-color: #040B11;
+  color: white !important;
+  border: 2px solid #141B22;
   display: flex;
   flex: 1;
   flex-direction: column;
