@@ -21,7 +21,6 @@ import useCrystalStats from '../../../hooks/useCrystalStats';
 import useClaimRewardTimerBoardroom from '../../../hooks/boardroom/useClaimRewardTimerBoardroom';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
-import TokenSymbol from '../../../components/TokenSymbol';
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import ProgressCountdown from './ProgressCountdown';
@@ -151,7 +150,7 @@ const ActionPanel: React.FC = () => {
         ) : (approveStatus !== ApprovalState.APPROVED) ? (
           <Button
             disabled={approveStatus !== ApprovalState.NOT_APPROVED}
-            className={approveStatus === ApprovalState.NOT_APPROVED ? 'shinyButton' : 'shinyButtonDisabled'}
+            className={approveStatus === ApprovalState.NOT_APPROVED ? 'shinyButtonPrimary' : 'shinyButtonDisabled'}
             style={{ width: '-webkit-fill-available' }}
             onClick={approve}
           >
@@ -168,7 +167,7 @@ const ActionPanel: React.FC = () => {
                 Deposit
               </Button>
               <Button
-                className={stakedBalance.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
+                className={!canWithdrawFromBoardroom ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
                 disabled={!canWithdrawFromBoardroom}
                 onClick={onPresentWithdraw}
                 style={{ width: '-webkit-fill-available' }}
@@ -177,7 +176,7 @@ const ActionPanel: React.FC = () => {
               </Button>
             </Box>
             <Button
-              className={earnings.eq(0) || !canClaimReward ? 'shinyButtonDisabled' : 'shinyButton'}
+              className={earnings.eq(0) || !canClaimReward ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
               disabled={earnings.eq(0) || !canClaimReward}
               onClick={onReward}
               fullWidth

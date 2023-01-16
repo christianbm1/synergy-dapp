@@ -46,7 +46,7 @@ const Harvest: React.FC = () => {
             <StyledCardActions>
               <Button
                 onClick={onReward}
-                className={earnings.eq(0) || !canClaimReward ? 'shinyButtonDisabled' : 'shinyButton'}
+                className={earnings.eq(0) || !canClaimReward ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
                 disabled={earnings.eq(0) || !canClaimReward}
               >
                 Claim Reward

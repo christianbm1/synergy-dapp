@@ -16,26 +16,14 @@ import useTotalStakedOnBoardroom from '../../hooks/useTotalStakedOnBoardroom';
 import useExpansionRate from '../../hooks/useExpansionRate';
 import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDollars';
 import ProgressCountdown from './components/ProgressCountdown';
-import { createGlobalStyle } from 'styled-components';
 import { Helmet } from 'react-helmet'
 
-import BGImage from '../../assets/img/background/ark.png';
-import Triangle from '../../assets/img/triangle.png';
 import LImage from '../../assets/img/background/wing.png';
 import RImage from '../../assets/img/background/find.png';
 import ActionPanel from './components/ActionPanel';
 import useSynergyFinance from '../../hooks/useSynergyFinance';
 import useShareStats from '../../hooks/useDiamondStats';
 import TokenSymbol from '../../components/TokenSymbol';
-import { relative } from 'path';
-
-const BackgroundImage = createGlobalStyle`
-  body {
-    background: url(${BGImage}) 100% 100% / cover no-repeat !important;
-    background-position-x: 80% !important;
-    background-position-y: top !important;
-  }
-`;
 
 const TITLE = 'Synergy | ARK'
 

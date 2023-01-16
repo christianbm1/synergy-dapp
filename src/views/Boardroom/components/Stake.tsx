@@ -3,9 +3,6 @@ import styled from 'styled-components';
 
 import {Box, Button, Card, CardContent, Typography} from '@material-ui/core';
 
-// import Button from '../../../components/Button';
-// import Card from '../../../components/Card';
-// import CardContent from '../../../components/CardContent';
 import CardIcon from '../../../components/CardIcon';
 import {AddIcon, RemoveIcon} from '../../../components/icons';
 import IconButton from '../../../components/IconButton';
