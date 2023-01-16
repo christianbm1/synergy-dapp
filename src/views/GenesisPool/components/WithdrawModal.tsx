@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 
 import {Button} from '@material-ui/core';
-// import Button from '../../../components/Button'
 import Modal, {ModalProps} from '../../../components/Modal';
 import ModalActions from '../../../components/ModalActions';
 import ModalTitle from '../../../components/ModalTitle';
@@ -46,7 +45,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({onConfirm, onDismiss, max,
         symbol={tokenName}
       />
       <ModalActions>
-        <Button className="shinyButtonSecondary" onClick={() => onConfirm(val)}>
+        <Button className="shinyButtonPrimary" onClick={() => onConfirm(val)}>
           Confirm
         </Button>
         {/* <Button color="secondary" onClick={onDismiss}>Cancel</Button> */}

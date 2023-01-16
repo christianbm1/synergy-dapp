@@ -1,32 +1,18 @@
 import React, { useMemo } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import { Box, Container, Grid, Paper, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
 import useWallet from 'use-wallet';
 import moment from 'moment';
 
 import useBanks from '../../hooks/useBanks';
-import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
 import PoolCard from './PoolCard';
 
-import TitleImage from '../../assets/img/gpool-title.png';
-import BGImage from '../../assets/img/background/gpool.png';
 import LImage from '../../assets/img/background/kind.png';
 import RImage from '../../assets/img/background/astronaut.png';
-import Triangle from '../../assets/img/triangle.png';
 import ProgressCountdown from './components/ProgressCountdown';
 import useGPoolTimes from '../../hooks/useGPoolTimes';
-
-const BackgroundImage = createGlobalStyle`
-  body {
-    background: url(${LImage}) left top no-repeat, url(${RImage}) right top no-repeat;
-    background-size: 50px, 50px;
-    // background-position-x: 80% !important;
-    // background-position-y: top !important;
-  }
-`;
 
 const TITLE = 'Synergy | Genesis Pools';
 
@@ -169,7 +155,7 @@ const Home = () => {
           Deposit selected tokens & get CRYSTALs as reward. <br />
           In day 3 CRS/BSD LP will become available for early stake.
         </Typography>
-        <Typography className={classes.timer}>
+        <Box className={classes.timer}>
           {
             Date.now() < from.getTime()
               ?
@@ -195,7 +181,7 @@ const Home = () => {
                 />
               </>
           }
-        </Typography>
+        </Box>
       </Box>
       <Box className={classes.poolSection}>
         <Grid container spacing={4} style={{ marginTop: '30px', rowGap: '20px' }}>

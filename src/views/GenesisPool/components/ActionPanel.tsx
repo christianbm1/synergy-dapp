@@ -18,7 +18,6 @@ import { Bank } from '../../../synergy-finance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import { Box } from 'react-feather';
 import useWallet from 'use-wallet';
 
 interface StakeProps {

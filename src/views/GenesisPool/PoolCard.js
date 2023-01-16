@@ -1,12 +1,9 @@
 import React, { useMemo } from 'react';
-import useWallet from 'use-wallet';
-import { Box, Card, CardActions, CardContent, Typography, Grid, makeStyles, CardHeader, Button } from '@material-ui/core';
+import { Box, Typography, Grid, makeStyles } from '@material-ui/core';
 
 import useStatsForPool from '../../hooks/useStatsForPool';
 import useStakedBalance from '../../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDollars';
-import useEarnings from '../../hooks/useEarnings';
-import useCrystalStats from '../../hooks/useCrystalStats';
 import ActionPanel from './components/ActionPanel';
 import TokenSymbol from '../../components/TokenSymbol';
 import { getDisplayBalance } from '../../utils/formatBalance';
