@@ -65,7 +65,12 @@ const useStyles = makeStyles((theme) => ({
     gap: '15px',
 
     [theme.breakpoints.down('430')]: {
-      fontSize: '32px',
+      fontSize: '34px',
+      gap: '10px',
+    },
+
+    [theme.breakpoints.down('380')]: {
+      fontSize: '24px',
       gap: '10px',
     },
   },
@@ -166,7 +171,7 @@ const Home = () => {
                   hideBar={true}
                   deadline={from}
                   description="GPool start time"
-                  fontSize={small ? '40px' : '36px'}
+                  fontSize={small ? '40px' : '30px'}
                 />
               </>
               :
@@ -177,7 +182,7 @@ const Home = () => {
                   hideBar={true}
                   deadline={to}
                   description="GPool end time"
-                  fontSize={small ? '40px' : '36px'}
+                  fontSize={small ? '40px' : '30px'}
                 />
               </>
           }

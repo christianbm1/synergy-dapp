@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    color: '#f9d749',
     'background-color': 'transparent',
     maxWidth: '1440px',
     padding: '10px',
@@ -72,6 +71,11 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     display: 'flex',
     justifyContent: 'space-between',
+
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '0px',
+      paddingRight: '0px',
+    },
   },
   toolbarTitle: {
     fontFamily: 'Bakbak One',

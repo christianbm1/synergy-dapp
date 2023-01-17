@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import useWallet from 'use-wallet';
 import { Button, Typography } from '@material-ui/core';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 
@@ -18,7 +19,6 @@ import { Bank } from '../../../synergy-finance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import useWallet from 'use-wallet';
 
 interface StakeProps {
   bank: Bank;

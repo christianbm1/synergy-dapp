@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import useWallet from 'use-wallet';
-import { Box, Button, Card, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Card, Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../components/Page';
 import useModal from '../../hooks/useModal';
@@ -9,21 +9,17 @@ import AccountModal from '../../components/Nav/AccountModal';
 import WalletProviderModal from '../../components/WalletProviderModal';
 
 import { Helmet } from 'react-helmet';
-import SynergyHomeTitle from '../../assets/img/home-title.png';
 import HeroImage from '../../assets/img/home-hero.png';
 import HeroBitcoin from '../../assets/img/hero-bitcoin.png';
 import HeroBinance from '../../assets/img/hero-binance.png';
 import HeroCardano from '../../assets/img/hero-cardano.png';
 import HeroLitecion from '../../assets/img/hero-litecoin.png';
+import ICON from '../../assets/img/icon.png';
 import Step1 from '../../assets/img/step1.png';
 import Step2 from '../../assets/img/step2.png';
 import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
 import NearIcon from '../../assets/img/partner-near.png';
-
-const StyledCard = styled(Card)`
-  background-color: #4d32727d;
-`;
 
 const TITLE = 'Synergy';
 
@@ -35,9 +31,22 @@ const useStyles = makeStyles((theme) => ({
     height: '950px',
     width: '100%',
     alignItems: 'center',
-    gap: '5px',
+    gap: '10px',
     backgroundSize: 'cover',
+    backgroundPositionX: 'center',
     background: `linear-gradient(357.1deg, #040B11 28.55%, rgba(4, 11, 17, 0.35) 68.07%), url(${HeroImage})`,
+
+    [theme.breakpoints.down('1025')]: {
+      height: '700px',
+    },
+
+    [theme.breakpoints.down('770')]: {
+      // marginTop: 
+    },
+
+    [theme.breakpoints.down('450')]: {
+      backgroundPositionY: '50px',
+    },
   },
   howtoSection: {
     background: '#040B11',
@@ -45,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '-100px',
-    padding: '12px',
+    padding: '24px',
   },
   detailSection: {
     display: 'flex',
     marginTop: '150px',
-    padding: '12px',
+    padding: '24px',
     color: 'white',
   },
   partnerSection: {
@@ -58,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '150px',
-    padding: '12px',
+    padding: '24px',
     color: 'white',
   },
   button: {
@@ -72,6 +81,16 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '80px',
     textAlign: 'center',
     textTransform: 'uppercase',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '55px',
+      lineHeight: '55px',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '40px',
+      lineHeight: '40px',
+    },
   },
   subtitle1: {
     color: 'white',
@@ -79,8 +98,15 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '40px',
     textAlign: 'center',
     textTransform: 'uppercase',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '25px',
+      lineHeight: '25px',
+    },
+
     [theme.breakpoints.down('430')]: {
-      fontSize: '14px',
+      fontSize: '16px',
+      lineHeight: '20px',
     },
   },
   subtitle2: {
@@ -90,6 +116,13 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '30px',
     textAlign: 'center',
     textTransform: 'uppercase',
+    maxWidth: '90%',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '16px',
+      lineHeight: '18px',
+    },
+
     [theme.breakpoints.down('430')]: {
       fontSize: '14px',
     },
@@ -100,6 +133,127 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '56px',
     textAlign: 'center',
     textTransform: 'uppercase',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '34px',
+      lineHeight: '34px',
+    },
+  },
+  sectionSubTitle: {
+    color: 'white',
+    fontSize: '44px',
+    lineHeight: '56px',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '34px',
+      lineHeight: '34px',
+    },
+  },
+  text: {
+    color: '#C2C3C5',
+    fontSize: '18px',
+    fontFamily: 'Poppins',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '16px',
+      lineHeight: '22px',
+    },
+  },
+  overviewContainer: {
+    display: 'flex',
+    gap: '50px',
+
+    [theme.breakpoints.down('430')]: {
+      gap: '20px',
+      justifyContent: 'space-between',
+    },
+  },
+  overviewTitle: {
+    fontSize: '20px',
+    color: '#C2C3C5',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '16px',
+      lineHeight: '28px',
+    },
+
+    [theme.breakpoints.down('375')]: {
+      fontSize: '14px',
+      lineHeight: '24px',
+    },
+  },
+  overviewValue: {
+    fontSize: '56px',
+    textShadow: '0px 4px 16px rgba(255,255,255,0.4)',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '44px',
+      lineHeight: '44px',
+    },
+
+    [theme.breakpoints.down('375')]: {
+      fontSize: '40px',
+      lineHeight: '40px',
+    },
+  },
+  stepCardContent: {
+    background: '#141B22',
+    height: '180px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    textAlign: 'center',
+    position: 'relative',
+    alignItems: 'center',
+    padding: '24px',
+    gap: '20px',
+
+    [theme.breakpoints.between('900', '1200')]: {
+      height: '230px',
+    },
+  },
+  icon1: {
+    width: '250px',
+    height: '250px',
+    marginLeft: '20px',
+    marginTop: '-100px',
+    position: 'absolute',
+    zIndex: '-1',
+
+    [theme.breakpoints.down('430')]: {
+      width: '150px',
+      height: '150px',
+      marginLeft: '-50px',
+      marginTop: '-80px',
+    },
+  },
+  icon2: {
+    width: '250px',
+    height: '250px',
+    transform: 'rotate(-80deg)',
+    marginRight: '100px',
+    marginTop: '300px',
+    position: 'absolute',
+    zIndex: '-1',
+    right: 0,
+
+    [theme.breakpoints.down('1500')]: {
+      display: 'none'
+    },
+  },
+  icon3: {
+    width: '250px',
+    height: '250px',
+    transform: 'rotate(-80deg)',
+    marginLeft: '-100px',
+    marginTop: '150px',
+    position: 'absolute',
+    zIndex: '-1',
+    left: 0,
+
+    [theme.breakpoints.down('1500')]: {
+      display: 'none'
+    },
   },
   video: {
     position: 'fixed',
@@ -123,6 +277,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const { account } = useWallet();
+  const xsmall = useMediaQuery('(max-width:320px)');
 
   const [onPresentAccountModal] = useModal(<AccountModal />);
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
@@ -155,7 +310,7 @@ const Home = () => {
           style={{
             display: 'flex',
             gap: '20px',
-            marginTop: '20px',
+            margin: '20px 10px 0px 10px',
           }}
         >
           {!account ? (
@@ -164,12 +319,12 @@ const Home = () => {
               className="shinyButtonPrimary"
               style={{
                 height: "42px",
-                minWidth: "200px",
+                minWidth: "160px",
                 fontSize: "18px",
                 lineHeight: "24px",
               }}
             >
-              Connect Wallet
+              Connect
             </Button>
           ) : (
             <Button
@@ -177,19 +332,19 @@ const Home = () => {
               className="shinyButtonPrimary"
               style={{
                 height: "42px",
-                minWidth: "200px",
+                minWidth: xsmall ? "120px" : '160px',
                 fontSize: "18px",
                 lineHeight: "24px",
               }}
             >
-              Your Wallet
+              Wallet
             </Button>
           )}
           <Button
             className="shinyButtonSecondary"
             style={{
               height: "42px",
-              minWidth: "200px",
+              minWidth: xsmall ? "120px" : '160px',
               fontSize: "18px",
               lineHeight: "24px",
             }}
@@ -204,10 +359,42 @@ const Home = () => {
           How to start <span style={{ color: '#21E786' }}>synergy</span> work
         </Typography>
         <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3}>
-          <Grid item xs={12} md={3} lg={3}>
-            <Box style={{ background: '#141B22', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <Box style={{ display: 'flex', width: '100%', justifyContent: 'center', minHeight: '100px' }}>
-                <img src={Step1} style={{ width: '92px', height: '72px' }} />
+          <Grid item xs={12} sm={6} md={3} lg={3} style={{ position: 'relative' }}>
+            <Box
+              style={{
+                width: '124px',
+                height: '100px',
+                background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                marginLeft: '-3px',
+                marginTop: '-3px',
+                position: 'absolute',
+                zIndex: '-1',
+              }}
+            />
+            <Box
+              style={{
+                width: '124px',
+                height: '100px',
+                background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                marginLeft: '-3px',
+                marginTop: '-3px',
+                position: 'absolute',
+                zIndex: '-1',
+                filter: 'blur(4px)',
+              }}
+            />
+            <Box 
+              style={{ 
+                background: '#141B22', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between',
+                padding: '24px',
+                gap: '20px',
+              }}
+            >
+              <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+                <img src={Step1} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -218,12 +405,47 @@ const Home = () => {
                 </Typography>
               </Box>
             </Box>
-
+            <Box
+              style={{
+                width: '124px',
+                height: '100px',
+                background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                marginRight: '9px',
+                marginBottom: '9px',
+                position: 'absolute',
+                zIndex: '-1',
+                bottom: 0,
+                right: 0,
+              }}
+            />
+            <Box
+              style={{
+                width: '124px',
+                height: '100px',
+                background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                marginRight: '9px',
+                marginBottom: '9px',
+                position: 'absolute',
+                zIndex: '-1',
+                bottom: 0,
+                right: 0,
+                filter: 'blur(4px)',
+              }}
+            />
           </Grid>
-          <Grid item xs={12} md={3} lg={3}>
-            <Box style={{ background: '#141B22', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Box 
+              style={{ 
+                background: '#141B22', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between',
+                padding: '24px',
+                gap: '20px',
+              }}
+            >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step2} style={{ width: '57px', height: '72px' }} />
+                <img src={Step2} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -235,10 +457,19 @@ const Home = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3} lg={3}>
-            <Box style={{ background: '#141B22', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Box 
+              style={{ 
+                background: '#141B22', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between',
+                padding: '24px',
+                gap: '20px',
+              }}
+            >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step3} style={{ width: '81px', height: '72px' }} />
+                <img src={Step3} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -251,17 +482,19 @@ const Home = () => {
             </Box>
 
           </Grid>
-          <Grid item xs={12} md={3} lg={3}>
-            <Box
-              style={{
-                background: '#141B22',
-                display: 'flex',
-                flexDirection: 'column',
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+            <Box 
+              style={{ 
+                background: '#141B22', 
+                display: 'flex', 
+                flexDirection: 'column', 
                 justifyContent: 'space-between',
+                padding: '24px',
+                gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step4} style={{ width: '72px', height: '70px' }} />
+                <img src={Step4} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -276,31 +509,33 @@ const Home = () => {
         </Grid>
       </Box>
       <Box className={classes.detailSection}>
-        <Grid container spacing={10}>
+        <img src={ICON} className={classes.icon1} />
+        <img src={ICON} className={classes.icon2} />
+        <Grid container spacing={8}>
           <Grid item xs={12} md={6} lg={6} style={{ display: 'flex', alignItems: 'center' }}>
             <Box>
-              <Typography style={{ fontSize: '44px', }}>
+              <Typography className={classes.sectionSubTitle}>
                 Our Mission
               </Typography>
-              <Typography style={{ fontSize: '18px', fontFamily: 'Poppins', color: '#C2C3C5' }}>
+              <Typography className={classes.text}>
                 We want to bridge the gap between the cryptocurrency marke and everyday consumer.
                 We'll bring it to the mainstream by removing barriers to access and by helping people
                 trust and understand what we believe to be the future of money.
               </Typography>
-              <Box style={{ display: 'flex', gap: '50px' }}>
+              <Box className={classes.overviewContainer}>
                 <Box style={{ marginTop: '40px' }}>
-                  <Typography style={{ fontSize: '20px', color: '#C2C3C5' }}>
+                  <Typography className={classes.overviewTitle}>
                     TVL
                   </Typography>
-                  <Typography style={{ fontSize: '56px', textShadow: '0px 4px 16px rgba(255,255,255,0.4)' }}>
+                  <Typography className={classes.overviewValue}>
                     1000+
                   </Typography>
                 </Box>
                 <Box style={{ marginTop: '40px' }}>
-                  <Typography style={{ fontSize: '20px', color: '#C2C3C5' }}>
+                  <Typography className={classes.overviewTitle}>
                     Community members
                   </Typography>
-                  <Typography style={{ fontSize: '56px', textShadow: '0px 4px 16px rgba(255,255,255,0.4)' }}>
+                  <Typography className={classes.overviewValue}>
                     2240+
                   </Typography>
                 </Box>
@@ -322,21 +557,31 @@ const Home = () => {
           <Grid item xs={12} md={6} lg={6}>
             <Box>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} lg={6}>
+                <Grid item xs={12} sm={6} md={6} lg={6} style={{ position: 'relative' }}>
                   <Box
                     style={{
-                      background: '#141B22',
-                      height: '180px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      textAlign: 'center',
-                      position: 'relative',
-                      alignItems: 'center',
-                      padding: '24px',
-                      gap: '20px',
+                      width: '124px',
+                      height: '100px',
+                      background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                      marginLeft: '-3px',
+                      marginTop: '-3px',
+                      position: 'absolute',
+                      zIndex: '-1',
                     }}
-                  >
+                  />
+                  <Box
+                    style={{
+                      width: '124px',
+                      height: '100px',
+                      background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                      marginLeft: '-3px',
+                      marginTop: '-3px',
+                      position: 'absolute',
+                      zIndex: '-1',
+                      filter: 'blur(4px)',
+                    }}
+                  />
+                  <Box className={classes.stepCardContent}>
                     <Typography
                       style={{
                         position: 'absolute',
@@ -356,22 +601,36 @@ const Home = () => {
                       Earn  tokens passively by staking your assets & collect big earning.
                     </Typography>
                   </Box>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
                   <Box
                     style={{
-                      background: '#141B22',
-                      height: '180px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      textAlign: 'center',
-                      position: 'relative',
-                      alignItems: 'center',
-                      padding: '24px',
-                      gap: '20px',
+                      width: '124px',
+                      height: '100px',
+                      background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                      marginRight: '9px',
+                      marginBottom: '9px',
+                      position: 'absolute',
+                      zIndex: '-1',
+                      bottom: 0,
+                      right: 0,
                     }}
-                  >
+                  />
+                  <Box
+                    style={{
+                      width: '124px',
+                      height: '100px',
+                      background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                      marginRight: '9px',
+                      marginBottom: '9px',
+                      position: 'absolute',
+                      zIndex: '-1',
+                      bottom: 0,
+                      right: 0,
+                      filter: 'blur(4px)',
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6} style={{ position: 'relative' }}>
+                  <Box className={classes.stepCardContent}>
                     <Typography
                       style={{
                         position: 'absolute',
@@ -392,21 +651,8 @@ const Home = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <Box
-                    style={{
-                      background: '#141B22',
-                      height: '180px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      textAlign: 'center',
-                      position: 'relative',
-                      alignItems: 'center',
-                      padding: '24px',
-                      gap: '20px',
-                    }}
-                  >
+                <Grid item xs={12} sm={6} md={6} lg={6} style={{ position: 'relative' }}>
+                  <Box className={classes.stepCardContent}>
                     <Typography
                       style={{
                         position: 'absolute',
@@ -423,25 +669,12 @@ const Home = () => {
                       Lottery
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Highest bonuses on your four first four deposits. Buy Tikects
+                      Highest bonuses on your four first four deposits. Buy Tickets
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <Box
-                    style={{
-                      background: '#141B22',
-                      height: '180px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      textAlign: 'center',
-                      position: 'relative',
-                      alignItems: 'center',
-                      padding: '24px',
-                      gap: '20px',
-                    }}
-                  >
+                <Grid item xs={12} sm={6} md={6} lg={6} style={{ position: 'relative' }}>
+                  <Box className={classes.stepCardContent}>
                     <Typography
                       style={{
                         position: 'absolute',
@@ -467,10 +700,10 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <Box>
-              <Typography style={{ fontSize: '44px', }}>
+              <Typography className={classes.sectionSubTitle}>
                 Power of Blockchain
               </Typography>
-              <Typography style={{ fontSize: '18px', fontFamily: 'Poppins', color: '#C2C3C5' }}>
+              <Typography className={classes.text}>
                 Blockchain is a system of recording information in a way that makes it difficult or impossible to change, hack,
                 or cheat the system. A blockchain is essentially a digital ledger of transactions that is duplicated and distributed
                 across the entire network of computer systems on the blockchain.
@@ -479,10 +712,10 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <Box>
-              <Typography style={{ fontSize: '44px', }}>
+              <Typography className={classes.sectionSubTitle}>
                 Purpose Of Crypto
               </Typography>
-              <Typography style={{ fontSize: '18px', fontFamily: 'Poppins', color: '#C2C3C5' }}>
+              <Typography className={classes.text}>
                 Cryptocurrencies are a new paradigm for money. Their promise is to streamline existing financial architecture
                 to make it faster and cheaper. Technology and architecture decentralize existing monetary systems make it
                 possible for transacting parties to exchange value independently of intermediary institutions such as banks.
@@ -492,96 +725,97 @@ const Home = () => {
         </Grid>
       </Box>
       <Box className={classes.partnerSection}>
+        <img src={ICON} className={classes.icon3} />
         <Typography className={classes.sectionTitle}>
           <span style={{ color: '#21E786' }}>synergy</span> Partners
         </Typography>
         <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3}>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center' }}>
               <img src={NearIcon}></img>
             </Box>
           </Grid>
-          <Grid item xs={3} md={2} lg={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
             <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
               <img src={NearIcon}></img>
             </Box>

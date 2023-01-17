@@ -32,7 +32,7 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
     setWalletProviderOpen(false);
   };
 
-  const buttonText = text ? text : 'Connect Wallet';
+  const buttonText = text ? text : 'Connect';
 
   return (
     <div>
