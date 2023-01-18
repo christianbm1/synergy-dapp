@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '12px',
     position: 'absolute',
     marginTop: '-70px',
+    gap: '20px',
   },
   content: {
     display: 'flex',
@@ -67,8 +68,8 @@ const PrimaryFarmCard = ({ bank }) => {
     <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
       <Box className={classes.cardContainer}>
         <Box className={classes.header}>
-          <TokenSymbol size={120} symbol={tokenList[0]} />
-          <TokenSymbol size={120} symbol={tokenList[1]} />
+          <TokenSymbol size={110} symbol={tokenList[0]} />
+          <TokenSymbol size={110} symbol={tokenList[1]} />
         </Box>
         <Box
           style={{

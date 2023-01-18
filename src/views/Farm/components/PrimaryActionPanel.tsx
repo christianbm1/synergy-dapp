@@ -1,7 +1,8 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Box, Button, Typography } from '@material-ui/core';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 
 import useModal from '../../../hooks/useModal';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
@@ -33,6 +34,8 @@ import useEarnings from '../../../hooks/useEarnings';
 import useDiamondStats from '../../../hooks/useDiamondStats';
 import useHarvest from '../../../hooks/useHarvest';
 import IconButton from '../../../components/IconButton';
+import useWallet from 'use-wallet';
+import WalletProviderModal from '../../../components/WalletProviderModal';
 
 interface PanelProps {
   bank: Bank;
@@ -40,6 +43,8 @@ interface PanelProps {
 
 const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
   const { color: themeColor } = useContext(ThemeContext);
+  const { account } = useWallet();
+  const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
   const [approveStatus, approve] = useApprove(bank.depositToken, bank.address);
 
   const tokenBalance = useTokenBalance(bank.depositToken);
@@ -66,6 +71,13 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
   const { onWithdraw } = useWithdraw(bank);
   const { onReward } = useHarvest(bank);
 
+  const handleWalletProviderOpen = () => {
+    setWalletProviderOpen(true);
+  };
+
+  const handleWalletProviderClose = () => {
+    setWalletProviderOpen(false);
+  };
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -128,68 +140,79 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
         </Box>
       </StyledCardContentInner>
       <StyledCardActions>
-        {approveStatus !== ApprovalState.APPROVED ? (
-          <Button
-            disabled={
-              bank.closedForStaking ||
-              approveStatus === ApprovalState.PENDING ||
-              approveStatus === ApprovalState.UNKNOWN
-            }
-            onClick={approve}
-            className={
-              bank.closedForStaking ||
-                approveStatus === ApprovalState.PENDING ||
-                approveStatus === ApprovalState.UNKNOWN
-                ? 'shinyButtonDisabled'
-                : 'shinyButtonPrimary'
-            }
-            style={{ width: '-webkit-fill-available' }}
-          >
-            {`Approve ${bank.depositTokenName}`}
-          </Button>
-        ) : (
-          <>
-            <Button
-              className={'shinyButtonPrimary'}
-              onClick={onPresentWithdraw}
+        {!account ? (
+            <Button 
+              onClick={handleWalletProviderOpen} 
+              className="shinyButtonPrimary" 
+              startIcon={<AccountBalanceWalletIcon />}
+              style={{width: '-webkit-fill-available'}}
             >
-              -
+              Connect
             </Button>
-            <Button
-              className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
-              disabled={earnings.eq(0)}
-              onClick={onReward}
-              fullWidth
-            >
-              Claim
-            </Button>
+          ) : ( (approveStatus !== ApprovalState.APPROVED) ? (
             <Button
               disabled={
                 bank.closedForStaking ||
-                bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                bank.depositTokenName === 'CRS/BUSD'
+                approveStatus === ApprovalState.PENDING ||
+                approveStatus === ApprovalState.UNKNOWN
               }
+              onClick={approve}
               className={
                 bank.closedForStaking ||
-                bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                bank.depositTokenName === 'CRS/BUSD'
+                  approveStatus === ApprovalState.PENDING ||
+                  approveStatus === ApprovalState.UNKNOWN
                   ? 'shinyButtonDisabled'
                   : 'shinyButtonPrimary'
               }
-              onClick={() => (bank.closedForStaking ? null : onPresentZap())}
+              style={{ width: '-webkit-fill-available' }}
             >
-              <FlashOnIcon style={{ color: themeColor.grey[400],  }} />
+              {`Approve ${bank.depositTokenName}`}
             </Button>
-            <Button
-              className={'shinyButtonPrimary'}
-              disabled={bank.closedForStaking}
-              onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
-            >
-              +
-            </Button>
-          </>
+          ) : (
+            <>
+              <Button
+                className={'shinyButtonPrimary'}
+                onClick={onPresentWithdraw}
+              >
+                -
+              </Button>
+              <Button
+                className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
+                disabled={earnings.eq(0)}
+                onClick={onReward}
+                fullWidth
+              >
+                Claim
+              </Button>
+              <Button
+                disabled={
+                  bank.closedForStaking ||
+                  bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
+                  bank.depositTokenName === 'CRS/BUSD'
+                }
+                className={
+                  bank.closedForStaking ||
+                  bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
+                  bank.depositTokenName === 'CRS/BUSD'
+                    ? 'shinyButtonDisabled'
+                    : 'shinyButtonPrimary'
+                }
+                onClick={() => (bank.closedForStaking ? null : onPresentZap())}
+              >
+                <FlashOnIcon style={{ color: themeColor.grey[400],  }} />
+              </Button>
+              <Button
+                className={'shinyButtonPrimary'}
+                disabled={bank.closedForStaking}
+                onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
+              >
+                +
+              </Button>
+            </>
+          )
         )}
       </StyledCardActions>
+      <WalletProviderModal open={isWalletProviderOpen} handleClose={handleWalletProviderClose} />
     </StyledContainer>
   );
 };

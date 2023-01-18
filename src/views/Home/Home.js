@@ -20,6 +20,7 @@ import Step2 from '../../assets/img/step2.png';
 import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
 import NearIcon from '../../assets/img/partner-near.png';
+import { Link } from 'react-router-dom';
 
 const TITLE = 'Synergy';
 
@@ -342,6 +343,7 @@ const Home = () => {
           )}
           <Button
             className="shinyButtonSecondary"
+            href="https://synergy-2.gitbook.io/the-book-of-synergy/"
             style={{
               height: "42px",
               minWidth: xsmall ? "120px" : '160px',
@@ -358,8 +360,8 @@ const Home = () => {
         <Typography className={classes.sectionTitle}>
           How to get started with <span style={{ color: '#21E786' }}>synergy</span>
         </Typography>
-        <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3}>
-          <Grid item xs={12} sm={6} md={3} lg={3} style={{ position: 'relative' }}>
+        <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3} alignItems="stretch">
+          <Grid item xs={12} sm={6} md={6} lg={3} style={{ position: 'relative' }}>
             <Box
               style={{
                 width: '124px',
@@ -387,21 +389,22 @@ const Home = () => {
               style={{ 
                 background: '#141B22', 
                 display: 'flex', 
+                height: '246px',
                 flexDirection: 'column', 
-                justifyContent: 'space-between',
-                padding: '24px',
+                justifyContent: 'start',
+                padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step1} />
+                <img src={Step1} height={78}/>
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
                   Step 1
                 </Typography>
-                <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Connect Your Wallet
+                <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
+                  Buy DIAMONDS in PancakeSwap
                 </Typography>
               </Box>
             </Box>
@@ -433,75 +436,78 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
           <Box 
               style={{ 
                 background: '#141B22', 
                 display: 'flex', 
+                height: '246px',
                 flexDirection: 'column', 
-                justifyContent: 'space-between',
-                padding: '24px',
+                justifyContent: 'start',
+                padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step2} />
+                <img src={Step2} height={78}/>
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
                   Step 2
                 </Typography>
-                <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Select Your Quantity
+                <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
+                  Stake DIAMONDS to earn CRYSTALS
                 </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
           <Box 
               style={{ 
                 background: '#141B22', 
                 display: 'flex', 
+                height: '246px',
                 flexDirection: 'column', 
-                justifyContent: 'space-between',
-                padding: '24px',
+                justifyContent: 'start',
+                padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step3} />
+                <img src={Step3} height={78}/>
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
                   Step 3
                 </Typography>
-                <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Confirm the Transaction
+                <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
+                  Earn more DIAMONDS by zapping CRYSTALS to CRS/BUSD LP
                 </Typography>
               </Box>
             </Box>
 
           </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             <Box 
               style={{ 
                 background: '#141B22', 
                 display: 'flex', 
+                height: '246px',
                 flexDirection: 'column', 
-                justifyContent: 'space-between',
-                padding: '24px',
+                justifyContent: 'start',
+                padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step4} />
+                <img src={Step4} height={78}/>
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
                   Step 4
                 </Typography>
-                <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Receive Your Tokens
+                <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
+                  Harvest DIAMONDS and repeat STEP 2
                 </Typography>
               </Box>
             </Box>
@@ -542,6 +548,8 @@ const Home = () => {
               </Box>
               <Button
                 className="shinyButtonSecondary"
+                component={Link} 
+                to="/farm"
                 style={{
                   marginTop: "40px",
                   height: "48px",
@@ -647,7 +655,7 @@ const Home = () => {
                       Exclusive NFTs
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      We have exclusive, hand-drawn NFTs that you can stake to earn double rewards!
+                      We have exclusive, hand-drawn NFTs that will be your access cards for future utilities!
                     </Typography>
                   </Box>
                 </Grid>
@@ -669,7 +677,7 @@ const Home = () => {
                       Lottery
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      The highest bonuses on your first four deposits allows you to buy tickets.
+                      Play for huge prizes and burn extra $CRS in the same time!
                     </Typography>
                   </Box>
                 </Grid>
@@ -691,7 +699,7 @@ const Home = () => {
                       Genesis Pools
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      The delicate curves and freeform shape, the Genesis brings harmony to your...
+                      Deposit whitelisted tokens and start your journey in Synergy ecosystem!
                     </Typography>
                   </Box>
                 </Grid>

@@ -12,6 +12,44 @@ import useEarnings from '../../hooks/useEarnings';
 import useCrystalStats from '../../hooks/useCrystalStats';
 
 const useStyles = makeStyles((theme) => ({
+  cardContainer: {
+    background: '#141B22',
+    position: 'relative',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: 'white',
+    padding: '12px',
+    width: '-webkit-fill-available',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '10px 24px 0px 24px',
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '10px 0px',
+  },
+  action: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '20px 24px 12px 24px',
+  },
+  divider: {
+    // margin: '0px 30px 20px', 
+    background: 'white', 
+    opacity: '0.2',
+
+    [theme.breakpoints.down('450')]: {
+      margin: '0px 15px 10px', 
+    },
+  },
   styledCard: {
     borderTopLeftRadius: '50px',
     borderTopRightRadius: '50px',
@@ -45,47 +83,109 @@ const PoolCard = ({ bank }) => {
 
   return (
     <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
-      <Card variant="outlined" className={classes.styledCard}>
-        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-50px' }}>
-          <TokenSymbol size={64} symbol={bank.depositTokenName} isLPLogo={true} />
-          <Typography variant="h5" component="h3">
+      <Box className={classes.cardContainer}>
+        <Box
+          style={{
+            width: '124px',
+            height: '100px',
+            background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+            marginLeft: '-3px',
+            marginTop: '-3px',
+            position: 'absolute',
+            zIndex: '-1',
+          }}
+        />
+        <Box
+          style={{
+            width: '124px',
+            height: '100px',
+            background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+            marginLeft: '-3px',
+            marginTop: '-3px',
+            position: 'absolute',
+            zIndex: '-1',
+            filter: 'blur(4px)',
+          }}
+        />
+        <Box className={classes.header}>
+          <TokenSymbol size={86} symbol={bank.depositTokenName} isLPLogo={true} />
+          <Typography style={{ fontSize: '26px', marginRight: '6px' }}>
             {bank.depositTokenName}
           </Typography>
-          <Typography variant="inherit" color="primary">
-            APR
-          </Typography>
-          <Typography variant="inherit" color="textSecondary">
-            {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
-          </Typography>
-          <Typography variant="inherit" color="primary">
-            Daily APR
-          </Typography>
-          <Typography variant="inherit" color="textSecondary">
-            {bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%
-          </Typography>
-          <Typography variant="inherit" color="primary">
-            TVL
-          </Typography>
-          <Typography variant="inherit" color="textSecondary">
-            {statsOnPool?.TVL}$
-          </Typography>
-          <Typography variant="inherit" color="primary">
-            Reward
-          </Typography>
-          <Typography variant="inherit" color="textSecondary">
-            {getDisplayBalance(earnings, bank.earnToken.decimal, 2)} CRS {`(${earnedInDollars}$)`}
-          </Typography>
-          <Typography variant="inherit" color="primary">
-            Staked
-          </Typography>
-          <Typography variant="inherit" color="textSecondary">
-            {getDisplayBalance(stakedBalance, bank.depositToken.decimal, 2)} {`${bank.depositTokenName}`} {`(${stakedInDollars}$)`}
-          </Typography>
-        </CardContent>
-        <CardActions style={{ padding: '0px 16px' }}>
+        </Box>
+        <Box className={classes.content}>
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              APR
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
+            </Typography>
+          </Box>
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Daily APR
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%
+            </Typography>
+          </Box>
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              TVL
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {statsOnPool?.TVL}$
+            </Typography>
+          </Box>
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Reward
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {getDisplayBalance(earnings, bank.earnToken.decimal, 2)} CRS {`(${earnedInDollars}$)`}
+            </Typography>
+          </Box>
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Staked
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {getDisplayBalance(stakedBalance, bank.depositToken.decimal, 2)} {`${bank.depositTokenName}`} {`(${stakedInDollars}$)`}
+            </Typography>
+          </Box>
+        </Box>
+        <Box className={classes.action}>
           <ActionPanel bank={bank} />
-        </CardActions>
-      </Card>
+        </Box>
+        <Box
+          style={{
+            width: '124px',
+            height: '100px',
+            background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+            marginRight: '-3px',
+            marginBottom: '-3px',
+            position: 'absolute',
+            zIndex: '-1',
+            bottom: 0,
+            right: 0,
+          }}
+        />
+        <Box
+          style={{
+            width: '124px',
+            height: '100px',
+            background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+            marginRight: '-3px',
+            marginBottom: '-3px',
+            position: 'absolute',
+            zIndex: '-1',
+            bottom: 0,
+            right: 0,
+            filter: 'blur(4px)',
+          }}
+        />
+      </Box>
     </Grid>
   );
 };

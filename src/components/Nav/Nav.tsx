@@ -178,7 +178,7 @@ const Nav = () => {
                 SYNERGY
               </Typography>
             </Link>
-            <Box style={{ paddingLeft: '30px', fontSize: '1rem', display: 'flex', alignItems: 'center' }}>
+            <Box style={{ fontSize: '1rem', display: 'flex', alignItems: 'center' }}>
               <Link to="/gpool" className={'navLink ' + classes.link}>
                 Genesis Pools
               </Link>
