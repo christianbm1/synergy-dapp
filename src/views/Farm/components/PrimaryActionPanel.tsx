@@ -109,18 +109,22 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
     <StyledContainer>
       <StyledCardContentInner>
         <Box style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
-          <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography>{bank.depositTokenName} Staked:</Typography>
-            <Typography>
+          <StyledRow>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Your Staked:
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
               {getDisplayBalance(stakedBalance, 18, 2)} {`(${stakedInDollars}$)`}
             </Typography>
-          </Box>
-          <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography>DIAMOND Earned:</Typography>
-            <Typography>
+          </StyledRow>
+          <StyledRow>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Earned:
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
               {getDisplayBalance(earnings, 18, 2)} {`(${earnedInDollars}$)`}
             </Typography>
-          </Box>
+          </StyledRow>
         </Box>
       </StyledCardContentInner>
       <StyledCardActions>
@@ -137,7 +141,7 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
                 approveStatus === ApprovalState.PENDING ||
                 approveStatus === ApprovalState.UNKNOWN
                 ? 'shinyButtonDisabled'
-                : 'shinyButton'
+                : 'shinyButtonPrimary'
             }
             style={{ width: '-webkit-fill-available' }}
           >
@@ -146,13 +150,13 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
         ) : (
           <>
             <Button
-              className={'shinyButton'}
+              className={'shinyButtonPrimary'}
               onClick={onPresentWithdraw}
             >
               -
             </Button>
             <Button
-              className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButton'}
+              className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
               disabled={earnings.eq(0)}
               onClick={onReward}
               fullWidth
@@ -170,14 +174,14 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
                 bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
                 bank.depositTokenName === 'CRS/BUSD'
                   ? 'shinyButtonDisabled'
-                  : 'shinyButton'
+                  : 'shinyButtonPrimary'
               }
               onClick={() => (bank.closedForStaking ? null : onPresentZap())}
             >
               <FlashOnIcon style={{ color: themeColor.grey[400],  }} />
             </Button>
             <Button
-              className={'shinyButton'}
+              className={'shinyButtonPrimary'}
               disabled={bank.closedForStaking}
               onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
             >
@@ -201,7 +205,7 @@ const StyledCardActions = styled.div`
 const StyledCardContentInner = styled.div`
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 `;
 
 const StyledContainer = styled.div`
@@ -210,5 +214,11 @@ const StyledContainer = styled.div`
 	flex-direction: column;
   justify-content: space-between;
 `;
+
+const StyledRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0px;
+`
 
 export default PrimaryActionPanel;

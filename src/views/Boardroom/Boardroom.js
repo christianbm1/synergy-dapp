@@ -253,7 +253,7 @@ const Boardroom = () => {
         </Typography>
         <Typography className={classes.subtitle}>
           ARK is the only place where you can get CRYSTALs by staking.  <br />
-          Stake your DIAMONDs and CRYSTALs for reward!
+          Stake your DIAMONDs and CRYSTALs for rewards!
         </Typography>
       </Box>
       <Box className={classes.cardSection}>

@@ -71,7 +71,7 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
               approveStatus === ApprovalState.PENDING ||
               approveStatus === ApprovalState.UNKNOWN
               ? 'shinyButtonDisabled'
-              : 'shinyButton'
+              : 'shinyButtonPrimary'
           }
           style={{width: '-webkit-fill-available'}}
         >
@@ -79,18 +79,18 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
         </Button>
       ) : (
         <>
-          <Button className={'shinyButton'} onClick={onPresentWithdraw}>
+          <Button className={'shinyButtonPrimary'} onClick={onPresentWithdraw}>
             -
           </Button>
           <Button
             onClick={onReward}
             disabled={earnings.eq(0)}
-            className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButton'}
+            className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
           >
             Claim
           </Button>
           <Button
-            className={'shinyButton'}
+            className={'shinyButtonPrimary'}
             disabled={bank.closedForStaking}
             onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}
           >

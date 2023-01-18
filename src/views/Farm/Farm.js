@@ -19,23 +19,131 @@ import Triangle from '../../assets/img/triangle.png';
 import Partner from '../../assets/img/partner.png';
 import TitleImage from '../../assets/img/farm-title.png';
 import AvatarImage from '../../assets/img/farm-avatar.jpg';
-
-const BackgroundImage = createGlobalStyle`
-  body {
-    background: url(${HomeImage}) repeat !important;
-    background-size: cover !important;
-    background-position-y: top !important;
-    background-color: #171923;
-  }
-`;
+import LImage from '../../assets/img/background/astronaut.png';
+import RImage from '../../assets/img/background/satellite.png';
 
 const TITLE = 'Synergy | Farms'
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    [theme.breakpoints.up('xl')]: {
-      paddingLeft: '60px',
-      paddingRight: '60px'
+  titleSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '200px 24px 0px 24px',
+    marginBottom: '60px',
+    gap: '20px',
+    position: 'relative',
+  },
+  partnerSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '10px 24px 0px 24px',
+    gap: '20px',
+    position: 'relative',
+  },
+  poolSection: {
+    display: 'flex',
+    padding: '24px',
+    marginBottom: '60px',
+  },
+  title: {
+    color: 'white',
+    fontSize: '80px',
+    lineHeight: '80px',
+    textAlign: 'center',
+    textTransform: 'capitalize',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '55px',
+      lineHeight: '55px',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '40px',
+      lineHeight: '40px',
+    },
+  },
+  subtitle1: {
+    color: 'white',
+    fontSize: '40px',
+    lineHeight: '40px',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '25px',
+      lineHeight: '25px',
+    },
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '16px',
+      lineHeight: '20px',
+    },
+  },
+  subtitle2: {
+    color: 'white',
+    fontFamily: 'Poppins',
+    fontSize: '20px',
+    lineHeight: '30px',
+    textAlign: 'center',
+    // maxWidth: '90%',
+
+    [theme.breakpoints.down('1025')]: {
+      fontSize: '16px',
+      lineHeight: '18px',
+    },
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '14px',
+    },
+  },
+  leftImg: {
+    position: 'absolute',
+    width: '20%',
+    transformOrigin: 'left center',
+    left: '0%',
+    transform: 'translate(-6%, -10%) rotate(50deg)',
+    zIndex: '-1',
+
+    [theme.breakpoints.down('1030')]: {
+      transform: 'translate(-10%, 10%) rotate(50deg)',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      width: '30%',
+      transform: 'translate(-10%, 40%) rotate(50deg)',
+    },
+
+    [theme.breakpoints.down('350')]: {
+      width: '30%',
+      transform: 'translate(-10%, 50%) rotate(50deg)',
+    },
+  },
+  rightImg: {
+    position: 'absolute',
+    width: '25%',
+    transformOrigin: 'right center',
+    right: '0%',
+    transform: 'translate(25%, 55%)',
+    zIndex: '-1',
+
+    [theme.breakpoints.down('1030')]: {
+      transform: 'translate(30%, 100%)',
+    },
+
+    [theme.breakpoints.down('800')]: {
+      transform: 'translate(16%, 100%)',
+    },
+
+    [theme.breakpoints.down('450')]: {
+      width: '40%',
+      transform: 'translate(16%, 120%)',
+    },
+
+    [theme.breakpoints.down('350')]: {
+      width: '40%',
+      transform: 'translate(16%, 120%)',
     },
   },
 }));
@@ -47,105 +155,59 @@ const Farm = () => {
   const { account } = useWallet();
   const activeBanks = banks.filter((bank) => !bank.finished);
   return (
-    <Switch>
-      <Page>
-        <Route exact path={path}>
-          <BackgroundImage />
-          <Helmet>
-            <title>{TITLE}</title>
-          </Helmet>
-          {!!account ? (
-            <>
-              <Box style={{ position: 'absolute', top: '110px', right: '-4%', zIndex: -1 }}>
-                <img src={AvatarImage} width={250} />
-              </Box>
-              <Container maxWidth="xl" className={classes.container}>
-                <Box>
-                  <img src={TitleImage} alt="Farm Title" style={{ maxHeight: '70px' }} />
-                  <Box style={{ marginTop: 10 }}>
-                    <Typography align="left" variant="h4">
-                      FARM
-                    </Typography>
-                  </Box>
-                  <Box
-                    style={{
-                      display: 'flex',
-                      marginBottom: 10,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-                    <Box style={{ color: "white", marginLeft: 5 }}>
-                      <Typography align="left">
-                        Stake CRYSTAL or DIAMOND
-                      </Typography>
-                      <Typography align="left">
-                        with BUSD or BNB and get DIAMONDS as reward
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                  {activeBanks
-                    .filter((bank) => bank.sectionInUI === 1)
-                    .map((bank) => (
-                      <React.Fragment key={bank.name}>
-                        <PrimaryFarmCard bank={bank} />
-                      </React.Fragment>
-                    ))}
-                </Grid>
-                <Box style={{ marginTop: '80px' }}>
-                  <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'bottom', gap: '5px' }}>
-                    <Typography align="left" variant="h4">
-                      Partner Farms
-                    </Typography>
-                    <img src={Partner} alt="Partner" style={{ maxHeight: '35px' }} />
-                  </Box>
-                  <Box
-                    style={{
-                      display: 'flex',
-                      marginBottom: 10,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <img src={Triangle} alt="Triangle" style={{ maxHeight: '30px' }} />
-                    <Box style={{ color: "white", marginLeft: 5 }}>
-                      <Typography align="left">
-                        Combine your token with CRYSTAL
-                      </Typography>
-                      <Typography align="left">
-                        and take DIAMONDs as reward
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box mt={5}>
-                  <div hidden={activeBanks.filter((bank) => bank.sectionInUI === 2).length === 0}>
-                    <Grid container spacing={3} style={{ marginTop: '20px' }}>
-                      {activeBanks
-                        .filter((bank) => bank.sectionInUI === 2)
-                        .map((bank) => (
-                          <React.Fragment key={bank.name}>
-                            <FarmCard bank={bank} />
-                          </React.Fragment>
-                        ))}
-                    </Grid>
-                  </div>
-                </Box>
-              </Container>
-            </>
-          ) : (
-            <UnlockWallet />
-          )}
-        </Route>
-        <Route path={`${path}/:bankId`}>
-          {/* <BackgroundImage /> */}
-          <Bank />
-        </Route>
-      </Page>
-    </Switch>
+    <Page>
+        <Helmet>
+          <title>{TITLE}</title>
+        </Helmet>
+        <img src={LImage} className={classes.leftImg} />
+      <img src={RImage} className={classes.rightImg} />
+      <Box className={classes.titleSection}>
+        <Typography className={classes.title}>
+          Let Your Resources Work!
+        </Typography>
+        <Typography className={classes.subtitle1}>
+          Farms
+        </Typography>
+        <Typography className={classes.subtitle2}>
+          Stake CRYSTAL or DIAMOND <br />
+          with BUSD or BNB and get DIAMONDS as a reward!
+        </Typography>
+      </Box>
+
+      <Box className={classes.poolSection}>
+        <Grid container spacing={3} style={{ marginTop: '20px', rowGap: '50px' }}>
+          {activeBanks
+            .filter((bank) => bank.sectionInUI === 1)
+            .map((bank) => (
+              <React.Fragment key={bank.name}>
+                <PrimaryFarmCard bank={bank} />
+              </React.Fragment>
+            ))}
+        </Grid>
+      </Box>
+
+      <Box className={classes.partnerSection}>
+        <Typography className={classes.title}>
+          Partner Farms
+        </Typography>
+        <Typography className={classes.subtitle2}>
+          Combine your token with CRYSTAL <br />
+          and take DIAMONDs as a reward!
+        </Typography>
+      </Box>
+
+      <Box className={classes.poolSection}>
+        <Grid container spacing={3} style={{ marginTop: '20px' }}>
+          {activeBanks
+            .filter((bank) => bank.sectionInUI === 2)
+            .map((bank) => (
+              <React.Fragment key={bank.name}>
+                <FarmCard bank={bank} />
+              </React.Fragment>
+            ))}
+        </Grid>
+      </Box>
+    </Page>
   );
 };
 

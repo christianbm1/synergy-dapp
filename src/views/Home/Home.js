@@ -598,7 +598,7 @@ const Home = () => {
                       Daily Earnings
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Earn tokens passively by staking your assets and collecting big earnings
+                      Earn tokens passively by staking your assets and collecting big earnings.
                     </Typography>
                   </Box>
                   <Box
