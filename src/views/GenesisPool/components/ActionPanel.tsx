@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import useWallet from 'use-wallet';
+import { useWallet } from 'use-wallet';
 import { Button, Typography } from '@material-ui/core';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 

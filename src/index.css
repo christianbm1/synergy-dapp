@@ -114,7 +114,7 @@ code {
   /* padding: 12px 24px!important; */
   font-size: 18px !important;
   line-height: 20px;
-  height: 48px;
+  /* height: 48px; */
 
   background-color: white !important;
   opacity: 0.3;
@@ -132,7 +132,7 @@ code {
   gap: 8px;
   font-size: 18px !important;
   line-height: 20px;
-  height: 48px;
+  /* height: 48px; */
   background-color: #21E786 !important;
   color: #141B22 !important;
   border-radius: 0px !important;

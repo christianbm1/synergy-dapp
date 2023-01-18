@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     background: '#F0B90B',
     display: 'flex',
     justifyContent: 'center',
-    padding: '12px',
+    // padding: '12px',
   },
   content: {
     display: 'flex',
@@ -55,7 +55,7 @@ const PoolCard = ({ bank }) => {
     <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
       <Box className={classes.cardContainer}>
         <Box className={classes.header}>
-          <TokenSymbol size={64} symbol={bank.depositTokenName} />
+          <TokenSymbol size={96} symbol={bank.depositTokenName} />
         </Box>
         <Box className={classes.content}>
           <Box className={classes.row}>

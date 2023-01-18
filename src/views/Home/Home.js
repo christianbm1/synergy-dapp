@@ -304,7 +304,7 @@ const Home = () => {
           Crypto of People
         </Typography>
         <Typography className={classes.subtitle2}>
-          Without the real world application, cryptocurrency can't develop to its full potential
+          WITH OUR REAL-LIFE APPLICATION, CRYPTOCURRENCY CAN DEVELOP TO ITS FULL POTENTIAL
         </Typography>
         <Box
           style={{
@@ -356,7 +356,7 @@ const Home = () => {
       </Box>
       <Box className={classes.howtoSection}>
         <Typography className={classes.sectionTitle}>
-          How to start <span style={{ color: '#21E786' }}>synergy</span> work
+          How to get started with <span style={{ color: '#21E786' }}>synergy</span>
         </Typography>
         <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3}>
           <Grid item xs={12} sm={6} md={3} lg={3} style={{ position: 'relative' }}>
@@ -452,7 +452,7 @@ const Home = () => {
                   Step 2
                 </Typography>
                 <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Select Your Quaility
+                  Select Your Quantity
                 </Typography>
               </Box>
             </Box>
@@ -476,7 +476,7 @@ const Home = () => {
                   Step 3
                 </Typography>
                 <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Confirm The Transaction
+                  Confirm the Transaction
                 </Typography>
               </Box>
             </Box>
@@ -501,7 +501,7 @@ const Home = () => {
                   Step 4
                 </Typography>
                 <Typography align="center" style={{ fontSize: '24px', lineHeight: '32px' }}>
-                  Receive Your Fees
+                  Receive Your Tokens
                 </Typography>
               </Box>
             </Box>
@@ -518,9 +518,9 @@ const Home = () => {
                 Our Mission
               </Typography>
               <Typography className={classes.text}>
-                We want to bridge the gap between the cryptocurrency marke and everyday consumer.
-                We'll bring it to the mainstream by removing barriers to access and by helping people
-                trust and understand what we believe to be the future of money.
+                At Synergy, we want to bridge the gap between our customers and cryptocurrency markets. 
+                Synergy will bring this concept into the mainstream by removing barriers, building trust, and providing easier ways 
+                for people to access their finances. We present what we believe to be, the future of money.
               </Typography>
               <Box className={classes.overviewContainer}>
                 <Box style={{ marginTop: '40px' }}>
@@ -595,10 +595,10 @@ const Home = () => {
                       01
                     </Typography>
                     <Typography style={{ fontSize: '24px', marginTop: '36px', zIndex: '1' }}>
-                      Daily Earning
+                      Daily Earnings
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Earn  tokens passively by staking your assets & collect big earning.
+                      Earn tokens passively by staking your assets and collecting big earnings
                     </Typography>
                   </Box>
                   <Box
@@ -647,7 +647,7 @@ const Home = () => {
                       Exclusive NFTs
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      We will have Exclusive NFTs. You can stake and earn double rewards
+                      We have exclusive, hand-drawn NFTs that you can stake to earn double rewards!
                     </Typography>
                   </Box>
                 </Grid>
@@ -669,7 +669,7 @@ const Home = () => {
                       Lottery
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Highest bonuses on your four first four deposits. Buy Tickets
+                      The highest bonuses on your first four deposits allows you to buy tickets.
                     </Typography>
                   </Box>
                 </Grid>
@@ -704,9 +704,9 @@ const Home = () => {
                 Power of Blockchain
               </Typography>
               <Typography className={classes.text}>
-                Blockchain is a system of recording information in a way that makes it difficult or impossible to change, hack,
-                or cheat the system. A blockchain is essentially a digital ledger of transactions that is duplicated and distributed
-                across the entire network of computer systems on the blockchain.
+                Blockchains are next-generation, immutable, public-distribution ledgers. They are secured and validated by an entire 
+                network of computer servers. This system allows the information to be recorded without being hacked, or duplicated, 
+                making every piece of information unique, like your valuable assets.
               </Typography>
             </Box>
           </Grid>
@@ -716,9 +716,9 @@ const Home = () => {
                 Purpose Of Crypto
               </Typography>
               <Typography className={classes.text}>
-                Cryptocurrencies are a new paradigm for money. Their promise is to streamline existing financial architecture
-                to make it faster and cheaper. Technology and architecture decentralize existing monetary systems make it
-                possible for transacting parties to exchange value independently of intermediary institutions such as banks.
+                Cryptocurrencies are a new paradigm for money. Their promise is to streamline the existing financial architecture
+                to make investing money faster and cheaper. Technology and architecture decentralize existing monetary systems, 
+                making it possible for transacting parties to exchange value independently of intermediary institutions such as banks.
               </Typography>
             </Box>
           </Grid>

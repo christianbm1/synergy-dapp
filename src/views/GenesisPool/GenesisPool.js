@@ -157,8 +157,8 @@ const Home = () => {
           Genesis Pools
         </Typography>
         <Typography className={classes.subtitle}>
-          Deposit selected tokens & get CRYSTALs as reward. <br />
-          In day 3 CRS/BSD LP will become available for early stake.
+          Deposit selected tokens and get CRYSTALs as a reward. <br />
+          On day 3, CRS/BSD LP will become available for early staking.
         </Typography>
         <Box className={classes.timer}>
           {

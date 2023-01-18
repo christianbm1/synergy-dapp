@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    'background-color': 'transparent',
+    backgroundColor: 'transparent',
     maxWidth: '1440px',
     padding: '10px',
     position: 'absolute',
