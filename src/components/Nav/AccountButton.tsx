@@ -5,7 +5,6 @@ import {useWallet} from 'use-wallet';
 import useModal from '../../hooks/useModal';
 import WalletProviderModal from '../WalletProviderModal';
 import AccountModal from './AccountModal';
-import {useENS} from '../../hooks/useENS';
 import Davatar from '@davatar/react';
 
 function shorten(str: string) {
@@ -20,7 +19,7 @@ interface AccountButtonProps {
 const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
   const {account} = useWallet();
   const [onPresentAccountModal] = useModal(<AccountModal />);
-  const {ensName} = useENS(account);
+  // const {ensName} = useENS(account);
 
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
 
@@ -49,7 +48,7 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
         <Button onClick={onPresentAccountModal} className="shinyButtonSecondary" style={{height: '42px'}}>
           <div className="account">
             <Davatar size={20} address={account} />
-            <span>{ensName || shorten(account)}</span>
+            <span>{shorten(account)}</span>
           </div>
         </Button>
       )}

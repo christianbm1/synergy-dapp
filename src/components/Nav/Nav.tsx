@@ -25,15 +25,10 @@ import ListItemLink from '../ListItemLink';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { ClickAwayListener } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AccountButton from './AccountButton';
 
 import synergyLogo from '../../assets/img/logo.png';
-import { roundAndFormatNumber } from '../../0x';
-//import TokenSymbol from '../TokenSymbol';
-
 import IconTelegram from '../../assets/img/telegram.png';
 import IconTwitter from '../../assets/img/twitter.png';
 import IconDiscord from '../../assets/img/discord.png';
@@ -270,48 +265,6 @@ const Nav = () => {
               </div>
             </Box>
             <AccountButton text="Connect"/>
-            {/* <Box
-              style={{
-                paddingLeft: '15px',
-                fontSize: '1rem',
-                paddingRight: '15px',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <a
-                href="https://www.reddit.com/r/SynergyCOFP/"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.socialLink}
-              >
-                <img alt="Reddit" src={IconReddit} height="45px" />
-              </a>
-              <a
-                href="https://t.me/SynergyCOFP"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.socialLink}
-              >
-                <img alt="Telegram" src={IconTelegram} height="45px" />
-              </a>
-              <a
-                href="https://discord.gg/nczxGjeTSv"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.socialLink}
-              >
-                <img alt="Discord" src={IconDiscord} height="45px" />
-              </a>
-              <a
-                href="https://twitter.com/SynergyCOFP"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.socialLink}
-              >
-                <img alt="Twitter" src={IconTwitter} height="45px" />
-              </a>
-            </Box> */}
           </>
         ) : (
           <>
