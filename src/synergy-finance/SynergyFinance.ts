@@ -1,6 +1,6 @@
 // import { Fetcher, Route, Token } from '@uniswap/sdk';
 //import { Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
-// import { Fetcher, Route, Token } from '@pancakeswap/sdk';
+import { Fetcher, Route, Token } from '@pancakeswap/sdk';
 import { Configuration } from './config';
 import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
@@ -53,6 +53,9 @@ export class SynergyFinance {
     this.BNB = this.externalTokens['WBNB'];
     this.BUSD = this.externalTokens['BUSD'];
 
+    this.externalTokens["CRS"] = this.CRS;
+    this.externalTokens["DIA"] = this.DIA;
+
     // Uniswap V2 Pair
     this.CRS_BUSD_LP = new ERC20(externalTokens['CRS/BUSD'][0], provider, 'CRS/BUSD');
     this.DIA_BUSD_LP = new ERC20(externalTokens['DIA/BUSD'][0], provider, 'DIA/BUSD');
@@ -72,7 +75,7 @@ export class SynergyFinance {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.CRS, this.DIA, ...Object.values(this.externalTokens)];
+    const tokens = [...Object.values(this.externalTokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
@@ -138,17 +141,22 @@ export class SynergyFinance {
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
-    const token0 = name.startsWith('CRS') ? this.CRS : this.DIA;
+    const tokenList = name.split("/");
+    console.log('debug / getLPStat / tokens : ', tokenList);
+    const token0 = this.externalTokens[tokenList[0]];
+    const token1 = tokenList[1] === 'BNB' ? this.BNB : this.externalTokens[tokenList[1]];
     const isCrystal = name.startsWith('CRS');
-    const tokenAmountBN = await token0.balanceOf(lpToken.address);
-    const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
+    const token0AmountBN = await token0.balanceOf(lpToken.address);
+    const token0Amount = getDisplayBalance(token0AmountBN, 18);
 
-    const ftmAmountBN = await this.BNB.balanceOf(lpToken.address);
-    const ftmAmount = getDisplayBalance(ftmAmountBN, 18);
+    const token1AmountBN = await token1.balanceOf(lpToken.address);
+    const token1Amount = getDisplayBalance(token1AmountBN, 18);
 
-    const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
-    const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
+    const tokenAmountInOneLP = Number(token0Amount) / Number(lpTokenSupply);
+    const ftmAmountInOneLP = Number(token1Amount) / Number(lpTokenSupply);
+    console.log('debug / getLPStat / params : ', [lpToken, token0, isCrystal]);
     const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isCrystal);
+    console.log('debug / getLPStat / lpTokenPrice : ', lpTokenPrice);
     const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
     const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice)).toFixed(2).toString();
     return {
@@ -209,7 +217,6 @@ export class SynergyFinance {
     let busd_amount_BN = await BUSD.balanceOf(diamond_busd_pair.address);
     let busd_amount = Number(getFullDisplayBalance(busd_amount_BN, BUSD.decimal));
     const priceInBUSD = (busd_amount / dia_amount).toString();
-
 
     return {
       tokenInFtm: priceInBUSD,
@@ -315,18 +322,24 @@ export class SynergyFinance {
     const priceOfOneFtmInDollars = await this.getWBNBPriceInBUSD();
     if (tokenName === 'WBNB') {
       tokenPrice = priceOfOneFtmInDollars;
+    } else if (tokenName === 'CRS') {
+      tokenPrice = await this.getTokenPriceInBUSD(this.CRS, this.CRS_BUSD_LP);
+    } else if (tokenName === 'DIA') {
+      tokenPrice = await this.getTokenPriceInBUSD(this.DIA, this.DIA_BUSD_LP);
+    } else if (tokenName.includes("CRS/")) {
+      tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
+    } else if (tokenName.includes("DIA/")) {
+      tokenPrice = await this.getLPTokenPrice(token, this.DIA, false);
+    } else if (tokenName.includes("/")){
+      if (tokenName.includes("BNB"))
+        tokenPrice = this.getExtraLPTokenPrice(token, this.externalTokens["WBNB"], true);
+      else if (tokenName.includes("BUSD"))
+        tokenPrice = this.getExtraLPTokenPrice(token, this.externalTokens["BUSD"], false);
     } else {
-      if (tokenName === 'CRS/BUSD' || tokenName === 'CRS/BNB') {
-        tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
-      } else if (tokenName === 'DIA/BUSD' || tokenName === 'DIA/BNB') {
-        tokenPrice = await this.getLPTokenPrice(token, this.DIA, false);
-      } else if (tokenName.includes("/")){
-        if (tokenName.includes("BNB"))
-          tokenPrice = this.getExtraLPTokenPrice(token, this.externalTokens["WBNB"], true);
-        else if (tokenName.includes("BUSD"))
-          tokenPrice = this.getExtraLPTokenPrice(token, this.externalTokens["BUSD"], false);
-      }
+      tokenPrice = await this.getTokenPriceFromPancakeswap(token);
+      tokenPrice = (Number(tokenPrice) * Number(priceOfOneFtmInDollars)).toString();
     }
+
     return tokenPrice;
   }
 
@@ -494,22 +507,22 @@ export class SynergyFinance {
     return this.boardroomVersionOfUser !== 'latest';
   }
 
-  // async getTokenPriceFromPancakeswap(tokenContract: ERC20): Promise<string> {
-  //   const ready = await this.provider.ready;
-  //   if (!ready) return;
-  //   //const { chainId } = this.config;
-  //   const { WBNB } = this.config.externalTokens;
+  async getTokenPriceFromPancakeswap(tokenContract: ERC20): Promise<string> {
+    const ready = await this.provider.ready;
+    if (!ready) return;
+    //const { chainId } = this.config;
+    const { WBNB } = this.config.externalTokens;
 
-  //   const wftm = new Token(config.chainId, WBNB[0], WBNB[1], 'WBNB');
-  //   const token = new Token(config.chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
-  //   try {
-  //     const wftmToToken = await Fetcher.fetchPairData(wftm, token, this.provider);
-  //     const priceInBUSD = new Route([wftmToToken], token);
-  //     return priceInBUSD.midPrice.toFixed(4);
-  //   } catch (err) {
-  //     console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
-  //   }
-  // }
+    const wftm = new Token(config.chainId, WBNB[0], WBNB[1], 'WBNB');
+    const token = new Token(config.chainId, tokenContract.address, tokenContract.decimal, tokenContract.symbol);
+    try {
+      const wftmToToken = await Fetcher.fetchPairData(wftm, token, this.provider);
+      const priceInBUSD = new Route([wftmToToken], token);
+      return priceInBUSD.midPrice.toFixed(4);
+    } catch (err) {
+      console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
+    }
+  }
 
   // async getTokenPriceFromPancakeswapBUSD(tokenContract: ERC20): Promise<string> {
   //   const ready = await this.provider.ready;
@@ -834,11 +847,13 @@ export class SynergyFinance {
   async estimateZapIn(tokenName: string, lpName: string, amount: string): Promise<number[]> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
+    console.log('debug / estimateZapIn / contracts : ', [tokenName, zapper, lpToken])
     let estimate;
     if (tokenName === BNB_TICKER) {
       estimate = await zapper.estimateZapIn(lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
+      console.log('debug / estimateZapIn / estimate : ', [estimate])
     } else {
-      const token = tokenName === CRS_TICKER ? this.CRS : this.DIA;
+      const token = this.externalTokens[tokenName];
       estimate = await zapper.estimateZapInToken(
         token.address,
         lpToken.address,
@@ -848,6 +863,7 @@ export class SynergyFinance {
     }
     return [estimate[0] / 1e18, estimate[1] / 1e18];
   }
+
   async zapIn(tokenName: string, lpName: string, amount: string): Promise<TransactionResponse> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
@@ -857,7 +873,7 @@ export class SynergyFinance {
       };
       return await zapper.zapIn(lpToken.address, SPOOKY_ROUTER_ADDR, this.myAccount, overrides);
     } else {
-      const token = tokenName === CRS_TICKER ? this.CRS : this.DIA;
+      const token = this.externalTokens[tokenName];
       return await zapper.zapInToken(
         token.address,
         parseUnits(amount, 18),

@@ -12,11 +12,13 @@ const configurations: { [env: string]: Configuration } = {
       WBNB: ['0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18],
       BUSD: ['0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7', 18],
       DAI: ['0x8a9424745056Eb399FD19a0EC26A14316684e274', 18],
+      USDT: ['0x7ef95a0FEE0Dd31b22626fA2e10Ee6A223F8a684', 18],
       'BUSD/BNB': ['0xe0e92035077c39594793e61802a350347c320cf2', 18],
-      'CRS/BUSD': ['0x2A648A037FB1a1d36Fc68201cD6B572654d1DAb7', 18],
-      'CRS/BNB': ['0xa2953DE4cff32496489b8f33B116f8D55b9bbC17', 18],
-      'DIA/BUSD': ['0x31d7dcb2f0c7E4e6E345B66422dbF84853e4Bf85', 18],
-      'DIA/BNB': ['0x39CA92aD86E306089dFa2a0B2E97B9261Fefb884', 18],
+      'CRS/BUSD': ['0x0Ab537936293d7ec30C86DBeDC01D6924d5325a2', 18],
+      'CRS/BNB': ['0x7A1166B75D5573Ff220E5172136b69403D1afc7c', 18],
+      'DIA/BUSD': ['0x2F89f743D64c637b8504312a140Cb955c78641Ba', 18],
+      'DIA/BNB': ['0x3c27447738efCC412C74907f4832064EDe74fDbb', 18],
+      'CRS/USDT': ['0xD1337F8a7d7E78aeDf709495CbA6C5E91E59cbD1', 18],
     },
     refreshInterval: 10000,
   },
@@ -109,7 +111,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     depositTokenName: 'DAI',
     earnTokenName: 'CRS',
     finished: false,
-    sort: 1,
+    sort: 2,
     closedForStaking: false,
   },
   CrystalBusdLPDiamondRewardPool: {
@@ -155,7 +157,18 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     finished: false,
     sort: 4,
     closedForStaking: false,
-  }
+  },
+  CrystalUsdtLPDiamondRewardPool: {
+    name: 'Earn DIA by CRS/USDT LP',
+    poolId: 4,
+    sectionInUI: 2,
+    contract: 'CrystalUsdtLPDiamondRewardPool',
+    depositTokenName: 'CRS/USDT',
+    earnTokenName: 'DIA',
+    finished: false,
+    sort: 5,
+    closedForStaking: false,
+  },
 };
 
 export default configurations['test'];
