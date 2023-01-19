@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import useWallet from 'use-wallet';
 import { Box, Button, Card, Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../components/Page';
 import useModal from '../../hooks/useModal';
@@ -20,7 +21,7 @@ import Step2 from '../../assets/img/step2.png';
 import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
 import NearIcon from '../../assets/img/partner-near.png';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 const TITLE = 'Synergy';
 
@@ -404,7 +405,13 @@ const Home = () => {
                   Step 1
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  Buy DIAMONDS in PancakeSwap
+                  <Link 
+                    style={{ color: 'white', textDecoration: 'underline' }}
+                    target="_blank" 
+                    href="http://pancake.kiemtienonline360.com/#/swap?inputCurrency=0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd&outputCurrency=0x8427BaaebBF3C8C89423b27AeABfE26F1b8233e6"
+                  >
+                    Buy DIAMONDS in PancakeSwap
+                  </Link>
                 </Typography>
               </Box>
             </Box>
@@ -548,7 +555,7 @@ const Home = () => {
               </Box>
               <Button
                 className="shinyButtonSecondary"
-                component={Link} 
+                component={RouterLink} 
                 to="/farm"
                 style={{
                   marginTop: "40px",
@@ -677,7 +684,7 @@ const Home = () => {
                       Lottery
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Play for huge prizes and burn extra $CRS in the same time!
+                      Play for huge prizes and burn extra $CRS at the same time!
                     </Typography>
                   </Box>
                 </Grid>

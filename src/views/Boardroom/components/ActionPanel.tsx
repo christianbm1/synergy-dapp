@@ -82,7 +82,7 @@ const ActionPanel: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'PShare'}
+      tokenName={'DIAMONDS'}
     />,
   );
 
@@ -93,7 +93,7 @@ const ActionPanel: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'PShare'}
+      tokenName={'DIAMONDS'}
     />,
   );
 
