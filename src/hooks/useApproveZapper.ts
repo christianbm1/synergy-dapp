@@ -20,12 +20,14 @@ export enum ApprovalState {
 function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<void>] {
   const synergyFinance = useSynergyFinance();
   let token: ERC20;
-  if (zappingToken === BNB_TICKER) token = synergyFinance.BNB;
-  else if (zappingToken === CRS_TICKER) token = synergyFinance.CRS;
-  else if (zappingToken === DIA_TICKER) token = synergyFinance.DIA;
-  else if (zappingToken === BUSD_TICKER) token = synergyFinance.externalTokens[BUSD_TICKER];
+  if (zappingToken === BNB_TICKER) {
+    token = synergyFinance.BNB;
+  } else {
+    token = synergyFinance.externalTokens[zappingToken];
+  }
   const pendingApproval = useHasPendingApproval(token.address, ZAPPER_ROUTER_ADDR);
   const currentAllowance = useAllowance(token, ZAPPER_ROUTER_ADDR, pendingApproval);
+  console.log('debug / ZapModal / allowance : ', currentAllowance);
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {

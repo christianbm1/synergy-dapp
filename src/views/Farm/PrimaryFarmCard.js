@@ -119,7 +119,7 @@ const PrimaryFarmCard = ({ bank }) => {
               DIAMOND
             </Typography>
           </Box>
-          <Box className={classes.row}>
+          {/* <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
               Market cap
             </Typography>
@@ -142,7 +142,7 @@ const PrimaryFarmCard = ({ bank }) => {
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
               0
             </Typography>
-          </Box>
+          </Box> */}
           <Divider className={classes.divider} />
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>

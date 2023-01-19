@@ -1,22 +1,22 @@
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 
-import {Button, Select, MenuItem, InputLabel, withStyles} from '@material-ui/core';
+import { Button, Select, MenuItem, InputLabel, withStyles, Typography, makeStyles } from '@material-ui/core';
 // import Button from '../../../components/Button'
-import Modal, {ModalProps} from '../../../components/Modal';
+import Modal, { ModalProps } from '../../../components/Modal';
 import ModalActions from '../../../components/ModalActions';
 import ModalTitle from '../../../components/ModalTitle';
 import TokenInput from '../../../components/TokenInput';
 import styled from 'styled-components';
 
-import {getDisplayBalance} from '../../../utils/formatBalance';
+import { getDisplayBalance } from '../../../utils/formatBalance';
 import Label from '../../../components/Label';
 import useLpStats from '../../../hooks/useLpStats';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import useSynergyFinance from '../../../hooks/useSynergyFinance';
-import {useWallet} from 'use-wallet';
-import useApproveZapper, {ApprovalState} from '../../../hooks/useApproveZapper';
-import {CRS_TICKER, DIA_TICKER, BNB_TICKER, BUSD_TICKER} from '../../../utils/constants';
-import {Alert} from '@material-ui/lab';
+import { useWallet } from 'use-wallet';
+import useApproveZapper, { ApprovalState } from '../../../hooks/useApproveZapper';
+import { Alert } from '@material-ui/lab';
+import { BigNumber } from 'ethers';
 
 interface ZapProps extends ModalProps {
   onConfirm: (zapAsset: string, lpName: string, amount: string) => void;
@@ -24,23 +24,36 @@ interface ZapProps extends ModalProps {
   decimals?: number;
 }
 
-const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', decimals = 18}) => {
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    fill: 'white',
+  },
+}));
+
+const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName, decimals = 18 }) => {
+  const classes = useStyles();
   const synergyFinance = useSynergyFinance();
-  const {balance} = useWallet();
-  const ftmBalance = (Number(balance) / 1e18).toFixed(4).toString();
-  const crsBalance = useTokenBalance(synergyFinance.CRS);
-  const pshareBalance = useTokenBalance(synergyFinance.DIA);
-  const btcBalance = useTokenBalance(synergyFinance.BUSD);
+  const tokenList = tokenName.split("/");
+  console.log('debug / ZapModal / tokens : ', synergyFinance.externalTokens);
+  const { balance } = useWallet();
+  const bnbBalance = (Number(balance) / 1e18).toFixed(4).toString();
+  const token0Balance = useTokenBalance(synergyFinance.externalTokens[tokenList[0]]);
+  const token1Temp = tokenList[1] === 'BNB' ? synergyFinance.externalTokens["BUSD"] : synergyFinance.externalTokens[tokenList[1]];
+  const token1BalanceTemp = useTokenBalance(token1Temp);
+  const token1Balance = tokenList[1] === 'BNB' ? BigNumber.from(balance) : token1BalanceTemp;
+  console.log('debug / ZapModal / balances : ', [token0Balance.toString(), token1Balance.toString()]);
   const [val, setVal] = useState('');
-  const [zappingToken, setZappingToken] = useState(BNB_TICKER);
-  const [zappingTokenBalance, setZappingTokenBalance] = useState(ftmBalance);
-  const [estimate, setEstimate] = useState({token0: '0', token1: '0'}); // token0 will always be BNB in this case
+  const [zappingToken, setZappingToken] = useState(tokenList[0]);
+  const [zappingTokenBalance, setZappingTokenBalance] = useState(bnbBalance);
+  const [estimate, setEstimate] = useState({ token0: '0', token1: '0' }); // token0 will always be BNB in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  const crsFtmLpStats = useLpStats('CRS/BUSD');
-  const pShareFtmLpStats = useLpStats('DIA/BNB');
-  const crsLPStats = useMemo(() => (crsFtmLpStats ? crsFtmLpStats : null), [crsFtmLpStats]);
-  const pshareLPStats = useMemo(() => (pShareFtmLpStats ? pShareFtmLpStats : null), [pShareFtmLpStats]);
-  const ftmAmountPerLP = tokenName.startsWith(CRS_TICKER) ? crsLPStats?.ftmAmount : pshareLPStats?.ftmAmount;
+  console.log('debug / ZapModal / approve : ', approveZapperStatus);
+  const lpStatsCand = useLpStats(tokenName);
+  const lpStats = useMemo(() => (lpStatsCand ? lpStatsCand : null), [lpStatsCand]);
+  const ftmAmountPerLP = lpStats?.ftmAmount;
+
+  console.log('debug / ZapModal / estimates : ', [estimate.token0, estimate.token1])
+  console.log('debug / ZapModal / ftmAmountPerLP : ', ftmAmountPerLP)
   /**
    * Checks if a value is a valid number or not
    * @param n is the value to be evaluated for a number
@@ -49,52 +62,57 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
   function isNumeric(n: any) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
+
   const handleChangeAsset = (event: any) => {
     const value = event.target.value;
     setZappingToken(value);
-    setZappingTokenBalance(ftmBalance);
-    if (event.target.value === DIA_TICKER) {
-      setZappingTokenBalance(getDisplayBalance(pshareBalance, decimals));
-    }
-    if (event.target.value === CRS_TICKER) {
-      setZappingTokenBalance(getDisplayBalance(crsBalance, decimals));
-    }
-    if (event.target.value === BUSD_TICKER) {
-      setZappingTokenBalance(getDisplayBalance(btcBalance, decimals));
+    setZappingTokenBalance(bnbBalance);
+
+    if (event.target.value === tokenList[0]) {
+      setZappingTokenBalance(getDisplayBalance(token0Balance, decimals));
+    } else if (event.target.value === tokenList[1]) {
+      setZappingTokenBalance(getDisplayBalance(token1Balance, decimals));
     }
   };
 
   const handleChange = async (e: any) => {
     if (e.currentTarget.value === '' || e.currentTarget.value === 0) {
       setVal(e.currentTarget.value);
-      setEstimate({token0: '0', token1: '0'});
+      setEstimate({ token0: '0', token1: '0' });
     }
     if (!isNumeric(e.currentTarget.value)) return;
     setVal(e.currentTarget.value);
+    console.log('debug / ZapModal : ', [zappingToken, tokenName, String(e.currentTarget.value)])
     const estimateZap = await synergyFinance.estimateZapIn(zappingToken, tokenName, String(e.currentTarget.value));
-    setEstimate({token0: estimateZap[0].toString(), token1: estimateZap[1].toString()});
+    setEstimate({ token0: estimateZap[0].toString(), token1: estimateZap[1].toString() });
   };
 
   const handleSelectMax = async () => {
     setVal(zappingTokenBalance);
     const estimateZap = await synergyFinance.estimateZapIn(zappingToken, tokenName, String(zappingTokenBalance));
-    setEstimate({token0: estimateZap[0].toString(), token1: estimateZap[1].toString()});
+    setEstimate({ token0: estimateZap[0].toString(), token1: estimateZap[1].toString() });
   };
 
   return (
     <Modal>
       <ModalTitle text={`Zap in ${tokenName}`} />
-
-      <StyledActionSpacer />
-      <InputLabel style={{color: '#2c2560'}} id="label">
+      <InputLabel style={{ fontSize: '20px' }} id="label">
         Select asset to zap with
       </InputLabel>
-      <Select onChange={handleChangeAsset} style={{color: '#2c2560'}} labelId="label" id="select" value={zappingToken}>
-        <StyledMenuItem value={BNB_TICKER}>BNB</StyledMenuItem>
-        <StyledMenuItem value={DIA_TICKER}>DIA</StyledMenuItem>
-        {/* <StyledMenuItem value={BUSD_TICKER}>BUSD</StyledMenuItem> */}
-        {/* Push as an input for zapping will be disabled due to issues occuring with the Gatekeeper system */}
-        {/* <StyledMenuItem value={CRS_TICKER}>CRS</StyledMenuItem> */}
+      <Select
+        onChange={handleChangeAsset}
+        style={{ color: '#C2C3C5', height: '40px', marginTop: '10px' }}
+        labelId="label"
+        id="select"
+        value={zappingToken}
+        inputProps={{
+          classes: {
+            icon: classes.icon
+          }
+        }}
+      >
+        <StyledMenuItem value={tokenList[0]}>{tokenList[0]}</StyledMenuItem>
+        <StyledMenuItem value={tokenList[1]}>{tokenList[1]}</StyledMenuItem>
       </Select>
       <TokenInput
         onSelectMax={handleSelectMax}
@@ -103,15 +121,17 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
         max={zappingTokenBalance}
         symbol={zappingToken}
       />
-      <Label text="Zap Estimations" />
+      <Typography style={{ fontSize: '20px' }}>
+        Zap Estimations
+      </Typography>
       <StyledDescriptionText>
         {' '}
         {tokenName}: {Number(estimate.token0) / Number(ftmAmountPerLP)}
       </StyledDescriptionText>
       <StyledDescriptionText>
         {' '}
-        ({Number(estimate.token0)} {tokenName.startsWith(DIA_TICKER) ? DIA_TICKER : BNB_TICKER} /{' '}
-        {Number(estimate.token1)} {tokenName.startsWith(DIA_TICKER) ? BNB_TICKER : DIA_TICKER}){' '}
+        ({Number(estimate.token0)} ${tokenList[0]} /{' '}
+        {Number(estimate.token1)} ${tokenList[1]}){' '}
       </StyledDescriptionText>
       <ModalActions>
         <Button
@@ -121,7 +141,7 @@ const ZapModal: React.FC<ZapProps> = ({onConfirm, onDismiss, tokenName = '', dec
             approveZapperStatus !== ApprovalState.APPROVED ? approveZapper() : onConfirm(zappingToken, tokenName, val)
           }
         >
-          {approveZapperStatus !== ApprovalState.APPROVED ? 'Approve' : "Let's go"}
+          {approveZapperStatus !== ApprovalState.APPROVED ? 'Approve' : "ZAP"}
         </Button>
       </ModalActions>
 
@@ -147,16 +167,17 @@ const StyledDescriptionText = styled.div`
   height: 22px;
   justify-content: flex-start;
 `;
+
 const StyledMenuItem = withStyles({
   root: {
     backgroundColor: 'white',
-    color: '#2c2560',
+    color: '#C2C3C5',
     '&:hover': {
-      backgroundColor: 'grey',
-      color: '#2c2560',
+      backgroundColor: 'grey !important',
+      color: '#C2C3C5',
     },
     selected: {
-      backgroundColor: 'black',
+      backgroundColor: 'black !important',
     },
   },
 })(MenuItem);

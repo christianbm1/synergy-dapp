@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import FlashOnIcon from '@material-ui/icons/FlashOn';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
@@ -17,6 +18,8 @@ import WithdrawModal from './WithdrawModal';
 import { Bank } from '../../../synergy-finance';
 import useWallet from 'use-wallet';
 import WalletProviderModal from '../../../components/WalletProviderModal';
+import useZap from '../../../hooks/useZap';
+import ZapModal from './ZapModal';
 
 interface StakeProps {
   bank: Bank;
@@ -32,6 +35,7 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
 
   const { onStake } = useStake(bank);
+  const { onZap } = useZap(bank);
   const { onReward } = useHarvest(bank);
   const { onWithdraw } = useWithdraw(bank);
 
@@ -51,6 +55,18 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
         if (Number(amount) <= 0 || isNaN(Number(amount))) return;
         onStake(amount);
         onDismissDeposit();
+      }}
+      tokenName={bank.depositTokenName}
+    />,
+  );
+
+  const [onPresentZap, onDissmissZap] = useModal(
+    <ZapModal
+      decimals={bank.depositToken.decimal}
+      onConfirm={(zappingToken, tokenName, amount) => {
+        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+        onZap(zappingToken, tokenName, amount);
+        onDissmissZap();
       }}
       tokenName={bank.depositTokenName}
     />,
@@ -108,8 +124,16 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
               onClick={onReward}
               disabled={earnings.eq(0)}
               className={earnings.eq(0) ? 'shinyButtonDisabled' : 'shinyButtonPrimary'}
+              fullWidth
             >
               Claim
+            </Button>
+            <Button
+              disabled={ bank.closedForStaking }
+              className={ bank.closedForStaking ? 'shinyButtonDisabled' : 'shinyButtonPrimary' }
+              onClick={() => (bank.closedForStaking ? null : onPresentZap())}
+            >
+              <FlashOnIcon style={{ color: 'black' }} />
             </Button>
             <Button
               className={'shinyButtonPrimary'}

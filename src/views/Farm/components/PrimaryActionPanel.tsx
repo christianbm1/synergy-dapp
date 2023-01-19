@@ -185,21 +185,11 @@ const PrimaryActionPanel: React.FC<PanelProps> = ({ bank }) => {
                 Claim
               </Button>
               <Button
-                disabled={
-                  bank.closedForStaking ||
-                  bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                  bank.depositTokenName === 'CRS/BUSD'
-                }
-                className={
-                  bank.closedForStaking ||
-                  bank.depositTokenName === 'CRYSTAL/DIAMOND' ||
-                  bank.depositTokenName === 'CRS/BUSD'
-                    ? 'shinyButtonDisabled'
-                    : 'shinyButtonPrimary'
-                }
+                disabled={ bank.closedForStaking }
+                className={ bank.closedForStaking ? 'shinyButtonDisabled' : 'shinyButtonPrimary' }
                 onClick={() => (bank.closedForStaking ? null : onPresentZap())}
               >
-                <FlashOnIcon style={{ color: themeColor.grey[400],  }} />
+                <FlashOnIcon style={{ color: 'black' }} />
               </Button>
               <Button
                 className={'shinyButtonPrimary'}
