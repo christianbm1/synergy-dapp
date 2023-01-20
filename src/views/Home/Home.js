@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import useWallet from 'use-wallet';
 import { Box, Button, Card, Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
@@ -20,8 +21,13 @@ import Step1 from '../../assets/img/step1.png';
 import Step2 from '../../assets/img/step2.png';
 import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
-import NearIcon from '../../assets/img/partner-near.png';
-import { Link as RouterLink } from 'react-router-dom';
+
+import DibsMoney from '../../assets/img/partners/dibsmoney.png';
+import DexFinance from '../../assets/img/partners/dexfinance.png';
+import GuilderFi from '../../assets/img/partners/guilderfi.png';
+import Lingo from '../../assets/img/partners/lingo.png';
+import BSCHouse from '../../assets/img/partners/bschouse.png';
+import Elongate from '../../assets/img/partners/elongate.png';
 
 const TITLE = 'Synergy';
 
@@ -71,6 +77,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '150px',
     padding: '24px',
     color: 'white',
+  },
+  partnerCard: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+    height: '120px',
+    alignItems: 'center',
+    backgroundSize: 'cover',
+
+    [theme.breakpoints.down('768')]: {
+      height: '80px',
+    },
+    [theme.breakpoints.down('430')]: {
+      height: '50px',
+    },
   },
   button: {
     [theme.breakpoints.down('415')]: {
@@ -405,13 +426,13 @@ const Home = () => {
                   Step 1
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  <Link 
+                  {/* <Link 
                     style={{ color: 'white', textDecoration: 'underline' }}
                     target="_blank" 
                     href="http://pancake.kiemtienonline360.com/#/swap?inputCurrency=0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd&outputCurrency=0x8427BaaebBF3C8C89423b27AeABfE26F1b8233e6"
-                  >
+                  > */}
                     Buy DIAMONDS in PancakeSwap
-                  </Link>
+                  {/* </Link> */}
                 </Typography>
               </Box>
             </Box>
@@ -744,96 +765,72 @@ const Home = () => {
         <Typography className={classes.sectionTitle}>
           <span style={{ color: '#21E786' }}>synergy</span> Partners
         </Typography>
-        <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={3}>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
+        <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={6}>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${DibsMoney})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${DexFinance})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${GuilderFi})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${Elongate})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${Lingo})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={NearIcon}></img>
-            </Box>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} lg={2}>
-            <Box style={{ display: 'flex', justifyContent: 'center', background: '#141B22' }}>
-              <img src={NearIcon}></img>
-            </Box>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box 
+              className={classes.partnerCard}
+              style={{
+                background: `url(${BSCHouse})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }} 
+            />
           </Grid>
         </Grid>
       </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 import { Button, Select, MenuItem, InputLabel, withStyles, Typography, makeStyles } from '@material-ui/core';
 // import Button from '../../../components/Button'
@@ -34,26 +34,25 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName, decimal
   const classes = useStyles();
   const synergyFinance = useSynergyFinance();
   const tokenList = tokenName.split("/");
-  console.log('debug / ZapModal / tokens : ', synergyFinance.externalTokens);
   const { balance } = useWallet();
   const bnbBalance = (Number(balance) / 1e18).toFixed(4).toString();
   const token0Balance = useTokenBalance(synergyFinance.externalTokens[tokenList[0]]);
   const token1Temp = tokenList[1] === 'BNB' ? synergyFinance.externalTokens["BUSD"] : synergyFinance.externalTokens[tokenList[1]];
   const token1BalanceTemp = useTokenBalance(token1Temp);
   const token1Balance = tokenList[1] === 'BNB' ? BigNumber.from(balance) : token1BalanceTemp;
-  console.log('debug / ZapModal / balances : ', [token0Balance.toString(), token1Balance.toString()]);
   const [val, setVal] = useState('');
   const [zappingToken, setZappingToken] = useState(tokenList[0]);
-  const [zappingTokenBalance, setZappingTokenBalance] = useState(bnbBalance);
+  const [zappingTokenBalance, setZappingTokenBalance] = useState(getDisplayBalance(token0Balance, decimals));
   const [estimate, setEstimate] = useState({ token0: '0', token1: '0' }); // token0 will always be BNB in this case
   const [approveZapperStatus, approveZapper] = useApproveZapper(zappingToken);
-  console.log('debug / ZapModal / approve : ', approveZapperStatus);
   const lpStatsCand = useLpStats(tokenName);
   const lpStats = useMemo(() => (lpStatsCand ? lpStatsCand : null), [lpStatsCand]);
   const ftmAmountPerLP = lpStats?.ftmAmount;
 
-  console.log('debug / ZapModal / estimates : ', [estimate.token0, estimate.token1])
-  console.log('debug / ZapModal / ftmAmountPerLP : ', ftmAmountPerLP)
+  useEffect(() => {
+    setZappingTokenBalance(getDisplayBalance(token0Balance, decimals));
+  }, [token0Balance]);
+
   /**
    * Checks if a value is a valid number or not
    * @param n is the value to be evaluated for a number
@@ -82,7 +81,6 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName, decimal
     }
     if (!isNumeric(e.currentTarget.value)) return;
     setVal(e.currentTarget.value);
-    console.log('debug / ZapModal : ', [zappingToken, tokenName, String(e.currentTarget.value)])
     const estimateZap = await synergyFinance.estimateZapIn(zappingToken, tokenName, String(e.currentTarget.value));
     setEstimate({ token0: estimateZap[0].toString(), token1: estimateZap[1].toString() });
   };
@@ -135,8 +133,7 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName, decimal
       </StyledDescriptionText>
       <ModalActions>
         <Button
-          color="primary"
-          variant="contained"
+          className={'shinyButtonPrimary'}
           onClick={() =>
             approveZapperStatus !== ApprovalState.APPROVED ? approveZapper() : onConfirm(zappingToken, tokenName, val)
           }
@@ -144,11 +141,6 @@ const ZapModal: React.FC<ZapProps> = ({ onConfirm, onDismiss, tokenName, decimal
           {approveZapperStatus !== ApprovalState.APPROVED ? 'Approve' : "ZAP"}
         </Button>
       </ModalActions>
-
-      <StyledActionSpacer />
-      <Alert variant="filled" severity="info">
-        New feature. Use at your own risk!
-      </Alert>
     </Modal>
   );
 };

@@ -136,13 +136,10 @@ export class SynergyFinance {
    * @returns
    */
   async getLPStat(name: string): Promise<LPStat> {
-    console.log('NAME', name);
-
     const lpToken = this.externalTokens[name];
     const lpTokenSupplyBN = await lpToken.totalSupply();
     const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
     const tokenList = name.split("/");
-    console.log('debug / getLPStat / tokens : ', tokenList);
     const token0 = this.externalTokens[tokenList[0]];
     const token1 = tokenList[1] === 'BNB' ? this.BNB : this.externalTokens[tokenList[1]];
     const isCrystal = name.startsWith('CRS');
@@ -154,9 +151,7 @@ export class SynergyFinance {
 
     const tokenAmountInOneLP = Number(token0Amount) / Number(lpTokenSupply);
     const ftmAmountInOneLP = Number(token1Amount) / Number(lpTokenSupply);
-    console.log('debug / getLPStat / params : ', [lpToken, token0, isCrystal]);
     const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0, isCrystal);
-    console.log('debug / getLPStat / lpTokenPrice : ', lpTokenPrice);
     const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(2).toString();
     const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice)).toFixed(2).toString();
     return {
@@ -847,11 +842,9 @@ export class SynergyFinance {
   async estimateZapIn(tokenName: string, lpName: string, amount: string): Promise<number[]> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
-    console.log('debug / estimateZapIn / contracts : ', [tokenName, zapper, lpToken])
     let estimate;
     if (tokenName === BNB_TICKER) {
       estimate = await zapper.estimateZapIn(lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
-      console.log('debug / estimateZapIn / estimate : ', [estimate])
     } else {
       const token = this.externalTokens[tokenName];
       estimate = await zapper.estimateZapInToken(

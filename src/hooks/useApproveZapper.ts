@@ -27,7 +27,6 @@ function useApproveZapper(zappingToken: string): [ApprovalState, () => Promise<v
   }
   const pendingApproval = useHasPendingApproval(token.address, ZAPPER_ROUTER_ADDR);
   const currentAllowance = useAllowance(token, ZAPPER_ROUTER_ADDR, pendingApproval);
-  console.log('debug / ZapModal / allowance : ', currentAllowance);
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {

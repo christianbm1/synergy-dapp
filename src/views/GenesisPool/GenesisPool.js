@@ -158,7 +158,7 @@ const Home = () => {
         </Typography>
         <Typography className={classes.subtitle}>
           Deposit selected tokens and get CRYSTALs as a reward. <br />
-          On day 3, CRS/BSD LP will become available for early staking.
+          On day 3, CRS/BUSD LP will become available for early staking.
         </Typography>
         <Box className={classes.timer}>
           {
