@@ -3,19 +3,8 @@ import { Link } from 'react-router-dom';
 import { Box, Button, makeStyles, Card, CardActions, CardContent, Typography, Grid, Divider, CardMedia } from '@material-ui/core';
 
 import TokenSymbol from '../../components/TokenSymbol';
-import CRS_BUSD_LOGO from '../../assets/img/crs_busd_farm.png';
-import CRS_BNB_LOGO from '../../assets/img/crs_bnb_farm.png';
-import DIA_BUSD_LOGO from '../../assets/img/dia_busd_farm.png';
-import DIA_BNB_LOGO from '../../assets/img/dia_bnb_farm.png';
 import useStatsForPool from '../../hooks/useStatsForPool';
 import PrimaryActionPanel from './components/PrimaryActionPanel';
-
-const mediaBySymbol = {
-  'CRS/BUSD': CRS_BUSD_LOGO,
-  'CRS/BNB': CRS_BNB_LOGO,
-  'DIA/BUSD': DIA_BUSD_LOGO,
-  'DIA/BNB': DIA_BNB_LOGO,
-};
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {

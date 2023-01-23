@@ -28,7 +28,6 @@ const ActionPanel: React.FC<StakeProps> = ({ bank }) => {
   const { account } = useWallet();
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
   const [approveStatus, approve] = useApprove(bank.depositToken, bank.address);
-
   const tokenBalance = useTokenBalance(bank.depositToken);
   const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);

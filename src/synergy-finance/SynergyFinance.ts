@@ -711,6 +711,16 @@ export class SynergyFinance {
     return { from: startAllocation, to: endAllocation };
   }
 
+  async getFarmTimes(): Promise<AllocationTime> {
+    const { DiamondRewardPool } = this.contracts;
+    const start: BigNumber = await DiamondRewardPool.poolStartTime();
+    const end: BigNumber = await DiamondRewardPool.poolEndTime();
+    const startAllocation = new Date(start.mul(1000).toNumber());
+    const endAllocation = new Date(end.mul(1000).toNumber());
+
+    return { from: startAllocation, to: endAllocation };
+  }
+
   async getTreasuryNextAllocationTime(): Promise<AllocationTime> {
     const { Treasury } = this.contracts;
     const nextEpochTimestamp: BigNumber = await Treasury.nextEpochPoint();
@@ -802,10 +812,10 @@ export class SynergyFinance {
       let assetUrl;
       if (assetName === 'CRS') {
         asset = this.CRS;
-        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/crystal_512x512.png';
+        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/crystal.png';
       } else if (assetName === 'DIA') {
         asset = this.DIA;
-        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/diamond_512x512.png';
+        assetUrl = 'https://raw.githubusercontent.com/levintech/synergy-assets/main/diamond.png';
       } else if (assetName === 'BUSD') {
         asset = this.BUSD;
         assetUrl = 'https://bscscan.com/token/images/btcb_32.png';

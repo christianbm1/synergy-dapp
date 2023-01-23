@@ -28,6 +28,8 @@ import GuilderFi from '../../assets/img/partners/guilderfi.png';
 import Lingo from '../../assets/img/partners/lingo.png';
 import BSCHouse from '../../assets/img/partners/bschouse.png';
 import Elongate from '../../assets/img/partners/elongate.png';
+import useTotalValueLocked from '../../hooks/useTotalValueLocked';
+import CountUp from 'react-countup';
 
 const TITLE = 'Synergy';
 
@@ -302,6 +304,8 @@ const Home = () => {
   const { account } = useWallet();
   const xsmall = useMediaQuery('(max-width:320px)');
 
+  const TVL = useTotalValueLocked();
+
   const [onPresentAccountModal] = useModal(<AccountModal />);
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
 
@@ -562,7 +566,7 @@ const Home = () => {
                     TVL
                   </Typography>
                   <Typography className={classes.overviewValue}>
-                    1000+
+                    <CountUp end={TVL} separator="," />
                   </Typography>
                 </Box>
                 <Box style={{ marginTop: '40px' }}>
@@ -570,7 +574,7 @@ const Home = () => {
                     Community members
                   </Typography>
                   <Typography className={classes.overviewValue}>
-                    2240+
+                    200+
                   </Typography>
                 </Box>
               </Box>
@@ -727,7 +731,7 @@ const Home = () => {
                       Genesis Pools
                     </Typography>
                     <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-                      Deposit whitelisted tokens and start your journey in Synergy ecosystem!
+                      Deposit whitelisted tokens and start your journey in the Synergy ecosystem!
                     </Typography>
                   </Box>
                 </Grid>

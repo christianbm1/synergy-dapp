@@ -4,8 +4,9 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Helmet } from 'react-helmet'
 
-import { Box, Container, Typography, Grid, makeStyles } from '@material-ui/core';
+import { Box, Container, Typography, Grid, makeStyles, useMediaQuery } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import moment from 'moment';
 
 import useBanks from '../../hooks/useBanks';
 import Bank from '../Bank';
@@ -14,13 +15,10 @@ import Page from '../../components/Page';
 import FarmCard from './FarmCard';
 import PrimaryFarmCard from './PrimaryFarmCard';
 
-import HomeImage from '../../assets/img/background/initial.png';
-import Triangle from '../../assets/img/triangle.png';
-import Partner from '../../assets/img/partner.png';
-import TitleImage from '../../assets/img/farm-title.png';
-import AvatarImage from '../../assets/img/farm-avatar.jpg';
 import LImage from '../../assets/img/background/astronaut.png';
 import RImage from '../../assets/img/background/satellite.png';
+import useFarmTimes from '../../hooks/useFarmTimes';
+import ProgressCountdown from './components/ProgressCountdown';
 
 const TITLE = 'Synergy | Farms'
 
@@ -98,6 +96,27 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '14px',
     },
   },
+  timer: {
+    display: 'flex',
+    justifyContent: 'center',
+    color: 'white',
+    fontSize: '40px',
+    lineHeight: '40px',
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    marginTop: '20px',
+    gap: '15px',
+
+    [theme.breakpoints.down('430')]: {
+      fontSize: '34px',
+      gap: '10px',
+    },
+
+    [theme.breakpoints.down('380')]: {
+      fontSize: '24px',
+      gap: '10px',
+    },
+  },
   leftImg: {
     position: 'absolute',
     width: '20%',
@@ -149,11 +168,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Farm = () => {
+  const small = useMediaQuery('(min-width:425px)');
   const classes = useStyles();
   const [banks] = useBanks();
   const { path } = useRouteMatch();
   const { account } = useWallet();
   const activeBanks = banks.filter((bank) => !bank.finished);
+
+  const { from, to } = useFarmTimes();
+
   return (
     <Page>
         <Helmet>
@@ -172,6 +195,25 @@ const Farm = () => {
           Stake CRYSTAL or DIAMOND <br />
           with BUSD or BNB and get DIAMONDS as a reward!
         </Typography>
+        <Box className={classes.timer}>
+          {
+            Date.now() < from.getTime()
+              ?
+              <>
+                {"Starts in"}
+                <ProgressCountdown
+                  base={moment().toDate()}
+                  hideBar={true}
+                  deadline={from}
+                  description="Farm start time"
+                  fontSize={small ? '40px' : '30px'}
+                />
+              </>
+              :
+              <>
+              </>
+          }
+        </Box>
       </Box>
 
       <Box className={classes.poolSection}>

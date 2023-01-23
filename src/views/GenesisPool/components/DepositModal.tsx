@@ -18,7 +18,6 @@ interface DepositModalProps extends ModalProps {
 
 const DepositModal: React.FC<DepositModalProps> = ({max, decimals, onConfirm, onDismiss, tokenName = ''}) => {
   const [val, setVal] = useState('');
-
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max, decimals, false);
   }, [max, decimals]);
