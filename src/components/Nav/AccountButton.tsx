@@ -45,9 +45,9 @@ const AccountButton: React.FC<AccountButtonProps> = ({text}) => {
           {buttonText}
         </Button>
       ) : (
-        <Button onClick={onPresentAccountModal} className="shinyButtonSecondary" style={{height: '42px'}}>
+        <Button onClick={onPresentAccountModal} className="shinyButtonSecondary" style={{height: '42px', paddingLeft: '10px', paddingRight: '10px'}}>
           <div className="account">
-            <Davatar size={20} address={account} />
+            {/* <Davatar size={20} address={account} /> */}
             <span>{shorten(account)}</span>
           </div>
         </Button>

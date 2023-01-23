@@ -12,6 +12,8 @@ import pushPshareLpLogo from '../../assets/img/push-pshare-LP.png';
 import bnbLogo from '../../assets/img/bnb.png';
 import daiLogo from '../../assets/img/dai.png';
 import busdLogo from '../../assets/img/busd.png';
+import dshareLogo from '../../assets/img/dshare.png';
+import dexshareLogo from '../../assets/img/dexshare.png';
 
 import symbol_bg from '../../assets/img/symbol_bg.png';
 
@@ -23,6 +25,8 @@ const logosBySymbol: { [title: string]: string } = {
   BNB: bnbLogo,
   WBNB: bnbLogo,
   BUSD: busdLogo,
+  DShare: dshareLogo,
+  DexShare: dexshareLogo,
   DAI: daiLogo,
   USDT: daiLogo,
   'CRS/BUSD': pushFtmLpLogo,
