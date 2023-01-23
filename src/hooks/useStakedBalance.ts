@@ -4,9 +4,11 @@ import {BigNumber} from 'ethers';
 import useSynergyFinance from './useSynergyFinance';
 import {ContractName} from '../synergy-finance';
 import config from '../config';
+import useRefresh from './useRefresh';
 
 const useStakedBalance = (poolName: ContractName, poolId: Number) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
+  const {fastRefresh} = useRefresh()
   const synergyFinance = useSynergyFinance();
   const isUnlocked = synergyFinance?.isUnlocked;
 
@@ -22,7 +24,7 @@ const useStakedBalance = (poolName: ContractName, poolId: Number) => {
       const refreshBalance = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [isUnlocked, poolName, setBalance, synergyFinance, fetchBalance]);
+  }, [isUnlocked, poolName, setBalance, synergyFinance, fetchBalance, fastRefresh]);
 
   return balance;
 };

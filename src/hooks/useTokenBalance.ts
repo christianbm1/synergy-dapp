@@ -3,10 +3,12 @@ import {BigNumber} from 'ethers';
 import ERC20 from '../synergy-finance/ERC20';
 import useSynergyFinance from './useSynergyFinance';
 import config from '../config';
+import useRefresh from './useRefresh';
 
 const useTokenBalance = (token: ERC20) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
   const synergyFinance = useSynergyFinance();
+  const {fastRefresh} = useRefresh()
   const isUnlocked = synergyFinance?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
@@ -19,7 +21,7 @@ const useTokenBalance = (token: ERC20) => {
       let refreshInterval = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshInterval);
     }
-  }, [isUnlocked, token, fetchBalance, synergyFinance]);
+  }, [isUnlocked, token, fetchBalance, synergyFinance, fastRefresh]);
 
   return balance;
 };
