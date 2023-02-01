@@ -51,11 +51,13 @@ const PoolCard = ({ bank }) => {
     Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, bank.depositToken.decimal))
   ).toFixed(2);
 
+  const isLPLogo = bank.poolId == 2 ? true : false;
+
   return (
     <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
       <Box className={classes.cardContainer}>
         <Box className={classes.header}>
-          <TokenSymbol size={96} symbol={bank.depositTokenName} />
+          <TokenSymbol size={96} symbol={bank.depositTokenName} isLPLogo={isLPLogo} />
         </Box>
         <Box className={classes.content}>
           <Box className={classes.row}>
