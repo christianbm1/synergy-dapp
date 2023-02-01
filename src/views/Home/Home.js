@@ -2,11 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import useWallet from 'use-wallet';
-import { Box, Button, Card, Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Button, Card, Container, Divider, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Page from '../../components/Page';
+import CountUp from 'react-countup';
 import useModal from '../../hooks/useModal';
+import useTotalValueLocked from '../../hooks/useTotalValueLocked';
+import useCrystalStats from '../../hooks/useCrystalStats';
+import useShareStats from '../../hooks/useDiamondStats';
+import Page from '../../components/Page';
 import AccountModal from '../../components/Nav/AccountModal';
 import WalletProviderModal from '../../components/WalletProviderModal';
 
@@ -21,15 +25,16 @@ import Step1 from '../../assets/img/step1.png';
 import Step2 from '../../assets/img/step2.png';
 import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
-
-import DibsMoney from '../../assets/img/partners/dibsmoney.png';
-import DexFinance from '../../assets/img/partners/dexfinance.png';
+import DexScreener from '../../assets/img/dexscreener.png';
+import OnSite from '../../assets/img/onsite.png';
+import Magik from '../../assets/img/partners/magik.png';
+import YieldWolf from '../../assets/img/partners/yieldwolf.png';
+import Vertek from '../../assets/img/partners/vertek.png';
 import GuilderFi from '../../assets/img/partners/guilderfi.png';
 import Lingo from '../../assets/img/partners/lingo.png';
 import BSCHouse from '../../assets/img/partners/bschouse.png';
 import Elongate from '../../assets/img/partners/elongate.png';
-import useTotalValueLocked from '../../hooks/useTotalValueLocked';
-import CountUp from 'react-countup';
+import TokenSymbol from '../../components/TokenSymbol';
 
 const TITLE = 'Synergy';
 
@@ -280,23 +285,73 @@ const useStyles = makeStyles((theme) => ({
       display: 'none'
     },
   },
-  video: {
-    position: 'fixed',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    bottom: '-30%',
-    width: '100%',
-    zIndex: -1,
-    [theme.breakpoints.down('1450')]: {
-      bottom: '-20%',
+  cardContainer: {
+    background: '#141B22',
+    paddingBottom: '5px',
+    display: 'block',
+    position: 'relative'
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '24px',
+    alignItems: 'center',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '20px 15px 15px 15px',
     },
-    [theme.breakpoints.down('1000')]: {
-      bottom: '-10%',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '0px 24px 20px',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '12px 15px 10px 15px',
     },
-    [theme.breakpoints.down('700')]: {
-      bottom: '-5%',
+  },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '5px 0px',
+  },
+  rowTitle: {
+    fontFamily: 'Poppins',
+    fontSize: '18px',
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '14px',
     },
-  }
+  },
+  rowValue: {
+    fontFamily: 'Poppins',
+    fontSize: '18px',
+    color: '#21E786',
+
+    [theme.breakpoints.down('450')]: {
+      fontSize: '14px',
+    },
+  },
+  divider: {
+    margin: '0px 24px 20px',
+    background: 'white',
+    opacity: '0.2',
+
+    [theme.breakpoints.down('450')]: {
+      margin: '0px 15px 10px',
+    },
+  },
+  action: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '0px 20px 24px',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '0px 15px 12px 15px',
+    },
+  },
 }));
 
 const Home = () => {
@@ -305,6 +360,23 @@ const Home = () => {
   const xsmall = useMediaQuery('(max-width:320px)');
 
   const TVL = useTotalValueLocked();
+  const crsStats = useCrystalStats();
+  const crsPriceInDollars = useMemo(
+    () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : 0),
+    [crsStats],
+  );
+  const crsCirculatingSupply = useMemo(() => (crsStats ? Number(crsStats.circulatingSupply).toFixed(2) : 0), [crsStats]);
+  const crsTotalSupply = useMemo(() => (crsStats ? Number(crsStats.totalSupply).toFixed(2) : 0), [crsStats]);
+  const crsMarketCap = Number(crsPriceInDollars * crsTotalSupply).toFixed(2);
+
+  const diaStats = useShareStats();
+  const diaPriceInDollars = useMemo(
+    () => (crsStats ? Number(diaStats.priceInDollars).toFixed(2) : 0),
+    [diaStats],
+  );
+  const diaCirculatingSupply = useMemo(() => (diaStats ? Number(diaStats.circulatingSupply).toFixed(2) : 0), [diaStats]);
+  const diaTotalSupply = useMemo(() => (diaStats ? Number(diaStats.totalSupply).toFixed(2) : 0), [diaStats]);
+  const diaMarketCap = Number(diaPriceInDollars * diaTotalSupply).toFixed(2);
 
   const [onPresentAccountModal] = useModal(<AccountModal />);
   const [isWalletProviderOpen, setWalletProviderOpen] = useState(false);
@@ -369,7 +441,8 @@ const Home = () => {
           )}
           <Button
             className="shinyButtonSecondary"
-            href="https://synergy-2.gitbook.io/the-book-of-synergy/"
+            target="_blank"
+            href="http://pancakeswap.com/swap?inputCurrency=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&outputCurrency=0xa1A5AD28C250B9383c360c0f69aD57D70379851e"
             style={{
               height: "42px",
               minWidth: xsmall ? "120px" : '160px',
@@ -377,7 +450,7 @@ const Home = () => {
               lineHeight: "24px",
             }}
           >
-            Docs
+            Buy Tokens
           </Button>
           <WalletProviderModal open={isWalletProviderOpen} handleClose={handleWalletProviderClose} />
         </Box>
@@ -411,32 +484,26 @@ const Home = () => {
                 filter: 'blur(4px)',
               }}
             />
-            <Box 
-              style={{ 
-                background: '#141B22', 
-                display: 'flex', 
+            <Box
+              style={{
+                background: '#141B22',
+                display: 'flex',
                 height: '246px',
-                flexDirection: 'column', 
+                flexDirection: 'column',
                 justifyContent: 'start',
                 padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step1} height={78}/>
+                <img src={Step1} height={78} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
                   Step 1
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  {/* <Link 
-                    style={{ color: 'white', textDecoration: 'underline' }}
-                    target="_blank" 
-                    href="http://pancake.kiemtienonline360.com/#/swap?inputCurrency=0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd&outputCurrency=0x8427BaaebBF3C8C89423b27AeABfE26F1b8233e6"
-                  > */}
-                    Buy DIAMONDS in PancakeSwap
-                  {/* </Link> */}
+                  Buy DIAMONDS in PancakeSwap
                 </Typography>
               </Box>
             </Box>
@@ -469,19 +536,19 @@ const Home = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
-          <Box 
-              style={{ 
-                background: '#141B22', 
-                display: 'flex', 
+            <Box
+              style={{
+                background: '#141B22',
+                display: 'flex',
                 height: '246px',
-                flexDirection: 'column', 
+                flexDirection: 'column',
                 justifyContent: 'start',
                 padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step2} height={78}/>
+                <img src={Step2} height={78} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -494,19 +561,19 @@ const Home = () => {
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
-          <Box 
-              style={{ 
-                background: '#141B22', 
-                display: 'flex', 
+            <Box
+              style={{
+                background: '#141B22',
+                display: 'flex',
                 height: '246px',
-                flexDirection: 'column', 
+                flexDirection: 'column',
                 justifyContent: 'start',
                 padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step3} height={78}/>
+                <img src={Step3} height={78} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -520,19 +587,19 @@ const Home = () => {
 
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
-            <Box 
-              style={{ 
-                background: '#141B22', 
-                display: 'flex', 
+            <Box
+              style={{
+                background: '#141B22',
+                display: 'flex',
                 height: '246px',
-                flexDirection: 'column', 
+                flexDirection: 'column',
                 justifyContent: 'start',
                 padding: '12px',
                 gap: '20px',
               }}
             >
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                <img src={Step4} height={78}/>
+                <img src={Step4} height={78} />
               </Box>
               <Box>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '30px', color: '#21E786' }}>
@@ -556,8 +623,8 @@ const Home = () => {
                 Our Mission
               </Typography>
               <Typography className={classes.text}>
-                At Synergy, we want to bridge the gap between our customers and cryptocurrency markets. 
-                Synergy will bring this concept into the mainstream by removing barriers, building trust, and providing easier ways 
+                At Synergy, we want to bridge the gap between our customers and cryptocurrency markets.
+                Synergy will bring this concept into the mainstream by removing barriers, building trust, and providing easier ways
                 for people to access their finances. We present what we believe to be, the future of money.
               </Typography>
               <Box className={classes.overviewContainer}>
@@ -574,13 +641,13 @@ const Home = () => {
                     Community members
                   </Typography>
                   <Typography className={classes.overviewValue}>
-                    200+
+                    250+
                   </Typography>
                 </Box>
               </Box>
               <Button
                 className="shinyButtonSecondary"
-                component={RouterLink} 
+                component={RouterLink}
                 to="/farm"
                 style={{
                   marginTop: "40px",
@@ -738,14 +805,250 @@ const Home = () => {
               </Grid>
             </Box>
           </Grid>
+          <Grid item xs={12} md={6} lg={6} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={xsmall ? 50 : 80} symbol="CRS" />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '30px' }}>CRS</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '18px' }}>(Crystal)</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <Link 
+                    href="https://dexscreener.com/bsc/0x3411f287c3fc5fbc1be9fcc324d47541ebf220c6"
+                    target='_blank'
+                  >
+                    <img src={DexScreener} height={xsmall ? 25 :40} />
+                  </Link>
+                  <Link 
+                    href="https://bscscan.com/token/0xa1A5AD28C250B9383c360c0f69aD57D70379851e"
+                    target='_blank'
+                  >
+                    <img src={OnSite} height={xsmall ? 20 : 35} />
+                  </Link>
+                </Box>
+              </Box>
+              <Divider variant="middle" className={classes.divider} />
+              <Box className={classes.content}>
+                <Box 
+                  className={classes.row} 
+                  style={{ 
+                    backgroundColor: "#0E1317", 
+                    borderRadius: '6px', 
+                    padding: '5px 15px', 
+                    marginBottom: '10px' 
+                  }}
+                >
+                  <Typography className={classes.rowTitle} style={{ color: '#8F9F97' }}>Price:</Typography>
+                  <Typography className={classes.rowValue}>{crsPriceInDollars}$</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Market Cap:</Typography>
+                  <Typography className={classes.rowValue}>{crsMarketCap}$</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Circulation Supply:</Typography>
+                  <Typography className={classes.rowValue}>{crsCirculatingSupply}</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Total Supply:</Typography>
+                  <Typography className={classes.rowValue}>{crsTotalSupply}</Typography>
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="http://pancakeswap.com/swap?inputCurrency=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&outputCurrency=0xa1A5AD28C250B9383c360c0f69aD57D70379851e"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                  }}
+                >
+                  Buy CRS
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6} lg={6} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={xsmall ? 50 : 80} symbol="DIA" />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '30px' }}>DIA</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '18px' }}>(Diamond)</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <Link 
+                    href="https://dexscreener.com/bsc/0x40f3b0a66bca432d19d51ac9d016ecc4deccf0b2"
+                    target='_blank'
+                  >
+                    <img src={DexScreener} height={xsmall ? 25 :40} />
+                  </Link>
+                  <Link 
+                    href=" https://bscscan.com/token/0xcAE4F3977c084aB12B73a920e670e1665B3fA7D5"
+                    target='_blank'
+                  >
+                    <img src={OnSite} height={xsmall ? 20 : 35} />
+                  </Link>
+                </Box>
+              </Box>
+              <Divider variant="middle" className={classes.divider} />
+              <Box className={classes.content}>
+                <Box 
+                  className={classes.row} 
+                  style={{ 
+                    backgroundColor: "#0E1317", 
+                    borderRadius: '6px', 
+                    padding: '5px 15px', 
+                    marginBottom: '10px' 
+                  }}
+                >
+                  <Typography className={classes.rowTitle} style={{ color: '#8F9F97' }}>Price:</Typography>
+                  <Typography className={classes.rowValue}>{diaPriceInDollars}$</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Market Cap:</Typography>
+                  <Typography className={classes.rowValue}>{diaMarketCap}$</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Circulation Supply:</Typography>
+                  <Typography className={classes.rowValue}>{diaCirculatingSupply}</Typography>
+                </Box>
+                <Box className={classes.row}>
+                  <Typography className={classes.rowTitle}>Total Supply:</Typography>
+                  <Typography className={classes.rowValue}>{diaTotalSupply}</Typography>
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="http://pancakeswap.com/swap?inputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&outputCurrency=0xcAE4F3977c084aB12B73a920e670e1665B3fA7D5"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                  }}
+                >
+                  Buy DIA
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <Box>
               <Typography className={classes.sectionSubTitle}>
                 Power of Blockchain
               </Typography>
               <Typography className={classes.text}>
-                Blockchains are next-generation, immutable, public-distribution ledgers. They are secured and validated by an entire 
-                network of computer servers. This system allows the information to be recorded without being hacked, or duplicated, 
+                Blockchains are next-generation, immutable, public-distribution ledgers. They are secured and validated by an entire
+                network of computer servers. This system allows the information to be recorded without being hacked, or duplicated,
                 making every piece of information unique, like your valuable assets.
               </Typography>
             </Box>
@@ -757,7 +1060,7 @@ const Home = () => {
               </Typography>
               <Typography className={classes.text}>
                 Cryptocurrencies are a new paradigm for money. Their promise is to streamline the existing financial architecture
-                to make investing money faster and cheaper. Technology and architecture decentralize existing monetary systems, 
+                to make investing money faster and cheaper. Technology and architecture decentralize existing monetary systems,
                 making it possible for transacting parties to exchange value independently of intermediary institutions such as banks.
               </Typography>
             </Box>
@@ -771,69 +1074,80 @@ const Home = () => {
         </Typography>
         <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={6}>
           <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
+            <Box
               className={classes.partnerCard}
               style={{
-                background: `url(${DibsMoney})`,
+                background: `url(${YieldWolf})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-              }} 
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
+            <Box
               className={classes.partnerCard}
               style={{
-                background: `url(${DexFinance})`,
+                background: `url(${Vertek})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-              }} 
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
-              className={classes.partnerCard}
-              style={{
-                background: `url(${GuilderFi})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-              }} 
-            />
-          </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
+            <Box
               className={classes.partnerCard}
               style={{
                 background: `url(${Elongate})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-              }} 
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${GuilderFi})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box
               className={classes.partnerCard}
               style={{
                 background: `url(${Lingo})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-              }} 
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box 
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${Magik})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box
               className={classes.partnerCard}
               style={{
                 background: `url(${BSCHouse})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-              }} 
+              }}
             />
           </Grid>
         </Grid>
