@@ -91,7 +91,7 @@ const Footer = () => {
           </a>
         </Box>
         <Typography className={classes.text}>
-          <span style={{ color: '#21E786' }}>synergy</span> All rights reserved 2022
+          <span style={{ color: '#21E786' }}>synergy</span> All rights reserved 2023
         </Typography>
       </Box>
     </footer>

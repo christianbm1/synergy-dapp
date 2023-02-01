@@ -19,6 +19,7 @@ import {
   MenuList,
   MenuItem,
 } from '@material-ui/core';
+import { Link as ExternalLink} from '@material-ui/core';
 
 import ListItemLink from '../ListItemLink';
 
@@ -179,9 +180,16 @@ const Nav = () => {
               </Typography>
             </Link>
             <Box style={{ fontSize: '1rem', display: 'flex', alignItems: 'center' }}>
-              <Link to="/gpool" className={'navLink ' + classes.link}>
+              <ExternalLink 
+                className={'navLink ' + classes.link}
+                href="https://synergy-2.gitbook.io/the-book-of-synergy/"
+                target='_blank'
+              >
+                Doc
+              </ExternalLink>
+              {/* <Link to="/gpool" className={'navLink ' + classes.link}>
                 Genesis Pools
-              </Link>
+              </Link> */}
               <Link to="/farm" className={'navLink ' + classes.link}>
                 Farm
               </Link>

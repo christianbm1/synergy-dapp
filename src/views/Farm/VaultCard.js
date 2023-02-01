@@ -1,10 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Button, makeStyles, Card, CardActions, CardContent, Typography, Grid, Divider, CardMedia } from '@material-ui/core';
+import React, { useMemo } from 'react';
+import { Box, Card, CardActions, CardContent, Typography, Grid, makeStyles } from '@material-ui/core';
 
 import TokenSymbol from '../../components/TokenSymbol';
 import useStatsForPool from '../../hooks/useStatsForPool';
-import PrimaryActionPanel from './components/PrimaryActionPanel';
+import ActionPanel from './components/ActionPanel';
+import useWallet from 'use-wallet';
+import useStakedBalance from '../../hooks/useStakedBalance';
+import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDollars';
+import { getDisplayBalance } from '../../utils/formatBalance';
+import useEarnings from '../../hooks/useEarnings';
+import useCrystalStats from '../../hooks/useCrystalStats';
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -13,18 +18,17 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     display: 'flex',
-    width: '-webkit-fill-available',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: 'white',
     padding: '12px',
-    position: 'absolute',
-    marginTop: '-70px',
-    gap: '20px',
+    width: '-webkit-fill-available',
   },
   content: {
     display: 'flex',
     flexDirection: 'column',
     color: 'white',
-    padding: '60px 24px 0px 24px',
+    padding: '10px 24px 0px 24px',
   },
   row: {
     display: 'flex',
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     color: 'white',
-    padding: '0px 24px 12px 24px',
+    padding: '20px 24px 12px 24px',
   },
   divider: {
     // margin: '0px 30px 20px', 
@@ -46,20 +50,40 @@ const useStyles = makeStyles((theme) => ({
       margin: '0px 15px 10px', 
     },
   },
+  styledCard: {
+    borderTopLeftRadius: '50px',
+    borderTopRightRadius: '50px',
+    border: '4px solid #545454',
+    overflow: 'initial',
+    paddingBottom: '5px'
+  },
 }));
 
-const PrimaryFarmCard = ({ bank }) => {
+const VaultCard = ({ bank }) => {
   const classes = useStyles();
+  const { account } = useWallet();
   const statsOnPool = useStatsForPool(bank);
-  const tokenList = bank.depositTokenName.split("/");
+  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
+  const tokenPriceInDollars = useMemo(
+    () => (stakedTokenPriceInDollars ? stakedTokenPriceInDollars : null),
+    [stakedTokenPriceInDollars],
+  );
+  const stakedInDollars = (
+    Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, bank.depositToken.decimal))
+  ).toFixed(2);
+
+  const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
+  const crsStats = useCrystalStats();
+  const enarTokenPriceInDollars = useMemo(
+    () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : null),
+    [crsStats],
+  );
+  const earnedInDollars = (Number(enarTokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
 
   return (
     <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
       <Box className={classes.cardContainer}>
-        <Box className={classes.header}>
-          <TokenSymbol size={110} symbol={tokenList[0]} />
-          <TokenSymbol size={110} symbol={tokenList[1]} />
-        </Box>
         <Box
           style={{
             width: '124px',
@@ -83,56 +107,29 @@ const PrimaryFarmCard = ({ bank }) => {
             filter: 'blur(4px)',
           }}
         />
+        <Box className={classes.header}>
+          <TokenSymbol size={86} symbol={bank.depositTokenName} isLPLogo={true} />
+          <Typography style={{ fontSize: '26px', marginRight: '6px' }}>
+            {bank.depositTokenName}
+          </Typography>
+        </Box>
         <Box className={classes.content}>
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Status
+              APR
             </Typography>
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              Online
+              {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
             </Typography>
           </Box>
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Deposit
+              Daily APR
             </Typography>
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              {bank.depositTokenName}
+              {bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%
             </Typography>
           </Box>
-          <Box className={classes.row}>
-            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Earn
-            </Typography>
-            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              DIAMOND
-            </Typography>
-          </Box>
-          {/* <Box className={classes.row}>
-            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Market cap
-            </Typography>
-            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              0
-            </Typography>
-          </Box>
-          <Box className={classes.row}>
-            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Circulation Supply
-            </Typography>
-            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              0
-            </Typography>
-          </Box>
-          <Box className={classes.row}>
-            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              Total Supply
-            </Typography>
-            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              0
-            </Typography>
-          </Box> */}
-          <Divider className={classes.divider} />
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
               TVL
@@ -143,16 +140,23 @@ const PrimaryFarmCard = ({ bank }) => {
           </Box>
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              APR
+              Reward
             </Typography>
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
+              {getDisplayBalance(earnings, bank.earnToken.decimal, 2)} DIA {`(${earnedInDollars}$)`}
             </Typography>
           </Box>
-          <Divider className={classes.divider} />
+          <Box className={classes.row}>
+            <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
+              Staked
+            </Typography>
+            <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
+              {getDisplayBalance(stakedBalance, bank.depositToken.decimal, 2)} {`${bank.depositTokenName}`} {`(${stakedInDollars}$)`}
+            </Typography>
+          </Box>
         </Box>
         <Box className={classes.action}>
-          <PrimaryActionPanel bank={bank} />
+          <ActionPanel bank={bank} />
         </Box>
         <Box
           style={{
@@ -186,4 +190,4 @@ const PrimaryFarmCard = ({ bank }) => {
   );
 };
 
-export default PrimaryFarmCard;
+export default VaultCard;

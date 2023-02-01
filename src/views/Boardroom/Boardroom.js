@@ -24,6 +24,7 @@ import ActionPanel from './components/ActionPanel';
 import useSynergyFinance from '../../hooks/useSynergyFinance';
 import useShareStats from '../../hooks/useDiamondStats';
 import TokenSymbol from '../../components/TokenSymbol';
+import useCrystalStats from '../../hooks/useCrystalStats';
 
 const TITLE = 'Synergy | ARK'
 
@@ -217,7 +218,7 @@ const Boardroom = () => {
   const { account } = useWallet();
   const synergyFinance = useSynergyFinance();
   const currentEpoch = useCurrentEpoch();
-  const cashStat = useCashPriceInEstimatedTWAP();
+  const cashStat = useCrystalStats();
   const shareStat = useShareStats();
   const totalStaked = useTotalStakedOnBoardroom();
   const boardroomAPR = useFetchBoardroomAPR();
@@ -228,17 +229,15 @@ const Boardroom = () => {
   const expansionRate = Number(useExpansionRate(scalingFactor)) * 100 / 10000;
   const { to } = useTreasuryAllocationTimes();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
-  const tokenPriceInDollars = useMemo(
+  // const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
+  const stakedTokenPriceInDollars = useMemo(() => (shareStat ? Number(shareStat.priceInDollars).toFixed(2) : null), [shareStat]);
+  const stakedInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
         ? (Number(stakedTokenPriceInDollars) * Number(getDisplayBalance(totalStaked))).toFixed(2).toString()
         : null,
     [stakedTokenPriceInDollars, totalStaked],
   );
-  const stakedInDollars = (
-    Number(tokenPriceInDollars) * Number(getDisplayBalance(totalStaked, 18))
-  ).toFixed(2);
 
   return (
     <Page>
@@ -303,7 +302,7 @@ const Boardroom = () => {
           <Box className={classes.content}>
             <Box style={{display: 'flex', justifyContent: 'flex-start', padding: '10px 0px'}}>
               <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '24px' : '36px', fontWeight: 700}} >TVL in ARK:</Typography>
-              <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '24px' : '36px', color: '#21E786', marginLeft: '20px' }}>637%</Typography>
+              <Typography style={{ fontFamily: 'Poppins', fontSize: small ? '24px' : '36px', color: '#21E786', marginLeft: '20px' }}>{stakedInDollars}$</Typography>
             </Box>
             <Box className={classes.row}>
               <Typography className={classes.rowTitle}>APR:</Typography>
@@ -314,8 +313,8 @@ const Boardroom = () => {
               <Typography className={classes.rowValue}>{boardroomEpochAPR.toFixed(2)}%</Typography>
             </Box>
             <Box className={classes.row}>
-              <Typography className={classes.rowTitle}>DIAMONDS stacked:</Typography>
-              <Typography className={classes.rowValue}>{stakedInDollars}$</Typography>
+              <Typography className={classes.rowTitle}>DIAMONDS staked:</Typography>
+              <Typography className={classes.rowValue}>{Number(getDisplayBalance(totalStaked, 18)).toFixed(2)}</Typography>
             </Box>
             <Box className={classes.row}>
               <Typography className={classes.rowTitle}>Total DIAMONDS staked:</Typography>

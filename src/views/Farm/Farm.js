@@ -4,7 +4,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Helmet } from 'react-helmet'
 
-import { Box, Container, Typography, Grid, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Box, Button, Typography, Grid, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 
@@ -19,6 +20,11 @@ import LImage from '../../assets/img/background/astronaut.png';
 import RImage from '../../assets/img/background/satellite.png';
 import useFarmTimes from '../../hooks/useFarmTimes';
 import ProgressCountdown from './components/ProgressCountdown';
+import VaultCard from './VaultCard';
+import TokenSymbol from '../../components/TokenSymbol';
+import YieldWolf from '../../assets/img/wolf.png';
+import Magik from '../../assets/img/magik.png';
+import AC from '../../assets/img/ac.png';
 
 const TITLE = 'Synergy | Farms'
 
@@ -33,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   partnerSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '10px 24px 0px 24px',
+    gap: '20px',
+    position: 'relative',
+  },
+  vaultSection: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -117,6 +131,32 @@ const useStyles = makeStyles((theme) => ({
       gap: '10px',
     },
   },
+  cardContainer: {
+    background: '#141B22',
+    paddingBottom: '5px',
+    display: 'block',
+    position: 'relative'
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '24px',
+    alignItems: 'center',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '20px 15px 15px 15px',
+    },
+  },
+  action: {
+    display: 'flex',
+    flexDirection: 'column',
+    color: 'white',
+    padding: '0px 20px 24px',
+
+    [theme.breakpoints.down('450')]: {
+      padding: '0px 15px 12px 15px',
+    },
+  },
   leftImg: {
     position: 'absolute',
     width: '20%',
@@ -168,7 +208,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Farm = () => {
-  const small = useMediaQuery('(min-width:425px)');
+  const small = useMediaQuery('(min-width:430px)');
   const classes = useStyles();
   const [banks] = useBanks();
   const { path } = useRouteMatch();
@@ -179,10 +219,10 @@ const Farm = () => {
 
   return (
     <Page>
-        <Helmet>
-          <title>{TITLE}</title>
-        </Helmet>
-        <img src={LImage} className={classes.leftImg} />
+      <Helmet>
+        <title>{TITLE}</title>
+      </Helmet>
+      <img src={LImage} className={classes.leftImg} />
       <img src={RImage} className={classes.rightImg} />
       <Box className={classes.titleSection}>
         <Typography className={classes.title}>
@@ -249,6 +289,350 @@ const Farm = () => {
             ))}
         </Grid>
       </Box>
+
+      <Box className={classes.partnerSection}>
+        <Typography className={classes.title}>
+          Partner Vaults
+        </Typography>
+        {/* <Typography className={classes.subtitle2}>
+          Combine your token with CRYSTAL <br />
+          and take DIAMONDs as a reward!
+        </Typography> */}
+      </Box>
+
+      <Box className={classes.poolSection}>
+        <Grid container spacing={3} style={{ marginTop: '20px' }}>
+          <Grid item xs={12} sm={6} md={6} lg={4} xl={4} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={small ? 70 : 50} symbol="CRS/BUSD" isLPLogo={true} />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '20px' }}>CRS/BUSD</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '14px' }}>Autocompounder</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <img src={YieldWolf} height={small ? 35 : 25} />
+                  <img src={AC} height={small ? 30 : 20} />
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="https://yieldwolf.finance/bsc/0xb2C5A04A71426756FCAbD0439E3738373C0A5064/v2-165"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    width: '-webkit-fill-available'
+                  }}
+                >
+                  Stake in YieldWolf
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={4} xl={4} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={small ? 70 : 50} symbol="DIA/BNB" isLPLogo={true} />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '20px' }}>DIA/BNB</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '14px' }}>Autocompounder</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <img src={YieldWolf} height={small ? 35 : 25} />
+                  <img src={AC} height={small ? 30 : 20} />
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="https://yieldwolf.finance/bsc/0xb2C5A04A71426756FCAbD0439E3738373C0A5064/v2-166"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    width: '-webkit-fill-available'
+                  }}
+                >
+                  Stake in YieldWolf
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={4} xl={4} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={small ? 70 : 50} symbol="CRS/DShare" isLPLogo={true} />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '20px' }}>CRS/DShare</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '14px' }}>Autocompounder</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <img src={YieldWolf} height={small ? 35 : 25} />
+                  <img src={AC} height={small ? 30 : 20} />
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="https://yieldwolf.finance/bsc/0xb2C5A04A71426756FCAbD0439E3738373C0A5064/v2-167"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    width: '-webkit-fill-available'
+                  }}
+                >
+                  Stake in YieldWolf
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={4} xl={4} style={{ position: 'relative' }}>
+            <Box className={classes.cardContainer}>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginLeft: '-3px',
+                  marginTop: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <Box className={classes.header}>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
+                  <TokenSymbol size={small ? 70 : 50} symbol="CRS/BUSD" isLPLogo={true} />
+                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
+                    <Typography style={{ fontSize: '20px' }}>CRS/BUSD</Typography>
+                    <Typography style={{ fontFamily: 'Poppins', fontSize: '14px' }}>Autocompounder</Typography>
+                  </Box>
+                </Box>
+                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+                  <img src={Magik} height={small ? 35 : 25} width={small ? 35 : 25} />
+                  <img src={AC} height={small ? 30 : 20} />
+                </Box>
+              </Box>
+              <Box className={classes.action}>
+                <Button
+                  className="shinyButtonPrimary"
+                  target="_blank"
+                  href="https://magik.farm/#/bsc/vault/synergy-crystals-busd"
+                  style={{
+                    height: "42px",
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    width: '-webkit-fill-available'
+                  }}
+                >
+                  Stake in Magik
+                </Button>
+              </Box>
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+              <Box
+                style={{
+                  width: '124px',
+                  height: '100px',
+                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
+                  marginRight: '-3px',
+                  marginBottom: '-3px',
+                  position: 'absolute',
+                  zIndex: '-1',
+                  bottom: 0,
+                  right: 0,
+                  filter: 'blur(4px)',
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+
     </Page>
   );
 };

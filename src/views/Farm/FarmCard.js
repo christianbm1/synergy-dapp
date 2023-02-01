@@ -10,6 +10,7 @@ import useStakedTokenPriceInDollars from '../../hooks/useStakedTokenPriceInDolla
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useEarnings from '../../hooks/useEarnings';
 import useCrystalStats from '../../hooks/useCrystalStats';
+import useShareStats from '../../hooks/useDiamondStats';
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -74,15 +75,16 @@ const PoolCard = ({ bank }) => {
   ).toFixed(2);
 
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
-  const crsStats = useCrystalStats();
+  const diaStats = useShareStats();
+  // const crsStats = useCrystalStats();
   const enarTokenPriceInDollars = useMemo(
-    () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : null),
-    [crsStats],
+    () => (diaStats ? Number(diaStats.priceInDollars).toFixed(2) : null),
+    [diaStats],
   );
   const earnedInDollars = (Number(enarTokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
 
   return (
-    <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
+    <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
       <Box className={classes.cardContainer}>
         <Box
           style={{
@@ -143,7 +145,7 @@ const PoolCard = ({ bank }) => {
               Reward
             </Typography>
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              {getDisplayBalance(earnings, bank.earnToken.decimal, 2)} CRS {`(${earnedInDollars}$)`}
+              {getDisplayBalance(earnings, bank.earnToken.decimal, 2)} DIA {`(${earnedInDollars}$)`}
             </Typography>
           </Box>
           <Box className={classes.row}>
