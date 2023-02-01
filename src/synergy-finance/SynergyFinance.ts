@@ -29,7 +29,7 @@ export class SynergyFinance {
   boardroomVersionOfUser?: string;
 
   CRS_BUSD_LP: ERC20;
-  DIA_BUSD_LP: ERC20;
+  DIA_BNB_LP: ERC20;
   CRS: ERC20;
   DIA: ERC20;
   BNB: ERC20;
@@ -58,7 +58,7 @@ export class SynergyFinance {
 
     // Uniswap V2 Pair
     this.CRS_BUSD_LP = new ERC20(externalTokens['CRS/BUSD'][0], provider, 'CRS/BUSD');
-    this.DIA_BUSD_LP = new ERC20(externalTokens['DIA/BUSD'][0], provider, 'DIA/BUSD');
+    this.DIA_BNB_LP = new ERC20(externalTokens['DIA/BNB'][0], provider, 'DIA/BNB');
 
     this.config = cfg;
     this.provider = provider;
@@ -205,13 +205,16 @@ export class SynergyFinance {
     const crsRewardPoolSupply = await this.DIA.balanceOf(DiamondRewardPool.address);
     const diaCirculatingSupply = supply.sub(crsRewardPoolSupply);
 
-    const { BUSD } = this.externalTokens;
-    const diamond_busd_pair = this.externalTokens["DIA/BUSD"];
-    let dia_amount_BN = await this.DIA.balanceOf(diamond_busd_pair.address);
+    const { WBNB } = this.externalTokens;
+    const diamond_bnb_pair = this.externalTokens["DIA/BNB"];
+    let dia_amount_BN = await this.DIA.balanceOf(diamond_bnb_pair.address);
     let dia_amount = Number(getFullDisplayBalance(dia_amount_BN, this.DIA.decimal));
-    let busd_amount_BN = await BUSD.balanceOf(diamond_busd_pair.address);
-    let busd_amount = Number(getFullDisplayBalance(busd_amount_BN, BUSD.decimal));
-    const priceInBUSD = (busd_amount / dia_amount).toString();
+    let wbnb_amount_BN = await WBNB.balanceOf(diamond_bnb_pair.address);
+    let wbnb_amount = Number(getFullDisplayBalance(wbnb_amount_BN, WBNB.decimal));
+    const priceInBNB = (wbnb_amount / dia_amount).toString();
+
+    const wbnbPrice = await this.getWBNBPriceInBUSD();
+    const priceInBUSD = (Number(priceInBNB) * Number(wbnbPrice)).toString();
 
     return {
       tokenInFtm: priceInBUSD,
@@ -264,7 +267,7 @@ export class SynergyFinance {
     const totalRewardPricePerYear =
       Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
     const totalRewardPricePerWeek =
-    Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(7)));
+    Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(3)));
     const totalRewardPricePerDay = Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24)));
     const totalStakingTokenInPool =
       Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal));
@@ -320,7 +323,8 @@ export class SynergyFinance {
     } else if (tokenName === 'CRS') {
       tokenPrice = await this.getTokenPriceInBUSD(this.CRS, this.CRS_BUSD_LP);
     } else if (tokenName === 'DIA') {
-      tokenPrice = await this.getTokenPriceInBUSD(this.DIA, this.DIA_BUSD_LP);
+      const stat = await this.getShareStat();
+      tokenPrice = stat.tokenInFtm;
     } else if (tokenName.includes("CRS/")) {
       tokenPrice = await this.getLPTokenPrice(token, this.CRS, true);
     } else if (tokenName.includes("DIA/")) {
@@ -437,6 +441,7 @@ export class SynergyFinance {
   }
 
   async stakedBalanceOnBank(poolName: ContractName, poolId: Number, account = this.myAccount): Promise<BigNumber> {
+    if (this.myAccount === undefined) return;
     const pool = this.contracts[poolName];
     try {
       let userInfo = await pool.userInfo(poolId, account);
