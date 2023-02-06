@@ -25,6 +25,7 @@ import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import ProgressCountdown from './ProgressCountdown';
 import WalletProviderModal from '../../../components/WalletProviderModal';
+import useShareStats from '../../../hooks/useDiamondStats';
 
 const ActionPanel: React.FC = () => {
   const small = useMediaQuery('(max-width:425px)');
@@ -37,17 +38,19 @@ const ActionPanel: React.FC = () => {
   const stakedBalance = useStakedBalanceOnBoardroom();
   const { from: withdrawFrom, to: withdrawTo } = useUnstakeTimerBoardroom();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
-  const tokenPriceInDollars = useMemo(
+  // const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('DIA', synergyFinance.DIA);
+  const shareStat = useShareStats();
+  const stakedTokenPriceInDollars = useMemo(() => (shareStat ? Number(shareStat.priceInDollars).toFixed(2) : null), [shareStat]);
+  const stakedInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
         ? (Number(stakedTokenPriceInDollars) * Number(getDisplayBalance(stakedBalance))).toFixed(2).toString()
         : null,
     [stakedTokenPriceInDollars, stakedBalance],
   );
-  const stakedInDollars = (
-    Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, 18))
-  ).toFixed(2);
+  // const stakedInDollars = (
+  //   Number(tokenPriceInDollars) * Number(getDisplayBalance(stakedBalance, 18))
+  // ).toFixed(2);
 
   const { onStake } = useStakeToBoardroom();
   const { onWithdraw } = useWithdrawFromBoardroom();

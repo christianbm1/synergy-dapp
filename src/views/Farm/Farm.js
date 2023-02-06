@@ -10,7 +10,6 @@ import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 
 import useBanks from '../../hooks/useBanks';
-import Bank from '../Bank';
 import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
 import FarmCard from './FarmCard';

@@ -143,10 +143,10 @@ const PrimaryFarmCard = ({ bank }) => {
           </Box>
           <Box className={classes.row}>
             <Typography style={{ fontSize: '18px', color: '#21E786', fontFamily: 'Poppins' }}>
-              APR
+              Daily APR
             </Typography>
             <Typography style={{ fontSize: '18px', fontFamily: 'Poppins' }}>
-              {bank.closedForStaking ? '0.00' : statsOnPool?.yearlyAPR}%
+              {bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%
             </Typography>
           </Box>
           <Divider className={classes.divider} />

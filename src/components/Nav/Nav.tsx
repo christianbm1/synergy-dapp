@@ -316,12 +316,12 @@ const Nav = () => {
                   <AccountButton text="Connect" />
                 </ListItem>
                 <ListItemLink primary="Home" to="/" />
-                <ListItemLink primary="Genesis Pools" to="/gpool" />
                 <ListItemLink primary="Farm" to="/farm" />
                 <ListItemLink primary="ARK" to="/boardroom" />
                 <ListItemLink primary="Lottery" to="/" />
                 <ListItemLink primary="NFT" to="/" />
                 <ListItemLink primary="Portofolio" to="/" />
+                <ListItemLink primary="Merch" to="/" />
                 <ListItem button component="a" href="https://synergy-2.gitbook.io/the-book-of-synergy/">
                   <ListItemText>Documentation</ListItemText>
                 </ListItem>

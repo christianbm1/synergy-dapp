@@ -35,6 +35,10 @@ import Lingo from '../../assets/img/partners/lingo.png';
 import BSCHouse from '../../assets/img/partners/bschouse.png';
 import Elongate from '../../assets/img/partners/elongate.png';
 import TokenSymbol from '../../components/TokenSymbol';
+import useCommunityMember from '../../hooks/useCommunityMember';
+
+import { useQuery } from '@apollo/client';
+import { CRS_BUSD_TVL } from "../../gql/YieldWolf";
 
 const TITLE = 'Synergy';
 
@@ -359,7 +363,14 @@ const Home = () => {
   const { account } = useWallet();
   const xsmall = useMediaQuery('(max-width:320px)');
 
+  const { loading, error, data } = useQuery(CRS_BUSD_TVL);
+  const tvlYieldWolf = useMemo(
+    () => (data ? data.pool.tvl : 0),
+    [data],
+  );
+
   const TVL = useTotalValueLocked();
+  const totalMembers = useCommunityMember();
   const crsStats = useCrystalStats();
   const crsPriceInDollars = useMemo(
     () => (crsStats ? Number(crsStats.priceInDollars).toFixed(2) : 0),
@@ -503,7 +514,7 @@ const Home = () => {
                   Step 1
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  Buy DIAMONDS in PancakeSwap
+                  {"Stake LP in CRS/BUSD -> DIA"}
                 </Typography>
               </Box>
             </Box>
@@ -555,7 +566,7 @@ const Home = () => {
                   Step 2
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  Stake DIAMONDS to earn CRYSTALS
+                  {"Stake DIA in ARK -> CRS"}
                 </Typography>
               </Box>
             </Box>
@@ -580,7 +591,7 @@ const Home = () => {
                   Step 3
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  Earn more DIAMONDS by zapping CRYSTALS to CRS/BUSD LP
+                  {"Sell 30% of CRS for profit"}
                 </Typography>
               </Box>
             </Box>
@@ -606,7 +617,7 @@ const Home = () => {
                   Step 4
                 </Typography>
                 <Typography align="center" style={{ fontSize: '22px', lineHeight: '32px' }}>
-                  Harvest DIAMONDS and repeat STEP 2
+                  {"ZAP the rest in CRS/BUSD and repeat STEP 1 "}
                 </Typography>
               </Box>
             </Box>
@@ -633,7 +644,7 @@ const Home = () => {
                     TVL
                   </Typography>
                   <Typography className={classes.overviewValue}>
-                    <CountUp end={TVL} separator="," />
+                    <CountUp end={TVL + tvlYieldWolf} separator="," />
                   </Typography>
                 </Box>
                 <Box style={{ marginTop: '40px' }}>
@@ -641,7 +652,8 @@ const Home = () => {
                     Community members
                   </Typography>
                   <Typography className={classes.overviewValue}>
-                    250+
+                    {/* 300+ */}
+                    <CountUp end={totalMembers} separator="," />
                   </Typography>
                 </Box>
               </Box>
