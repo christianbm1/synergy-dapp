@@ -5,7 +5,7 @@ import useRefresh from '../useRefresh';
 const useWithdrawCheck = () => {
   const [canWithdraw, setCanWithdraw] = useState(false);
   const synergyFinance = useSynergyFinance();
-  const {slowRefresh} = useRefresh();
+  const {fastRefresh} = useRefresh();
   const isUnlocked = synergyFinance?.isUnlocked;
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const useWithdrawCheck = () => {
     if (isUnlocked) {
       canUserWithdraw();
     }
-  }, [isUnlocked, synergyFinance, slowRefresh]);
+  }, [isUnlocked, synergyFinance, fastRefresh]);
 
   return canWithdraw;
 };

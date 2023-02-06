@@ -3,7 +3,7 @@ import useRefresh from '../useRefresh';
 import useSynergyFinance from '../useSynergyFinance';
 
 const useClaimRewardCheck = () => {
-  const {slowRefresh} = useRefresh();
+  const {fastRefresh} = useRefresh();
   const [canClaimReward, setCanClaimReward] = useState(false);
   const synergyFinance = useSynergyFinance();
   const isUnlocked = synergyFinance?.isUnlocked;
@@ -19,7 +19,7 @@ const useClaimRewardCheck = () => {
     if (isUnlocked) {
       canUserClaimReward();
     }
-  }, [isUnlocked, slowRefresh, synergyFinance]);
+  }, [isUnlocked, fastRefresh, synergyFinance]);
 
   return canClaimReward;
 };

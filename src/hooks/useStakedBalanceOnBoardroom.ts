@@ -4,7 +4,7 @@ import useSynergyFinance from './useSynergyFinance';
 import useRefresh from './useRefresh';
 
 const useStakedBalanceOnBoardroom = () => {
-  const {slowRefresh} = useRefresh();
+  const {fastRefresh} = useRefresh();
   const [balance, setBalance] = useState(BigNumber.from(0));
   const synergyFinance = useSynergyFinance();
   const isUnlocked = synergyFinance?.isUnlocked;
@@ -19,7 +19,7 @@ const useStakedBalanceOnBoardroom = () => {
     if (isUnlocked) {
       fetchBalance();
     }
-  }, [slowRefresh, isUnlocked, synergyFinance]);
+  }, [fastRefresh, isUnlocked, synergyFinance]);
   return balance;
 };
 
