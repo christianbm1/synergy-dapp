@@ -1,6 +1,7 @@
 // import { Fetcher, Route, Token } from '@uniswap/sdk';
 //import { Fetcher as FetcherSpirit, Token as TokenSpirit } from '@spiritswap/sdk';
 import { Fetcher, Route, Token } from '@pancakeswap/sdk';
+
 import { Configuration } from './config';
 import { ContractName, TokenStat, AllocationTime, LPStat, Bank, PoolStats } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
@@ -15,10 +16,20 @@ import config, { bankDefinitions } from '../config';
 import moment from 'moment';
 import { parseUnits } from 'ethers/lib/utils';
 import { BNB_TICKER, SPOOKY_ROUTER_ADDR, CRS_TICKER } from '../utils/constants';
+
+import axios from 'axios';
 /**
  * An API module of Synergy Finance contracts.
  * All contract-interacting domain logic should be defined in here.
  */
+
+interface IDISCORD {
+  approximate_member_count: string,
+  approximate_presence_count: string,
+  code: string,
+  expires_at: string,
+
+}
 export class SynergyFinance {
   myAccount: string;
   provider: ethers.providers.Web3Provider;
@@ -360,6 +371,23 @@ export class SynergyFinance {
     return await Treasury.getNextExpansionRate(decimalToBalance(_crystalPrice));
   }
 
+  async getCommunityMember(): Promise<Number> {
+    const serverId = 'Ecd4NmeN'
+    let serverInfo : IDISCORD = {
+      approximate_member_count: "",
+      approximate_presence_count: "",
+      code: "",
+      expires_at: "",
+    }
+    let serverInfoCustom
+    await axios.get(`https://discord.com/api/v9/invites/${serverId}?with_counts=true&with_expiration=true`)
+    .then(function (res) {
+      serverInfo = res?.data as IDISCORD;
+      // serverInfoCustom = res?.data?.approximate_member_count
+    });    
+    return Number(serverInfo.approximate_member_count);
+  }
+
   async getTotalValueLocked(): Promise<Number> {
     let totalValue = 0;
     for (const bankInfo of Object.values(bankDefinitions)) {
@@ -435,7 +463,7 @@ export class SynergyFinance {
         return await pool.pendingShare(poolId, account);
       }
     } catch (err) {
-      console.error(`Failed to call pendingShare() on pool ${pool.address}: ${err.stack}`);
+      console.error(`Failed to call pendingShare() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
@@ -447,7 +475,7 @@ export class SynergyFinance {
       let userInfo = await pool.userInfo(poolId, account);
       return await userInfo.amount;
     } catch (err) {
-      console.error(`Failed to call userInfo() on pool ${pool.address}: ${err.stack}`);
+      console.error(`Failed to call userInfo() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
