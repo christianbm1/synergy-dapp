@@ -27,6 +27,8 @@ import Step3 from '../../assets/img/step3.png';
 import Step4 from '../../assets/img/step4.png';
 import DexScreener from '../../assets/img/dexscreener.png';
 import OnSite from '../../assets/img/onsite.png';
+import CoinGecko from '../../assets/img/partners/coingecko.png';
+import CMC from '../../assets/img/partners/cmc.png';
 import Magik from '../../assets/img/partners/magik.png';
 import YieldWolf from '../../assets/img/partners/yieldwolf.png';
 import Vertek from '../../assets/img/partners/vertek.png';
@@ -1156,6 +1158,28 @@ const Home = () => {
               className={classes.partnerCard}
               style={{
                 background: `url(${BSCHouse})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${CoinGecko})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${CMC})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
