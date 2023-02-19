@@ -10,16 +10,14 @@ import useModal from '../../hooks/useModal';
 import useTotalValueLocked from '../../hooks/useTotalValueLocked';
 import useCrystalStats from '../../hooks/useCrystalStats';
 import useShareStats from '../../hooks/useDiamondStats';
+import useCommunityMember from '../../hooks/useCommunityMember';
 import Page from '../../components/Page';
 import AccountModal from '../../components/Nav/AccountModal';
 import WalletProviderModal from '../../components/WalletProviderModal';
+import TokenSymbol from '../../components/TokenSymbol';
 
 import { Helmet } from 'react-helmet';
 import HeroImage from '../../assets/img/home-hero.png';
-import HeroBitcoin from '../../assets/img/hero-bitcoin.png';
-import HeroBinance from '../../assets/img/hero-binance.png';
-import HeroCardano from '../../assets/img/hero-cardano.png';
-import HeroLitecion from '../../assets/img/hero-litecoin.png';
 import ICON from '../../assets/img/icon.png';
 import Step1 from '../../assets/img/step1.png';
 import Step2 from '../../assets/img/step2.png';
@@ -29,15 +27,17 @@ import DexScreener from '../../assets/img/dexscreener.png';
 import OnSite from '../../assets/img/onsite.png';
 import CoinGecko from '../../assets/img/partners/coingecko.png';
 import CMC from '../../assets/img/partners/cmc.png';
-import Magik from '../../assets/img/partners/magik.png';
 import YieldWolf from '../../assets/img/partners/yieldwolf.png';
 import Vertek from '../../assets/img/partners/vertek.png';
 import GuilderFi from '../../assets/img/partners/guilderfi.png';
 import Lingo from '../../assets/img/partners/lingo.png';
 import BSCHouse from '../../assets/img/partners/bschouse.png';
 import Elongate from '../../assets/img/partners/elongate.png';
-import TokenSymbol from '../../components/TokenSymbol';
-import useCommunityMember from '../../hooks/useCommunityMember';
+import Hunger from '../../assets/img/partners/hunger.png';
+import DogeBets from '../../assets/img/partners/dogebets.png';
+import Merch1 from '../../assets/img/merch/merch1.png';
+import Merch2 from '../../assets/img/merch/merch2.png';
+import Merch4 from '../../assets/img/merch/merch4.png';
 
 import { useQuery } from '@apollo/client';
 import { CRS_BUSD_TVL } from "../../gql/YieldWolf";
@@ -91,6 +91,14 @@ const useStyles = makeStyles((theme) => ({
     padding: '24px',
     color: 'white',
   },
+  merchSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '100px',
+    padding: '24px',
+    color: 'white',
+  },
   partnerCard: {
     display: 'flex',
     justifyContent: 'center',
@@ -104,6 +112,30 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down('430')]: {
       height: '50px',
+    },
+  },
+  merchContainer: {
+    display: 'flex',
+    gap: '30px',
+    // [theme.breakpoints.down('430')]: {
+    //   flexDirection: 'column'
+    // },
+  },
+  merchCard: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '200px',
+    height: '200px',
+    alignItems: 'center',
+    backgroundSize: 'cover',
+
+    [theme.breakpoints.down('768')]: {
+      width: '100px',
+      height: '100px',
+    },
+    [theme.breakpoints.down('430')]: {
+      width: '80px',
+      height: '80px',
     },
   },
   button: {
@@ -1087,7 +1119,7 @@ const Home = () => {
           <span style={{ color: '#21E786' }}>synergy</span> Partners
         </Typography>
         <Grid container style={{ marginTop: '40px', color: 'white' }} spacing={6}>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1098,7 +1130,7 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1109,7 +1141,7 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1120,7 +1152,7 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1131,40 +1163,18 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
-                background: `url(${Lingo})`,
+                background: `url(${DogeBets})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box
-              className={classes.partnerCard}
-              style={{
-                background: `url(${Magik})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
-            <Box
-              className={classes.partnerCard}
-              style={{
-                background: `url(${BSCHouse})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1175,7 +1185,18 @@ const Home = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4}>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${BSCHouse})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
             <Box
               className={classes.partnerCard}
               style={{
@@ -1186,7 +1207,63 @@ const Home = () => {
               }}
             />
           </Grid>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${Hunger})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={3} lg={3}>
+            <Box
+              className={classes.partnerCard}
+              style={{
+                background: `url(${Lingo})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Grid>
         </Grid>
+      </Box>
+      <Box className={classes.merchSection}>
+        <Typography className={classes.sectionTitle}>
+          <span style={{ color: '#21E786' }}>synergy</span> Merch
+        </Typography>
+        <Box className={classes.merchContainer} style={{ marginTop: '40px', color: 'white' }}>
+          <Box
+            className={classes.merchCard}
+            style={{
+              background: `url(${Merch1})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+          <Box
+            className={classes.merchCard}
+            style={{
+              background: `url(${Merch2})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+          <Box
+            className={classes.merchCard}
+            style={{
+              background: `url(${Merch4})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+        </Box>
       </Box>
     </Page>
   );

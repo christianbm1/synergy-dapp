@@ -372,7 +372,7 @@ export class SynergyFinance {
   }
 
   async getCommunityMember(): Promise<Number> {
-    const serverId = 'mg7yA4We'
+    const serverId = '5BsG8QX6'
     let serverInfo : IDISCORD = {
       approximate_member_count: "",
       approximate_presence_count: "",

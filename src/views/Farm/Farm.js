@@ -22,7 +22,6 @@ import ProgressCountdown from './components/ProgressCountdown';
 import VaultCard from './VaultCard';
 import TokenSymbol from '../../components/TokenSymbol';
 import YieldWolf from '../../assets/img/wolf.png';
-import Magik from '../../assets/img/magik.png';
 import AC from '../../assets/img/ac.png';
 
 const TITLE = 'Synergy | Farms'
@@ -516,88 +515,6 @@ const Farm = () => {
                   }}
                 >
                   Stake in YieldWolf
-                </Button>
-              </Box>
-              <Box
-                style={{
-                  width: '124px',
-                  height: '100px',
-                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
-                  marginRight: '-3px',
-                  marginBottom: '-3px',
-                  position: 'absolute',
-                  zIndex: '-1',
-                  bottom: 0,
-                  right: 0,
-                }}
-              />
-              <Box
-                style={{
-                  width: '124px',
-                  height: '100px',
-                  background: 'linear-gradient(to top left, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
-                  marginRight: '-3px',
-                  marginBottom: '-3px',
-                  position: 'absolute',
-                  zIndex: '-1',
-                  bottom: 0,
-                  right: 0,
-                  filter: 'blur(4px)',
-                }}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={4} xl={4} style={{ position: 'relative' }}>
-            <Box className={classes.cardContainer}>
-              <Box
-                style={{
-                  width: '124px',
-                  height: '100px',
-                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
-                  marginLeft: '-3px',
-                  marginTop: '-3px',
-                  position: 'absolute',
-                  zIndex: '-1',
-                }}
-              />
-              <Box
-                style={{
-                  width: '124px',
-                  height: '100px',
-                  background: 'linear-gradient(to bottom right, rgba(33,231,134,100), rgba(33,231,134,0) 50%)',
-                  marginLeft: '-3px',
-                  marginTop: '-3px',
-                  position: 'absolute',
-                  zIndex: '-1',
-                  filter: 'blur(4px)',
-                }}
-              />
-              <Box className={classes.header}>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '25px' }}>
-                  <TokenSymbol size={small ? 70 : 50} symbol="CRS/BUSD" isLPLogo={true} />
-                  <Box style={{ display: 'flex', flexDirection: 'column', color: 'white', alignItems: 'start' }}>
-                    <Typography style={{ fontSize: '20px' }}>CRS/BUSD</Typography>
-                    <Typography style={{ fontFamily: 'Poppins', fontSize: '14px' }}>Autocompounder</Typography>
-                  </Box>
-                </Box>
-                <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
-                  <img src={Magik} height={small ? 35 : 25} width={small ? 35 : 25} />
-                  <img src={AC} height={small ? 30 : 20} />
-                </Box>
-              </Box>
-              <Box className={classes.action}>
-                <Button
-                  className="shinyButtonPrimary"
-                  target="_blank"
-                  href="https://magik.farm/#/bsc/vault/synergy-crystals-busd"
-                  style={{
-                    height: "42px",
-                    fontSize: "18px",
-                    lineHeight: "24px",
-                    width: '-webkit-fill-available'
-                  }}
-                >
-                  Stake in Magik
                 </Button>
               </Box>
               <Box

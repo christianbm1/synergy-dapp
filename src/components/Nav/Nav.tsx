@@ -232,6 +232,17 @@ const Nav = () => {
                             style={{padding: '0'}}
                           >
                             <MenuItem onClick={handleClick} className={classes.menuItem}>
+                              <ExternalLink
+                                style={{ fontSize: '18px' }}
+                                color="textPrimary"
+                                href="https://www.cryptolids.com/synergy-merch"
+                                target="_blank"
+                                className={classes.linkDropDown}
+                              >
+                                Merch
+                              </ExternalLink>
+                            </MenuItem>
+                            <MenuItem onClick={handleClick} className={classes.menuItem}>
                               <NavLink
                                 style={{ fontSize: '18px' }}
                                 color="textPrimary"
@@ -318,11 +329,14 @@ const Nav = () => {
                 <ListItemLink primary="Home" to="/" />
                 <ListItemLink primary="Farm" to="/farm" />
                 <ListItemLink primary="ARK" to="/boardroom" />
+                <ListItem button component="a" href="https://www.cryptolids.com/synergy-merch" target="_blank">
+                  <ListItemText>Merch</ListItemText>
+                </ListItem>
                 <ListItemLink primary="Lottery" to="/" />
                 <ListItemLink primary="NFT" to="/" />
                 <ListItemLink primary="Portofolio" to="/" />
                 <ListItemLink primary="Merch" to="/" />
-                <ListItem button component="a" href="https://synergy-2.gitbook.io/the-book-of-synergy/">
+                <ListItem button component="a" href="https://synergy-2.gitbook.io/the-book-of-synergy/" target="_blank">
                   <ListItemText>Documentation</ListItemText>
                 </ListItem>
               </List>
